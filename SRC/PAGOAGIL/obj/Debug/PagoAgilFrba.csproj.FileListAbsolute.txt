@@ -1,0 +1,2 @@
+\\VBOXSVR\PagoAgil2C2017\src\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\sho_m\Desktop\GESTION DE DATOS\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
