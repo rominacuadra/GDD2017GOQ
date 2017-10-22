@@ -76,7 +76,7 @@ create table GOQ.Cliente(
 
 GO
 create table GOQ.Empresa(
-	empresa_id_empresa int CONSTRAINT PK_empresa_id_empresa PRIMARY KEY IDENTITY(1,1),
+	ID_empresa int CONSTRAINT PK_empresa_id_empresa PRIMARY KEY IDENTITY(1,1),
 	empresa_cuit nvarchar(50) not null UNIQUE,
 	empresa_nombre nvarchar(255) not null,
 	empresa_dir nvarchar(255) not null,
@@ -99,7 +99,7 @@ create table GOQ.Servicio(
 GO
 create table GOQ.Pago(
 	pago_id numeric(18,0) CONSTRAINT PK_pago_id PRIMARY KEY,
-	pago_fac_id int, /* FK a GOQ.Factura*/
+	pago_fac_id numeric(18,0), /* FK a GOQ.Factura*/
 	pago_fecha_cobro datetime not null,
 	pago_empresa_id int, /* FK a GOQ.Empresa*/
 	pago_cliente_id int, /* FK a GOQ.Cliente*/
@@ -132,7 +132,7 @@ create table GOQ.Factura(
 
 GO
 create table GOQ.Item(
-	numeroItem int CONSTRAINT PK_ren_id PRIMARY KEY IDENTITY(1,1),
+	numeroItem int CONSTRAINT PK_numeroItem_id PRIMARY KEY IDENTITY(1,1),
 	fac_id numeric(18,0),  /*FK GOQ.Factura*/
 	Monto numeric(18,2) not null,
 	Cantidad numeric(18,0) not null
@@ -184,7 +184,7 @@ add constraint FK_sucu_id foreign key (sucu_id) references GOQ.Sucursal(sucu_id)
 GO
 alter table GOQ.Servicio_Empresa
 add constraint FK_servicio foreign key (ID_servicio) references GOQ.Servicio(serv_id),
-	constraint FK_empresa foreign key (ID_empresa) references GOQ.Empresa(empresa_id_empresa);
+	constraint FK_empresa foreign key (ID_empresa) references GOQ.Empresa(ID_empresa);
 GO
 alter table GOQ.Pago
 add constraint FK_pago_fac_id foreign key (pago_fac_id) references GOQ.Factura(fac_id),
@@ -195,7 +195,7 @@ add constraint FK_pago_fac_id foreign key (pago_fac_id) references GOQ.Factura(f
 	
 GO
 alter table GOQ.Rendicion
-add constraint FK_ren_empresa_id foreign key (ren_empresa_id) references GOQ.Empresa(empresa_id_empresa),
+add constraint FK_ren_empresa_id foreign key (ren_empresa_id) references GOQ.Empresa(ID_empresa),
  constraint FK_ren_porc_comision_id foreign key (ren_porc_comision_id) references GOQ.Porcentaje_Comision(porc_comi_id);
 
 GO
@@ -207,13 +207,13 @@ GO
 
 alter table GOQ.Factura
 add constraint FK_fac_cli_id foreign key (fac_cli_id) references GOQ.Cliente(cli_id),
- constraint FK_fac_empresa_id foreign key (fac_empresa_id) references GOQ.Empresa(empresa_id_empresa);
+ constraint FK_fac_empresa_id foreign key (fac_empresa_id) references GOQ.Empresa(ID_empresa);
 
 GO
 
 alter table GOQ.RendicionFactura
-add constraint FK_ren_id foreign key (ren_id) references GOQ.Cliente(ren_id),
- constraint FK_ren_fac_id foreign key (ren_fac_id) references GOQ.Empresa(fac_id);
+add constraint FK_ren_id foreign key (ren_id) references GOQ.Rendicion(ren_id),
+ constraint FK_ren_fac_id foreign key (ren_fac_id) references GOQ.Factura(fac_id);
 
 GO
 
@@ -249,6 +249,102 @@ END;
 /***************************** FIN / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
 
 /******************************************** INICIO - LLENADO DE TABLAS *********************************************/
+
+/*********************************CLIENTES*****************************/
+
+update [gd_esquema].[Maestra] 
+set
+Cliente_Mail='pedirActualizarMail@mail.com'
+where Cliente_Codigo_Postal=5081 and [Cliente-Dni]=31294365
+;
+
+update [gd_esquema].[Maestra] 
+set
+Cliente_Mail='pedirActualizarMail2@mail.com'
+where Cliente_Codigo_Postal=8240 and [Cliente-Dni]=3703799
+;
+
+INSERT INTO [GOQ].[Cliente]
+           ([cli_nombre]
+           ,[cli_apellido]
+           ,[cli_dni]
+           ,[cli_mail]
+           ,[cli_tel]
+           ,[cli_dir]
+           ,[cli_cp]
+           ,[cli_habilitado]
+           ,[cli_fecha_nac])
+select distinct	m.[Cliente-Nombre],
+			m.[Cliente-Apellido],
+			m.[Cliente-Dni],
+			m.Cliente_Mail,
+			0000000000 as telefono,
+			m.Cliente_Direccion,
+			m.Cliente_Codigo_Postal,
+			1,
+			m.[Cliente-Fecha_Nac]  
+from [gd_esquema].[Maestra] m ;
+/***********************************************************************/
+
+/***************************EMPRESA*************************************/
+INSERT INTO [GOQ].[Empresa]
+           ([empresa_cuit]
+           ,[empresa_nombre]
+           ,[empresa_dir]
+           ,[empresa_habilitado])
+select		distinct e.Empresa_Cuit,
+			e.Empresa_Nombre ,
+			e.Empresa_Direccion ,
+			1 
+from [gd_esquema].[Maestra] e;
+/***********************************************************************/
+
+/*************************FACTURA************************************/
+
+INSERT INTO [GOQ].[Factura]
+           ([fac_id]
+           ,[fac_cli_id]
+           ,[fac_empresa_id]
+           ,[fac_fecha_alta]
+           ,[fac_fecha_vec]
+           ,[fac_total])
+select		distinct f.Nro_Factura,
+			c.cli_id ,
+			em.empresa_id_empresa ,
+			f.Factura_Fecha ,
+			f.Factura_Fecha_Vencimiento ,
+			f.Factura_Total 
+from [gd_esquema].[Maestra] f
+inner join [GOQ].[Cliente] c
+on(c.cli_dni =f.[Cliente-Dni] )
+inner join [GOQ].[Empresa] em
+on(em.empresa_cuit =f.Empresa_Cuit);
+/***********************************************************************/
+
+/****************************SUCURSAL*********************************/
+INSERT INTO [GOQ].[Sucursal]
+           ([sucu_nombre]
+           ,[sucu_dir]
+           ,[sucu_cp]
+           ,[sucu_habilitado])
+select		distinct f.Sucursal_Nombre,
+			f.Sucursal_Dirección ,
+			f.Sucursal_Codigo_Postal ,
+			1
+from [gd_esquema].[Maestra] f
+where Sucursal_Nombre is not null;
+/***********************************************************************/
+
+
+
+
+
+
+
+
+
+
+
 /******************************************** FIN - LLENADO DE TABLAS *********************************************/
 /******************************************** INICIO - TRIGGERS *****************************************/
 /******************************************** FIN - TRIGGERS *****************************************/
