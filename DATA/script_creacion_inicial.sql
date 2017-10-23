@@ -347,7 +347,7 @@ INSERT INTO [GOQ].[FUNCIONALIDAD] ([fun_nombre])
 VALUES  ('ABM de Rol'),('ABM de Cliente'), ('ABM de Empresa'),
 		('ABM de Sucursal'), ('ABM de Factura'),('Registro de Pago de Facturas'), ('Rendición de facturas cobradas'),
 		('Devoluciones'), ('Listado Estadístico')
-
+/***********************************************************************/
 
 
 /**********************FUNCIONALIDAD-ROL*******************************/
@@ -355,7 +355,7 @@ VALUES  ('ABM de Rol'),('ABM de Cliente'), ('ABM de Empresa'),
 		
 INSERT INTO [GOQ].[Funcionalidad_Rol] ([fun_rol_fun_id], [fun_rol_rol_id])
 VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,2),(6,1),(7,1),(8,1),(9,1)
-
+/***********************************************************************/
 
 /**********************USUARIO*******************************/
 
@@ -375,13 +375,13 @@ VALUES ('RominaCA', GOQ.F_Hash256('RominaCA'),0,1)
 
 INSERT INTO [GOQ].[Usuario] (Usu_Username,Usu_Password,usu_intentos,usu_habilitado)
 VALUES ('RominaCU', GOQ.F_Hash256('RominaCU'),0,1)
-
+/***********************************************************************/
 
 /**********************SERVICIO*******************************/
 
 INSERT INTO [GOQ].[Servicio] (serv_descripcion)
 select distinct Rubro_Descripcion from [gd_esquema].[Maestra]
-
+/***********************************************************************/
 
 /*******************RENDICION ****PROBAR SI FUNCIONA...****************************/	
 	
@@ -401,7 +401,7 @@ on (e.empresa_cuit = m.Empresa_Cuit)
 inner join [GOQ].[Porcentaje_Comision] pc
 on ( pc.porc_periodo  = ((m.ItemRendicion_Importe * 100) / m.Total) ) --calculo el porcentaje obtenido de la rendicion para compararlo con el del periodo y obtener su ID, habria que ver si funciona la division
 group by m.Rendicion_Nro, m.Rendicion_Fecha, e.ID_empresa, pc.porc_comi_id;
-
+/***********************************************************************/
 
 /*******************SERVICIO_EMPRESA ********************************/	
 INSERT INTO [GOQ].[Servicio_Empresa] ([ID_servicio],[ID_empresa])
@@ -411,10 +411,10 @@ INNER JOIN [GOQ].Servicio s
 on (m.Rubro_Descripcion = s.serv_descripcion)
 INNER JOIN [GOQ].Empresa e
 on(m.Empresa_Cuit = e.empresa_cuit);
-
+/***********************************************************************/
 
 /*******************DEVOLUCION*******--NO HAY NADA PARA MIGRAR*************************/	
-
+/***********************************************************************/
 
 
 /*******************RENDICION_FACTURA********************************/	
@@ -427,6 +427,73 @@ on(m.Rendicion_Nro = r.ren_id)
 INNER JOIN [GOQ].[Factura] f
 on(m.Nro_Factura = f.fac_id) 
 
+/****************************ITEM*********************************/
+INSERT INTO [GOQ].[Item]
+           ([fac_id]
+           ,[Monto]
+           ,[Cantidad])
+select i.Nro_Factura,
+	i.ItemFactura_Monto,
+	i.ItemFactura_Cantidad 
+from [gd_esquema].[Maestra] i
+where i.Nro_Factura is not null
+order by i.Nro_Factura;
+/***********************************************************************/
+
+/****************************TIPO_PAGO*********************************/
+INSERT INTO [GOQ].[Tipo_Pago]
+           ([tipo_pago_descripcion])
+select distinct t.FormaPagoDescripcion
+from [gd_esquema].[Maestra] t
+where t.FormaPagoDescripcion is not null;
+/***********************************************************************/
+
+/****************************ROL_USUARIO*********************************/
+INSERT INTO [GOQ].[Rol_Usuario] ([rol_usu_rol_id], [rol_usu_usu_id])
+VALUES (1, 1), (2, 2), (2, 3), (2, 4), (2, 5);
+/***********************************************************************/
+
+/****************************PORCENTAJE_COMISION*********************************/
+INSERT INTO [GOQ].[Porcentaje_Comision]
+           ([porc_periodo])
+VALUES (2), (3), (5), (10);
+/***********************************************************************/
+
+/******************************COBRADORSUCURSAL*****************************************/
+
+--Corroborar si funciona
+
+INSERT INTO [GOQ].[CobradorSucursal] ([sucu_id], [usu_id])
+select U.usu_id, S.sucu_id 
+from  [GOQ].[Sucursal] S, [GOQ].[Usuario] U
+where U.usu_id != 1;
+/***********************************************************************/
+
+/******************************PAGO*****************************************/
+
+--Evaluar modificacion nueva!!!!! y terminar
+
+INSERT INTO [GOQ].[Item]
+           ([pago_id] 
+		   ,[pago_fac_id]
+           ,[pago_fecha_cobro]
+		   ,[pago_empresa_id]
+		   ,[pago_cliente_id]
+		   ,[pago_fecha_vencim]
+		   ,[pago_importe]
+		   ,[pago_tipo_id]
+           ,[pago_usuario_id])
+select distinct p.Pago_nro ,p.Nro_Factura, p.Pago_Fecha, 
+e.ID_empresa, c.cli_id, /*SERA FACURA_FECHA?*/, p.Total, 
+tp.tipo_pago_id, /*no se de donde sacar usuario:(*/
+from [gd_esquema].[Maestra] p
+inner join [GOQ].[Empresa] e
+on (e.empresa_cuit = p.Empresa_Cuit)
+inner join [GOQ].[Cliente] c
+on (c.cli_dni = p.[Cliente-Dni])
+inner join [GOQ].[Tipo_Pago] tp
+on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion);
+/***********************************************************************/
 
 /******************************************** FIN - LLENADO DE TABLAS *********************************************/
 /******************************************** INICIO - TRIGGERS *****************************************/
