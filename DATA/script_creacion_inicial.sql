@@ -297,9 +297,14 @@ select		distinct e.Empresa_Cuit,
 			e.Empresa_Direccion ,
 			1 
 from [gd_esquema].[Maestra] e;
-/***********************************************************************/
+/*****************************ROL******************************************/
 
-/*************************FACTURA************************************/
+INSERT INTO [GOQ].[Rol] ([rol_nombre])
+VALUES ('Administrador'), ('Cobrador')
+
+
+
+/*************************FACTURA*VERIFICAR CON EL NUEVO CAMBIO QUE SE AGREGARA***********************************/
 
 INSERT INTO [GOQ].[Factura]
            ([fac_id]
@@ -310,7 +315,7 @@ INSERT INTO [GOQ].[Factura]
            ,[fac_total])
 select		distinct f.Nro_Factura,
 			c.cli_id ,
-			em.empresa_id_empresa ,
+			em.ID_empresa ,
 			f.Factura_Fecha ,
 			f.Factura_Fecha_Vencimiento ,
 			f.Factura_Total 
@@ -335,14 +340,92 @@ from [gd_esquema].[Maestra] f
 where Sucursal_Nombre is not null;
 /***********************************************************************/
 
+/*************************FUNCIONALIDAD*********************************/
+
+
+INSERT INTO [GOQ].[FUNCIONALIDAD] ([fun_nombre])
+VALUES  ('ABM de Rol'),('ABM de Cliente'), ('ABM de Empresa'),
+		('ABM de Sucursal'), ('ABM de Factura'),('Registro de Pago de Facturas'), ('Rendición de facturas cobradas'),
+		('Devoluciones'), ('Listado Estadístico')
 
 
 
+/**********************FUNCIONALIDAD-ROL*******************************/
+	
+		
+INSERT INTO [GOQ].[Funcionalidad_Rol] ([fun_rol_fun_id], [fun_rol_rol_id])
+VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,2),(6,1),(7,1),(8,1),(9,1)
+
+
+/**********************USUARIO*******************************/
+
+INSERT INTO [GOQ].[Usuario] (Usu_Username,Usu_Password,usu_intentos,usu_habilitado)
+VALUES ('admin', GOQ.F_Hash256('w23e'),0,1)
+
+INSERT INTO [GOQ].[Usuario] (Usu_Username,Usu_Password,usu_intentos,usu_habilitado)
+VALUES ('Leandro', GOQ.F_Hash256('Leandro'),0,1)
+
+
+INSERT INTO [GOQ].[Usuario] (Usu_Username,Usu_Password,usu_intentos,usu_habilitado)
+VALUES ('Maru', GOQ.F_Hash256('Maru'),0,1)
+
+INSERT INTO [GOQ].[Usuario] (Usu_Username,Usu_Password,usu_intentos,usu_habilitado)
+VALUES ('RominaCA', GOQ.F_Hash256('RominaCA'),0,1)
+
+
+INSERT INTO [GOQ].[Usuario] (Usu_Username,Usu_Password,usu_intentos,usu_habilitado)
+VALUES ('RominaCU', GOQ.F_Hash256('RominaCU'),0,1)
+
+
+/**********************SERVICIO*******************************/
+
+INSERT INTO [GOQ].[Servicio] (serv_descripcion)
+select distinct Rubro_Descripcion from [gd_esquema].[Maestra]
+
+
+/*******************RENDICION ****PROBAR SI FUNCIONA...****************************/	
+	
+INSERT INTO [GOQ].Rendicion ([ren_id]
+       ,[ren_fecha_ren]
+       ,[ren_cant_fac]
+       ,[ren_imp_comision]
+       ,[ren_empresa_id]
+       ,[ren_porc_comision_id]
+       ,[ren_imp_total])
+SELECT DISTINCT m.Rendicion_Nro, m.Rendicion_Fecha, COUNT(rf.ren_fac_id), SUM(m.ItemRendicion_Importe), e.ID_empresa, pc.porc_comi_id, SUM(m.Total)
+FROM [gd_esquema].[Maestra] m
+inner join [GOQ].[RendicionFactura] rf
+on (m.Rendicion_Nro = rf.ren_id)
+inner join [GOQ].[Empresa] e
+on (e.empresa_cuit = m.Empresa_Cuit)
+inner join [GOQ].[Porcentaje_Comision] pc
+on ( pc.porc_periodo  = ((m.ItemRendicion_Importe * 100) / m.Total) ) --calculo el porcentaje obtenido de la rendicion para compararlo con el del periodo y obtener su ID, habria que ver si funciona la division
+group by m.Rendicion_Nro, m.Rendicion_Fecha, e.ID_empresa, pc.porc_comi_id;
+
+
+/*******************SERVICIO_EMPRESA ********************************/	
+INSERT INTO [GOQ].[Servicio_Empresa] ([ID_servicio],[ID_empresa])
+SELECT DISTINCT serv_id, ID_empresa 
+from [gd_esquema].[Maestra] m
+INNER JOIN [GOQ].Servicio s
+on (m.Rubro_Descripcion = s.serv_descripcion)
+INNER JOIN [GOQ].Empresa e
+on(m.Empresa_Cuit = e.empresa_cuit);
+
+
+/*******************DEVOLUCION*******--NO HAY NADA PARA MIGRAR*************************/	
 
 
 
+/*******************RENDICION_FACTURA********************************/	
 
-
+INSERT INTO [GOQ].[RendicionFactura] ([ren_id],[ren_fac_id])
+SELECT DISTINCT ren_id, fac_id 
+from [gd_esquema].[Maestra] m
+INNER JOIN [GOQ].[Rendicion] r
+on(m.Rendicion_Nro = r.ren_id) 
+INNER JOIN [GOQ].[Factura] f
+on(m.Nro_Factura = f.fac_id) 
 
 
 /******************************************** FIN - LLENADO DE TABLAS *********************************************/

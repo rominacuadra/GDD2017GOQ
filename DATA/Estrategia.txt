@@ -1,0 +1,10 @@
+username	password
+admin		w23e
+Leandro		Leandro
+Maru		Maru
+RominaCA 	RominaCA
+RominaCU 	RominaCU
+
+Siendo Cobradores: Leandro,Maru,RominaCA,RominaCU
+Siendo administrador: admin
+La funcionalidad del admin son todas las existentes. 
