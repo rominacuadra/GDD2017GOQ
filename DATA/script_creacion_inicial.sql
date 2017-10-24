@@ -99,11 +99,8 @@ create table GOQ.Servicio(
 GO
 create table GOQ.Pago(
 	pago_id numeric(18,0) CONSTRAINT PK_pago_id PRIMARY KEY,
-	pago_fac_id numeric(18,0), /* FK a GOQ.Factura*/
 	pago_fecha_cobro datetime not null,
-	pago_empresa_id int, /* FK a GOQ.Empresa*/
 	pago_cliente_id int, /* FK a GOQ.Cliente*/
-	pago_fecha_vencim datetime not null CHECK(pago_fecha_vencim<getDate()) ,
 	pago_importe numeric(18,0) not null CHECK(pago_importe>0),
 	pago_tipo_id int , /* FK a GOQ.Tipo_Pago*/
 	pago_usuario_id int /* FK a GOQ.Usuario*/
@@ -138,6 +135,11 @@ create table GOQ.Item(
 	Cantidad numeric(18,0) not null
 );
 
+GO
+create table GOQ.Pago_Factura
+	pago_fac_pago_id int, /* FK  GOQ.Pago */
+	pago_fac_fac_id int, /* FK  GOQ.Factura */
+	CONSTRAINT PK_pago_factura PRIMARY KEY (pago_fac_pago_id, pago_fac_fac_id)
 GO
 create table GOQ.Tipo_Pago(
 	tipo_pago_id int CONSTRAINT PK_tipo_pago_id PRIMARY KEY IDENTITY(1,1),
@@ -214,6 +216,12 @@ GO
 alter table GOQ.RendicionFactura
 add constraint FK_ren_id foreign key (ren_id) references GOQ.Rendicion(ren_id),
  constraint FK_ren_fac_id foreign key (ren_fac_id) references GOQ.Factura(fac_id);
+
+GO
+
+alter table GOQ.Pago_Factura
+add constraint FK_pago_fac_pago_id foreign key (pago_fac_pago_id) references GOQ.Pago(pago_id),
+	constraint FK_pago_fac_fac_id foreign key (pago_fac_fac_id) references GOQ.Factura(fac_id);
 
 GO
 
