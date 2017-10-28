@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Security.Cryptography;
+using PagoAgilFrba.AbmCliente; //ACA AGREGO EL FORMULARIO ABMCLIENTE
 
 
 
@@ -34,29 +35,19 @@ namespace PagoAgilFrba
 
         /******************************************************************************/
 
-        public static SqlConnection getConexion()
+        public SqlConnection getConexion()
         {
-
-
-
             SqlConnection conex = null;
             if (conex == null || conex.State == ConnectionState.Closed)
             {
-
-
-
                 try
                 {
-
-
-
                     String str = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True"; ;
                     //String str = ConfigurationManager.ConnectionStrings["GD1C2017"].ConnectionString; //VER SI FUNCIONA OK
                     conex = new SqlConnection(str);
                     conex.ConnectionString = str;
                     conex.Open();
-                    MessageBox.Show("conectados", "", MessageBoxButtons.OK);
-
+                    MessageBox.Show("Conexión establecida", "Información", MessageBoxButtons.OK);
                 }
                 catch (SqlException)
                 {
@@ -179,7 +170,10 @@ namespace PagoAgilFrba
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            //DESCOMENTAR THIS.CLOSE ACTUALMENTE ES UNA PRUEBA PARA VER EL FORMULARIO QUE HICE
+            //this.Close();
+            ABMCliente p = new ABMCliente();
+            p.Show();
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
