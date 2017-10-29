@@ -266,7 +266,7 @@ namespace PagoAgilFrba.AbmCliente
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    comboBoxFiltro.Items.Add(reader.GetString(0));
+                    comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
                 }
                 if (reader.HasRows)
                 {
@@ -288,7 +288,7 @@ namespace PagoAgilFrba.AbmCliente
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    comboBoxFiltro.Items.Add(reader.GetString(0));
+                    comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
                 }
                 if (reader.HasRows)
                 {
@@ -310,7 +310,7 @@ namespace PagoAgilFrba.AbmCliente
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    comboBoxFiltro.Items.Add(reader.GetString(0));
+                    comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
                 }
                 if (reader.HasRows)
                 {
@@ -332,7 +332,7 @@ namespace PagoAgilFrba.AbmCliente
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    comboBoxFiltro.Items.Add(reader.GetString(0));
+                    comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
                 }
                 if (reader.HasRows)
                 {
@@ -392,19 +392,20 @@ namespace PagoAgilFrba.AbmCliente
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
-                textBoxNombre.Text = reader.GetString(0);
-                textBoxApellido.Text = reader.GetString(1);
-                textBoxDNI.Text = reader.GetString(2);
-                textBoxMail.Text = reader.GetString(3);
-                textBoxTelefono.Text = reader.GetString(4);
-                string[] direccion = reader.GetString(5).Split(new Char[] { ' ' });
+                reader.Read();
+                textBoxNombre.Text = Convert.ToString(reader.GetValue(0));
+                textBoxApellido.Text = Convert.ToString(reader.GetValue(1));
+                textBoxDNI.Text = Convert.ToString(reader.GetValue(2));
+                textBoxMail.Text = Convert.ToString(reader.GetValue(3));
+                textBoxTelefono.Text = Convert.ToString(reader.GetValue(4));
+                string[] direccion = Convert.ToString(reader.GetValue(5)).Split(new Char[] { ' ' });
                 textBoxNroPiso.Text = Convert.ToString(direccion[direccion.Length - 1]);
-                textBoxCalle.Text = reader.GetString(5).Remove( (reader.GetString(5).Length - direccion[direccion.Length - 1].Length) , direccion[direccion.Length - 1].Length);
+                textBoxCalle.Text = Convert.ToString(reader.GetValue(5)).Remove((reader.GetString(5).Length - direccion[direccion.Length - 1].Length), direccion[direccion.Length - 1].Length);
                 textBoxLocalidad.Text = "-";
                 textBoxDepto.Text = "-";
-                textBoxCodigoPostal.Text = reader.GetString(6);
-                textBoxFechaDeNacimiento.Text = reader.GetString(7);
-                if (reader.GetInt32(8) == 0)
+                textBoxCodigoPostal.Text = Convert.ToString(reader.GetValue(6));
+                textBoxFechaDeNacimiento.Text = Convert.ToString(reader.GetValue(7));
+                if (Convert.ToInt32(reader.GetValue(8)) == 0)
                 {
                     checkBoxCliente.Visible = true;
                 }

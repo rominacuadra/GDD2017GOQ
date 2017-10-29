@@ -15,6 +15,7 @@ namespace PagoAgilFrba.ListadoEstadistico
         public Form1()
         {
             InitializeComponent();
+            button1.Visible
         }
     }
 }

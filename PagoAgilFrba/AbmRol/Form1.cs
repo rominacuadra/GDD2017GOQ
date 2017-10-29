@@ -50,7 +50,7 @@ namespace PagoAgilFrba.AbmRol
                 while (reader.Read())
                 {
                     cant += 1;
-                    cbRol.Items.Add(reader.GetString(0));
+                    listBox1.Items.Add(reader.GetString(0));
                 }
                 
             }
@@ -59,7 +59,7 @@ namespace PagoAgilFrba.AbmRol
                 MessageBox.Show("No tiene roles, ingresar como administrador y generar un rol para el usuario.", "Información"); 
             }
 
-            cargar los usuarios al listbox
+            //cargar los usuarios al listbox
         
         }
 
