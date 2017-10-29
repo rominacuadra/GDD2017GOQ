@@ -25,6 +25,7 @@ DROP TABLE GOQ.Empresa
 DROP TABLE GOQ.Porcentaje_Comision
 DROP TABLE GOQ.Servicio
 DROP TABLE GOQ.Tipo_Pago
+DROP TABLE GOQ.Pago_Factura
 
 
 /*ELIMINAR FUNCIONES*/
