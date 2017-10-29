@@ -1,9 +1,37 @@
 /********************************************* INICIO - CREACION ESQUEMA *******************************************/
 USE GD2C2017;
 GO
-IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')BEGIN		DROP FUNCTION GOQ.F_Hash256		DROP TABLE GOQ.CobradorSucursal	DROP TABLE GOQ.Devolucion	DROP TABLE GOQ.Funcionalidad_Rol	DROP TABLE GOQ.Funcionalidad	DROP TABLE GOQ.Item	DROP TABLE GOQ.RendicionFactura	DROP TABLE GOQ.Rendicion	DROP TABLE GOQ.Rol_Usuario	DROP TABLE GOQ.Rol	DROP TABLE GOQ.Factura	DROP TABLE GOQ.Porcentaje_Comision	DROP TABLE GOQ.Servicio_Empresa	DROP TABLE GOQ.Servicio	DROP TABLE GOQ.Pago_Factura	DROP TABLE GOQ.Sucursal	DROP TABLE GOQ.Tipo_Pago	DROP TABLE GOQ.Usuario	DROP TABLE GOQ.Cliente	DROP TABLE GOQ.Empresa	DROP TABLE GOQ.Pago	DROP SCHEMA GOQ
-END
-GOCREATE SCHEMA GOQ AUTHORIZATION gd 
+IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
+BEGIN
+	
+	DROP FUNCTION GOQ.F_Hash256
+	
+	DROP TABLE GOQ.CobradorSucursal
+	DROP TABLE GOQ.Devolucion
+	DROP TABLE GOQ.Funcionalidad_Rol
+	DROP TABLE GOQ.Funcionalidad
+	DROP TABLE GOQ.Item
+	DROP TABLE GOQ.RendicionFactura
+	DROP TABLE GOQ.Rendicion
+	DROP TABLE GOQ.Rol_Usuario
+	DROP TABLE GOQ.Rol
+	DROP TABLE GOQ.Factura
+	DROP TABLE GOQ.Porcentaje_Comision
+	DROP TABLE GOQ.Servicio_Empresa
+	DROP TABLE GOQ.Servicio
+	DROP TABLE GOQ.Pago_Factura
+	DROP TABLE GOQ.Sucursal
+	DROP TABLE GOQ.Tipo_Pago
+	DROP TABLE GOQ.Usuario
+	DROP TABLE GOQ.Cliente
+	DROP TABLE GOQ.Empresa
+	DROP TABLE GOQ.Pago
+	DROP SCHEMA GOQ
+
+END
+
+GO
+CREATE SCHEMA GOQ AUTHORIZATION gd 
 GO
 
 /********************************************* FIN - CREACION ESQUEMA **********************************************/
@@ -316,7 +344,7 @@ INSERT INTO [GOQ].[Sucursal]
            ,[sucu_cp]
            ,[sucu_habilitado])
 select		distinct f.Sucursal_Nombre,
-			f.Sucursal_Dirección ,
+			f.Sucursal_DirecciÃ³n ,
 			f.Sucursal_Codigo_Postal ,
 			1
 from [gd_esquema].[Maestra] f
@@ -328,8 +356,8 @@ where Sucursal_Nombre is not null;
 
 INSERT INTO [GOQ].[FUNCIONALIDAD] ([fun_nombre])
 VALUES  ('ABM de Rol'),('ABM de Cliente'), ('ABM de Empresa'),
-		('ABM de Sucursal'), ('ABM de Factura'),('Registro de Pago de Facturas'), ('Rendición de facturas cobradas'),
-		('Devoluciones'), ('Listado Estadístico')
+		('ABM de Sucursal'), ('ABM de Factura'),('Registro de Pago de Facturas'), ('RendiciÃ³n de facturas cobradas'),
+		('Devoluciones'), ('Listado EstadÃ­stico')
 /***********************************************************************/
 
 
@@ -467,7 +495,7 @@ INSERT INTO [GOQ].[Item]
 		   ,[pago_tipo_id]
            ,[pago_usuario_id])
 select distinct p.Pago_nro ,p.Nro_Factura, p.Pago_Fecha, 
-e.ID_empresa, c.cli_id, /*SERA FACURA_FECHA?*/, p.Total, 
+e.ID_empresa, c.cli_id, /*SERA FACURA_FECHA?*/ p.Total, 
 tp.tipo_pago_id, /*no se de donde sacar usuario:(*/
 from [gd_esquema].[Maestra] p
 inner join [GOQ].[Empresa] e
