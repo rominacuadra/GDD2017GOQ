@@ -1,0 +1,22 @@
+\\VBOXSVR\PagoAgil2C2017\src\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\bin\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
