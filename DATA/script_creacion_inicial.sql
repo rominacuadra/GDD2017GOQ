@@ -1,7 +1,9 @@
 /********************************************* INICIO - CREACION ESQUEMA *******************************************/
 USE GD2C2017;
 GO
-CREATE SCHEMA GOQ AUTHORIZATION gd 
+IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')BEGIN		DROP FUNCTION GOQ.F_Hash256		DROP TABLE GOQ.CobradorSucursal	DROP TABLE GOQ.Devolucion	DROP TABLE GOQ.Funcionalidad_Rol	DROP TABLE GOQ.Funcionalidad	DROP TABLE GOQ.Item	DROP TABLE GOQ.RendicionFactura	DROP TABLE GOQ.Rendicion	DROP TABLE GOQ.Rol_Usuario	DROP TABLE GOQ.Rol	DROP TABLE GOQ.Factura	DROP TABLE GOQ.Porcentaje_Comision	DROP TABLE GOQ.Servicio_Empresa	DROP TABLE GOQ.Servicio	DROP TABLE GOQ.Pago_Factura	DROP TABLE GOQ.Sucursal	DROP TABLE GOQ.Tipo_Pago	DROP TABLE GOQ.Usuario	DROP TABLE GOQ.Cliente	DROP TABLE GOQ.Empresa	DROP TABLE GOQ.Pago	DROP SCHEMA GOQ
+END
+GOCREATE SCHEMA GOQ AUTHORIZATION gd 
 GO
 
 /********************************************* FIN - CREACION ESQUEMA **********************************************/
@@ -32,6 +34,8 @@ create table GOQ.Usuario(
 	usu_id int CONSTRAINT PK_usu_id PRIMARY KEY IDENTITY(1,1),
 	usu_username nvarchar(25) not null UNIQUE,
 	usu_password varbinary(64) not null,
+	usu_nombre nvarchar(25) null,
+	usu_apellido nvarchar(25) null,
 	usu_intentos int DEFAULT 0,
 	usu_habilitado bit DEFAULT 1,
 );
@@ -124,7 +128,8 @@ create table GOQ.Factura(
 	 fac_empresa_id int, /* FK GOQ.Empresa */
 	 fac_fecha_alta datetime not null,
 	 fac_fecha_vec datetime not null,
-	 fac_total numeric(18,2) not null
+	 fac_total numeric(18,2) not null,
+	 fac_ren_id numeric(18,0)
 );
 
 GO
@@ -136,10 +141,12 @@ create table GOQ.Item(
 );
 
 GO
-create table GOQ.Pago_Factura
-	pago_fac_pago_id int, /* FK  GOQ.Pago */
-	pago_fac_fac_id int, /* FK  GOQ.Factura */
+create table GOQ.Pago_Factura(
+	pago_fac_pago_id numeric(18,0), /* FK  GOQ.Pago */
+	pago_fac_fac_id numeric(18,0), /* FK  GOQ.Factura */
 	CONSTRAINT PK_pago_factura PRIMARY KEY (pago_fac_pago_id, pago_fac_fac_id)
+);
+
 GO
 create table GOQ.Tipo_Pago(
 	tipo_pago_id int CONSTRAINT PK_tipo_pago_id PRIMARY KEY IDENTITY(1,1),
@@ -151,13 +158,6 @@ create table GOQ.Devolucion(
 	dev_id int CONSTRAINT PK_dev_id PRIMARY KEY IDENTITY(1,1),
 	dev_fac_id numeric(18,0), /*FK GOQ.Factura*/
 	dev_motivo nvarchar(255) not null
-);
-
-GO
-create table GOQ.RendicionFactura(
-	ren_fac_idRendicion int CONSTRAINT PK_ren_fac_idRendicion PRIMARY KEY IDENTITY(1,1),
-	ren_id numeric(18,0),  /*FK GOQ.Rendicion*/
-	ren_fac_id numeric(18,0)  /*FK GOQ.Factura*/
 );
 
 GO
@@ -189,9 +189,7 @@ add constraint FK_servicio foreign key (ID_servicio) references GOQ.Servicio(ser
 	constraint FK_empresa foreign key (ID_empresa) references GOQ.Empresa(ID_empresa);
 GO
 alter table GOQ.Pago
-add constraint FK_pago_fac_id foreign key (pago_fac_id) references GOQ.Factura(fac_id),
-	constraint FK_empresa_id foreign key (pago_empresa_id) references GOQ.Empresa(ID_empresa),
-	constraint FK_cliente_id foreign key (pago_cliente_id) references GOQ.Cliente(cli_id),
+add constraint FK_cliente_id foreign key (pago_cliente_id) references GOQ.Cliente(cli_id),
 	constraint FK_tipo_id foreign key (pago_tipo_id) references GOQ.Tipo_Pago(tipo_pago_id),
 	constraint FK_usuario_id foreign key (pago_usuario_id) references GOQ.Usuario(usu_id);
 	
@@ -209,13 +207,8 @@ GO
 
 alter table GOQ.Factura
 add constraint FK_fac_cli_id foreign key (fac_cli_id) references GOQ.Cliente(cli_id),
- constraint FK_fac_empresa_id foreign key (fac_empresa_id) references GOQ.Empresa(ID_empresa);
-
-GO
-
-alter table GOQ.RendicionFactura
-add constraint FK_ren_id foreign key (ren_id) references GOQ.Rendicion(ren_id),
- constraint FK_ren_fac_id foreign key (ren_fac_id) references GOQ.Factura(fac_id);
+	constraint FK_fac_ren_id foreign key (fac_ren_id) references GOQ.Rendicion(ren_id),
+    constraint FK_fac_empresa_id foreign key (fac_empresa_id) references GOQ.Empresa(ID_empresa);
 
 GO
 
@@ -245,12 +238,6 @@ END;
 
 ----------------------------------TRANSFORMAR A MAYUSCULAS SIN TILDES
 GO
-CREATE FUNCTION GOQ.F_ObtenerPasswordGenerica(@usuario varchar(255))
-RETURNS varbinary(64)
-BEGIN
-	return GOQ.F_Hash256(@usuario)
-END;
-
 
 /*************************************** FIN / CREACION - FUNCIONES ***************************************/
 /***************************** INICIO / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
@@ -259,18 +246,6 @@ END;
 /******************************************** INICIO - LLENADO DE TABLAS *********************************************/
 
 /*********************************CLIENTES*****************************/
-
-update [gd_esquema].[Maestra] 
-set
-Cliente_Mail='pedirActualizarMail@mail.com'
-where Cliente_Codigo_Postal=5081 and [Cliente-Dni]=31294365
-;
-
-update [gd_esquema].[Maestra] 
-set
-Cliente_Mail='pedirActualizarMail2@mail.com'
-where Cliente_Codigo_Postal=8240 and [Cliente-Dni]=3703799
-;
 
 INSERT INTO [GOQ].[Cliente]
            ([cli_nombre]
