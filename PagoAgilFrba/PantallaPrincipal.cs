@@ -48,5 +48,11 @@ namespace PagoAgilFrba
             p.ShowDialog();
         }
 
+        private void listadoEstadisticoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListadoEstadistico.ListadoEstadistico listado = new ListadoEstadistico.ListadoEstadistico();
+            listado.ShowDialog();
+        }
+
     }
 }

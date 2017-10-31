@@ -81,18 +81,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListadoEstadistico\ListadoEstadistico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ListadoEstadistico.Designer.cs">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModuloGlobal.cs" />
     <Compile Include="PantallaPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PantallaPrincipal.Designer.cs">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ListadoEstadistico\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ListadoEstadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,8 +117,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListadoEstadistico\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ListadoEstadistico\ListadoEstadistico.resx">
+      <DependentUpon>ListadoEstadistico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PantallaPrincipal.resx">
       <DependentUpon>PantallaPrincipal.cs</DependentUpon>

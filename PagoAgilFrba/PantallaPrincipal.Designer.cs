@@ -91,7 +91,7 @@
             // rolToolStripMenuItem
             // 
             this.rolToolStripMenuItem.Name = "rolToolStripMenuItem";
-            this.rolToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rolToolStripMenuItem.Size = new System.Drawing.Size(91, 22);
             this.rolToolStripMenuItem.Text = "Rol";
             this.rolToolStripMenuItem.Click += new System.EventHandler(this.rolToolStripMenuItem_Click);
             // 
@@ -163,6 +163,7 @@
             this.listadoEstadisticoToolStripMenuItem.Name = "listadoEstadisticoToolStripMenuItem";
             this.listadoEstadisticoToolStripMenuItem.Size = new System.Drawing.Size(116, 20);
             this.listadoEstadisticoToolStripMenuItem.Text = "Listado Estadistico";
+            this.listadoEstadisticoToolStripMenuItem.Click += new System.EventHandler(this.listadoEstadisticoToolStripMenuItem_Click);
             // 
             // PantallaPrincipal
             // 
