@@ -50,13 +50,16 @@ namespace PagoAgilFrba.ListadoEstadistico
                     Porcentaje.ReadOnly = true;
                     dataGridView1.Columns.Add(Porcentaje);
 
+                    
                     while (reader.Read())
                     {
                         //agregar fila, esto te devuelve de a una las filas de tu consulta select
                        
-                        dataGridView1.Rows.Add(Convert.ToString(reader.GetValue(0)), Convert.ToString(reader.GetValue(1)));
-                      
+                        string[] fila = new string[]{  Convert.ToString(reader.GetValue(0)), Convert.ToString(reader.GetValue(1)) };
+                        object[] rows = new object[] { fila };
+                        dataGridView1.Rows.Add(rows);
                     }
+                    
          
                 }
                 else

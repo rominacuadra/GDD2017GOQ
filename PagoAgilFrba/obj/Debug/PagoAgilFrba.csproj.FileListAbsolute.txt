@@ -48,3 +48,14 @@ C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.Gen
 C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
 C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
 C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.ListadoEstadistico.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache

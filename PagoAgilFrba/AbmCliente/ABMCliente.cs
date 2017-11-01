@@ -25,8 +25,8 @@ namespace PagoAgilFrba.AbmCliente
         }
 
         private Form1 general = new Form1();
-        private int DNIAModificar = 0;
-        private string ApellidoAModificar = "", NombreAModificar = "";
+        private int DNIAModificar = 0, DNISinModificar = 0;
+        private string ApellidoAModificar = "", NombreAModificar = "", MailSinModificar = "";
 
         private void mostrarAlta()
         {
@@ -217,9 +217,33 @@ namespace PagoAgilFrba.AbmCliente
             {
                 habilitado = 1;
             }
-            SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido = '{10}' AND cli_nombre = '{11}'",
+            if(MailSinModificar == Mail && DNISinModificar != DNI){
+                //modifica DNI, MAIL no
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
+                Nombre, Apellido, DNI, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
+                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+            }
+            else if (MailSinModificar != Mail && DNISinModificar == DNI)
+            {
+                ////modifica Mail, DNI no
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_mail = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
+                Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
+                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+            }
+            else if (MailSinModificar != Mail && DNISinModificar != DNI)
+            {
+                ////modifica Mail y DNI
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido = '{10}' AND cli_nombre = '{11}'",
                 Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+            }
+            else
+            {
+                ////no modifica Mail ni DNI
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_tel = '{2}', cli_dir = '{3}', cli_cp = '{4}', cli_habilitado = '{5}', cli_fecha_nac =  '{6}' WHERE cli_dni = '{7}' AND cli_apellido = '{8}' AND cli_nombre = '{9}'",
+                Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
+                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+            }
 
             filasRetornadas = cmd.ExecuteNonQuery();
             if (filasRetornadas > 0)
@@ -396,7 +420,9 @@ namespace PagoAgilFrba.AbmCliente
                 textBoxNombre.Text = Convert.ToString(reader.GetValue(0));
                 textBoxApellido.Text = Convert.ToString(reader.GetValue(1));
                 textBoxDNI.Text = Convert.ToString(reader.GetValue(2));
+                DNISinModificar = Convert.ToInt32(textBoxDNI.Text);
                 textBoxMail.Text = Convert.ToString(reader.GetValue(3));
+                MailSinModificar = textBoxMail.Text;
                 textBoxTelefono.Text = Convert.ToString(reader.GetValue(4));
                 string[] direccion = Convert.ToString(reader.GetValue(5)).Split(new Char[] { ' ' });
                 textBoxNroPiso.Text = Convert.ToString(direccion[direccion.Length - 1]);
