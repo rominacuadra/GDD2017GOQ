@@ -59,3 +59,6 @@ C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.
 C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
 C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
 C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Devolucion.Devolucion.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.ListadoEstadistico.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources

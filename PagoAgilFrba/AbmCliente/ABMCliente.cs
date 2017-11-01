@@ -140,15 +140,9 @@ namespace PagoAgilFrba.AbmCliente
         {
             if (todosLosCamposCompletos())
             {
-                if (mailNoEstaRepetido(textBoxMail.Text))
-                {
-                    //Depto y localidad no se usa en la base de datos, preguntar, asi esta en la master: Avenida San Juan 6237
-                    modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
-                }
-                else
-                {
-                    MessageBox.Show("El mail ingresado ya se encuentra registrado, intente con otro.", "Error");
-                }
+                //Depto y localidad no se usa en la base de datos, preguntar, asi esta en la master: Avenida San Juan 6237
+                modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
+               
             }
             else
             {
@@ -222,6 +216,7 @@ namespace PagoAgilFrba.AbmCliente
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
                 Nombre, Apellido, DNI, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                filasRetornadas = cmd.ExecuteNonQuery();
             }
             else if (MailSinModificar != Mail && DNISinModificar == DNI)
             {
@@ -229,6 +224,7 @@ namespace PagoAgilFrba.AbmCliente
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_mail = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
                 Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                filasRetornadas = cmd.ExecuteNonQuery();
             }
             else if (MailSinModificar != Mail && DNISinModificar != DNI)
             {
@@ -236,16 +232,17 @@ namespace PagoAgilFrba.AbmCliente
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido = '{10}' AND cli_nombre = '{11}'",
                 Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                filasRetornadas = cmd.ExecuteNonQuery();
             }
             else
             {
                 ////no modifica Mail ni DNI
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_tel = '{2}', cli_dir = '{3}', cli_cp = '{4}', cli_habilitado = '{5}', cli_fecha_nac =  '{6}' WHERE cli_dni = '{7}' AND cli_apellido = '{8}' AND cli_nombre = '{9}'",
-                Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
+                Nombre, Apellido, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                filasRetornadas = cmd.ExecuteNonQuery();
             }
 
-            filasRetornadas = cmd.ExecuteNonQuery();
             if (filasRetornadas > 0)
             {
                 MessageBox.Show("El cliente se ha modificado con éxito!", "Información");
@@ -468,6 +465,7 @@ namespace PagoAgilFrba.AbmCliente
         private void altaToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             ocultarTodosLosItems();
+            limpiarCampos();
             labelTitulo.Text = "ALTA";
             mostrarAlta();
         }
@@ -486,6 +484,7 @@ namespace PagoAgilFrba.AbmCliente
         private void modificaciónToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             ocultarTodosLosItems();
+            limpiarCampos();
             labelTitulo.Text = "MODIFICACION";
             mostrarBusqueda();
         }
@@ -497,7 +496,7 @@ namespace PagoAgilFrba.AbmCliente
             {
                 if (realizarBusquedayDevolverResultado())
                 {
-                    MessageBox.Show("El cliente fue encontrado, modifique los datos deseados.", "Información");
+                    MessageBox.Show("El cliente fue encontrado.", "Información");
                     mostrarResultadosBusqueda();
                 }
                 else
@@ -514,7 +513,6 @@ namespace PagoAgilFrba.AbmCliente
 
         private void comboBoxResultadoBusqueda_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("ESTOY", "Error");
             //al elegir al usuario del combobox
             if (labelTitulo.Text == "MODIFICACION")
             {
@@ -596,6 +594,7 @@ namespace PagoAgilFrba.AbmCliente
         private void bajaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ocultarTodosLosItems();
+            limpiarCampos();
             labelTitulo.Text = "BAJA";
             mostrarBusqueda();
         }

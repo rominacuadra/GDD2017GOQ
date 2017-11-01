@@ -62,10 +62,10 @@ namespace PagoAgilFrba.Devolucion
         private void button3_Click(object sender, EventArgs e)
         {
             if(radioButtonError.Checked){
-                string motivo = "ErrorCobro";
+                //string motivo = "ErrorCobro";
             }
             else if(radioButtonCliente.Checked){
-                string motivo = "DecisionCliente";
+                //string motivo = "DecisionCliente";
             }
             else{
                 MessageBox.Show("Seleccione el motivo de la devolucion","Error");

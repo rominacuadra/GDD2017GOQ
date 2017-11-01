@@ -17,6 +17,7 @@ namespace PagoAgilFrba.RegistroPago
         public RegistroPago()
         {
             InitializeComponent();
+            ocultarElementos();
             llenarComboBoxFiltro();
             llenarComboBoxEmpresa();
             llenarComboBoxCliente();
@@ -33,7 +34,7 @@ namespace PagoAgilFrba.RegistroPago
         private void llenarComboBoxEmpresa()
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 empresa_nombre + '-' + empresa_cuit FROM GOQ.Empresa",
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 empresa_nombre + '/' + empresa_cuit FROM GOQ.Empresa",
                 PagoAgilFrba.ModuloGlobal.getConexion()); 
             reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -64,7 +65,7 @@ namespace PagoAgilFrba.RegistroPago
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                comboBoxCli.Items.Add(Convert.ToString(reader.GetValue(0)));
+                comboBoxTipoPago.Items.Add(Convert.ToString(reader.GetValue(0)));
             }
             reader.Close();
         }
@@ -267,7 +268,7 @@ namespace PagoAgilFrba.RegistroPago
             {
                 if (comboBoxEmp.SelectedItem.ToString().Length > 0)
                 {
-                    string[] direccion = comboBoxEmp.SelectedItem.ToString().Split(new Char[] { '-' });
+                    string[] direccion = comboBoxEmp.SelectedItem.ToString().Split(new Char[] { '/' });
                     buscarPorEmpresaSeleccionada(direccion[0], direccion[1]);
                     mostrarDatosDeFactura();
                 }
@@ -292,7 +293,7 @@ namespace PagoAgilFrba.RegistroPago
 
         private void buttonFact_Click(object sender, EventArgs e)
         {
-            if (comboBoxTipoPago.SelectedItem.ToString().Length > 0)
+            if (!comboBoxTipoPago.SelectedIndex.Equals(-1))
             {
                 if (listBoxFacturas.Items.Contains("Factura:" + labelRNroFac.Text + "-Tipo:" + comboBoxTipoPago.SelectedItem.ToString() + "-Valor:" + labelRImp.Text))
                 {
@@ -307,7 +308,11 @@ namespace PagoAgilFrba.RegistroPago
                     }
                     else
                     {
-                        labelRTot.Text = Convert.ToString(Convert.ToInt32(labelRTot.Text) + Convert.ToInt32(labelRImp.Text));
+                        decimal total = Convert.ToDecimal(labelRTot.Text);
+                        decimal importe = Convert.ToDecimal(labelRImp.Text);
+                        decimal suma = total + importe;
+
+                        labelRTot.Text = suma.ToString();
                     }
                 }
             }
@@ -328,7 +333,11 @@ namespace PagoAgilFrba.RegistroPago
             if (listBoxFacturas.SelectedItem.ToString().Length > 0)
             {
                 string[] direccion = listBoxFacturas.SelectedItem.ToString().Split(new Char[] { '-', ':' });
-                labelRTot.Text = Convert.ToString(Convert.ToInt32(labelRTot.Text) - Convert.ToInt32(direccion[5]));
+                decimal total = Convert.ToDecimal(labelRTot.Text);
+                decimal importe = Convert.ToDecimal(direccion[5]);
+                decimal resta = total - importe;
+                labelRTot.Text = resta.ToString();
+                //labelRTot.Text = Convert.ToString(Convert.ToInt32(labelRTot.Text) - Convert.ToInt32(direccion[5]));
                 listBoxFacturas.Items.Remove(listBoxFacturas.SelectedItem);
             }
             else

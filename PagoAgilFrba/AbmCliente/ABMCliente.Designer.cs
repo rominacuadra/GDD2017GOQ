@@ -406,7 +406,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(705, 573);
+            this.ClientSize = new System.Drawing.Size(705, 605);
             this.Controls.Add(this.labelTitulo);
             this.Controls.Add(this.menuABMCli);
             this.Controls.Add(this.groupBox1);
