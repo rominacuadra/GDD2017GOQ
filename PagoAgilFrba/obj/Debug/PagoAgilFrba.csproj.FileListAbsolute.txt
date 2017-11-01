@@ -45,3 +45,6 @@ C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEst
 C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
 C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
 C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
