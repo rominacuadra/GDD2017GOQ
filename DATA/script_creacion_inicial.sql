@@ -1,9 +1,37 @@
-USE GD2C2017;/*
+USE GD2C2017;
+/*
 GO
-IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
-	BEGIN		DROP FUNCTION GOQ.F_Hash256		DROP TABLE GOQ.CobradorSucursal		DROP TABLE GOQ.Devolucion		DROP TABLE GOQ.Funcionalidad_Rol		DROP TABLE GOQ.Funcionalidad		DROP TABLE GOQ.Item		DROP TABLE GOQ.Rol_Usuario		DROP TABLE GOQ.Rol		DROP TABLE GOQ.Servicio_Empresa		DROP TABLE GOQ.Servicio		DROP TABLE GOQ.Pago_Factura		DROP TABLE GOQ.Sucursal		DROP TABLE GOQ.Pago			DROP TABLE GOQ.Factura		DROP TABLE GOQ.Cliente		DROP TABLE GOQ.Rendicion		DROP TABLE GOQ.Empresa		DROP TABLE GOQ.Porcentaje_Comision		DROP TABLE GOQ.Tipo_Pago		DROP TABLE GOQ.Usuario		DROP SCHEMA GOQ
-	END
-GOCREATE SCHEMA GOQ AUTHORIZATION gd */
+IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
+
+	BEGIN
+		DROP FUNCTION GOQ.F_Hash256
+		DROP TABLE GOQ.CobradorSucursal
+		DROP TABLE GOQ.Devolucion
+		DROP TABLE GOQ.Funcionalidad_Rol
+		DROP TABLE GOQ.Funcionalidad
+		DROP TABLE GOQ.Item
+		DROP TABLE GOQ.Rol_Usuario
+		DROP TABLE GOQ.Rol
+		DROP TABLE GOQ.Servicio_Empresa
+		DROP TABLE GOQ.Servicio
+		DROP TABLE GOQ.Pago_Factura
+		DROP TABLE GOQ.Sucursal
+		DROP TABLE GOQ.Pago
+	
+		DROP TABLE GOQ.Factura
+		DROP TABLE GOQ.Cliente
+		DROP TABLE GOQ.Rendicion
+		DROP TABLE GOQ.Empresa
+		DROP TABLE GOQ.Porcentaje_Comision
+		DROP TABLE GOQ.Tipo_Pago
+		DROP TABLE GOQ.Usuario
+		DROP SCHEMA GOQ
+
+	END
+	*/
+GO
+CREATE SCHEMA GOQ AUTHORIZATION gd 
+
 
 /********************************************* FIN - CREACION ESQUEMA **********************************************/
 
@@ -105,7 +133,9 @@ create table GOQ.Pago(
 	pago_cliente_id int, /* FK a GOQ.Cliente*/
 	pago_importe numeric(18,0) not null CHECK(pago_importe>0),
 	pago_tipo_id int , /* FK a GOQ.Tipo_Pago*/
-	pago_usuario_id int /* FK a GOQ.Usuario*/
+	pago_sucursal_id int /* FK a GOQ.Sucursal*/
+
+	--///////////////////////////////////////CAMBIO ACA////////////////////////////////////////////
 );
 
 GO
@@ -189,7 +219,7 @@ GO
 alter table GOQ.Pago
 add constraint FK_cliente_id foreign key (pago_cliente_id) references GOQ.Cliente(cli_id),
 	constraint FK_tipo_id foreign key (pago_tipo_id) references GOQ.Tipo_Pago(tipo_pago_id),
-	constraint FK_usuario_id foreign key (pago_usuario_id) references GOQ.Usuario(usu_id);
+	constraint FK_sucursal_id foreign key (pago_sucursal_id) references GOQ.Sucursal(sucu_id);
 	
 GO
 alter table GOQ.Rendicion
@@ -410,22 +440,28 @@ INSERT INTO [GOQ].[Pago]
 		   ,[pago_fecha_cobro]
 		   ,[pago_cliente_id]
 		   ,[pago_importe]
-		   ,[pago_tipo_id])
+		   ,[pago_tipo_id]
+		   ,[pago_sucursal_id])
 select distinct p.Pago_nro ,
 				p.Pago_Fecha, 
 				c.cli_id, 
 				p.Total, 
-				tp.tipo_pago_id
+				tp.tipo_pago_id,
+				1
 from [gd_esquema].[Maestra] p
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
 inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
 inner join [GOQ].[Tipo_Pago] tp on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion);
-GO
-UPDATE [GOQ].[Pago] SET [pago_usuario_id] = 2 where pago_usuario_id IS NULL;
 
 /******************************PAGO_FACTURA*****************************************/
 GO
-INSERT INTO [GOQ].[Pago_Factura](pago_fac_pago_id, pago_fac_fac_id)SELECT P.pago_id, F.fac_idFROM GOQ.Pago P, gd_esquema.Maestra M JOIN GOQ.Factura F ON (M.Nro_Factura = F.fac_id)WHERE P.pago_id = M.Pago_nroGROUP BY P.pago_id, F.fac_idORDER BY P.pago_id, F.fac_id;
+INSERT INTO [GOQ].[Pago_Factura](pago_fac_pago_id, pago_fac_fac_id)
+SELECT P.pago_id, F.fac_id
+FROM GOQ.Pago P, gd_esquema.Maestra M 
+JOIN GOQ.Factura F ON (M.Nro_Factura = F.fac_id)
+WHERE P.pago_id = M.Pago_nro
+GROUP BY P.pago_id, F.fac_id
+ORDER BY P.pago_id, F.fac_id;
 
 /****************************PORCENTAJE_COMISION*********************************/
 GO
@@ -451,15 +487,12 @@ SELECT m.Rendicion_Nro,
 	   SUM(m.Total)
 FROM [gd_esquema].[Maestra] m
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = m.Empresa_Cuit)
-inner join [GOQ].[Porcentaje_Comision] pc on ( pc.porc_periodo  = ((m.ItemRendicion_Importe * 100) / m.Total) ) --calculo el porcentaje obtenido de la rendicion para compararlo con el del periodo y obtener su ID, habria que ver si funciona la division
+inner join [GOQ].[Porcentaje_Comision] pc on ( pc.porc_periodo  = ((m.ItemRendicion_Importe * 100) / m.Total) ) 
 WHERE Rendicion_Nro is not null
 group by m.Rendicion_Nro, m.Rendicion_Fecha,e.ID_empresa,pc.porc_comi_id;
- 
 
 /*******************DEVOLUCION*******--NO HAY NADA PARA MIGRAR*************************/	
 
 /******************************************** FIN - LLENADO DE TABLAS *********************************************/
 /******************************************** INICIO - TRIGGERS *****************************************/
 /******************************************** FIN - TRIGGERS *****************************************/
-
-
