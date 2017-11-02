@@ -61,8 +61,6 @@ create table GOQ.Usuario(
 	usu_id int CONSTRAINT PK_usu_id PRIMARY KEY IDENTITY(1,1),
 	usu_username nvarchar(25) not null UNIQUE,
 	usu_password varbinary(64) not null,
-	usu_nombre nvarchar(25) null,
-	usu_apellido nvarchar(25) null,
 	usu_intentos int DEFAULT 0,
 	usu_habilitado bit DEFAULT 1,
 );
@@ -96,7 +94,7 @@ create table GOQ.Cliente(
 	cli_nombre nvarchar(255) not null,
 	cli_apellido nvarchar(255) not null,
 	cli_dni numeric(18,0) not null,
-	cli_mail nvarchar(255) not null,
+	cli_mail nvarchar(255) not null UNIQUE,
 	cli_tel numeric(18,0) not null,
 	cli_dir nvarchar(255) not null,
 	cli_cp nvarchar(255) not null,

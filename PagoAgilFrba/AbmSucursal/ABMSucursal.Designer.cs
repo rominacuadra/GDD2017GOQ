@@ -271,7 +271,7 @@
             this.Controls.Add(this.labelDirec);
             this.Controls.Add(this.labelNombre);
             this.Name = "ABMSucursal";
-            this.Text = "Form1";
+            this.Text = "Administracion de Sucursal";
             this.menuABMCli.ResumeLayout(false);
             this.menuABMCli.PerformLayout();
             this.ResumeLayout(false);

@@ -60,5 +60,11 @@ namespace PagoAgilFrba
             devolucion.ShowDialog();
         }
 
+        private void sucursalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbmSucursal.ABMSucursal sucursal = new AbmSucursal.ABMSucursal();
+            sucursal.ShowDialog();
+        }
+
     }
 }
