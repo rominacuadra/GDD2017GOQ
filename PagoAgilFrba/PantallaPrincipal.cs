@@ -54,5 +54,11 @@ namespace PagoAgilFrba
             listado.ShowDialog();
         }
 
+        private void devoluciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Devolucion.Devolucion devolucion = new Devolucion.Devolucion();
+            devolucion.ShowDialog();
+        }
+
     }
 }

@@ -45,6 +45,7 @@
             this.rendiciónDePagoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rendiciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listadoEstadisticoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.devoluciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,7 +59,8 @@
             this.facturaToolStripMenuItem,
             this.sucursalToolStripMenuItem,
             this.rendiciónDePagoToolStripMenuItem,
-            this.listadoEstadisticoToolStripMenuItem});
+            this.listadoEstadisticoToolStripMenuItem,
+            this.devoluciónToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(882, 24);
@@ -165,6 +167,13 @@
             this.listadoEstadisticoToolStripMenuItem.Text = "Listado Estadistico";
             this.listadoEstadisticoToolStripMenuItem.Click += new System.EventHandler(this.listadoEstadisticoToolStripMenuItem_Click);
             // 
+            // devoluciónToolStripMenuItem
+            // 
+            this.devoluciónToolStripMenuItem.Name = "devoluciónToolStripMenuItem";
+            this.devoluciónToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.devoluciónToolStripMenuItem.Text = "Devolución";
+            this.devoluciónToolStripMenuItem.Click += new System.EventHandler(this.devoluciónToolStripMenuItem_Click);
+            // 
             // PantallaPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -201,5 +210,6 @@
         private System.Windows.Forms.ToolStripMenuItem rendiciónDePagoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rendiciónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem listadoEstadisticoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem devoluciónToolStripMenuItem;
     }
 }

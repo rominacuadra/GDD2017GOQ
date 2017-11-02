@@ -120,26 +120,28 @@
             this.listBoxFacturas.FormattingEnabled = true;
             this.listBoxFacturas.Location = new System.Drawing.Point(360, 38);
             this.listBoxFacturas.Name = "listBoxFacturas";
-            this.listBoxFacturas.Size = new System.Drawing.Size(162, 173);
+            this.listBoxFacturas.Size = new System.Drawing.Size(243, 173);
             this.listBoxFacturas.TabIndex = 8;
             // 
             // quitar
             // 
-            this.quitar.Location = new System.Drawing.Point(360, 225);
+            this.quitar.Location = new System.Drawing.Point(379, 225);
             this.quitar.Name = "quitar";
             this.quitar.Size = new System.Drawing.Size(75, 23);
             this.quitar.TabIndex = 9;
             this.quitar.Text = "Quitar";
             this.quitar.UseVisualStyleBackColor = true;
+            this.quitar.Click += new System.EventHandler(this.quitar_Click);
             // 
             // devolver
             // 
-            this.devolver.Location = new System.Drawing.Point(447, 225);
+            this.devolver.Location = new System.Drawing.Point(508, 225);
             this.devolver.Name = "devolver";
             this.devolver.Size = new System.Drawing.Size(75, 23);
             this.devolver.TabIndex = 10;
             this.devolver.Text = "Devolver";
             this.devolver.UseVisualStyleBackColor = true;
+            this.devolver.Click += new System.EventHandler(this.devolver_Click);
             // 
             // agregar
             // 
@@ -217,7 +219,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(565, 260);
+            this.ClientSize = new System.Drawing.Size(630, 260);
             this.Controls.Add(this.botonBuscar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
