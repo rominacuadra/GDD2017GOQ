@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.labelingresaranio = new System.Windows.Forms.Label();
             this.textAño = new System.Windows.Forms.TextBox();
@@ -36,20 +35,19 @@
             this.listadotrimestre = new System.Windows.Forms.ComboBox();
             this.labellistado = new System.Windows.Forms.Label();
             this.listadoMostrar = new System.Windows.Forms.ComboBox();
-         
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-          
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(101, 133);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(510, 255);
+            this.dataGridView1.Size = new System.Drawing.Size(510, 293);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -85,14 +83,14 @@
             this.listadotrimestre.FormattingEnabled = true;
             this.listadotrimestre.Location = new System.Drawing.Point(490, 38);
             this.listadotrimestre.Name = "listadotrimestre";
-            this.listadotrimestre.Size = new System.Drawing.Size(121, 21);
+            this.listadotrimestre.Size = new System.Drawing.Size(171, 21);
             this.listadotrimestre.TabIndex = 4;
             this.listadotrimestre.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // labellistado
             // 
             this.labellistado.AutoSize = true;
-            this.labellistado.Location = new System.Drawing.Point(201, 81);
+            this.labellistado.Location = new System.Drawing.Point(116, 81);
             this.labellistado.Name = "labellistado";
             this.labellistado.Size = new System.Drawing.Size(189, 13);
             this.labellistado.TabIndex = 5;
@@ -101,12 +99,12 @@
             // listadoMostrar
             // 
             this.listadoMostrar.FormattingEnabled = true;
-            this.listadoMostrar.Location = new System.Drawing.Point(405, 78);
+            this.listadoMostrar.Location = new System.Drawing.Point(311, 78);
             this.listadoMostrar.Name = "listadoMostrar";
-            this.listadoMostrar.Size = new System.Drawing.Size(121, 21);
+            this.listadoMostrar.Size = new System.Drawing.Size(300, 21);
             this.listadoMostrar.TabIndex = 6;
             this.listadoMostrar.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
-           
+            // 
             // ListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -120,10 +118,9 @@
             this.Controls.Add(this.labelingresaranio);
             this.Controls.Add(this.dataGridView1);
             this.Name = "ListadoEstadistico";
-            this.Text = "Form1";
+            this.Text = "Listado Estadistico";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-        
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -38,33 +38,42 @@ namespace PagoAgilFrba.ListadoEstadistico
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    DataGridViewColumn ColumnaEmpresa = new DataGridViewColumn();
-                    ColumnaEmpresa.HeaderText = "Nombre de la Empresa";
+
+                    DataGridViewTextBoxColumn ColumnaEmpresa = new DataGridViewTextBoxColumn();
+                   
+
+                    ColumnaEmpresa.Name = "Nombre de la Empresa";
                     ColumnaEmpresa.Width = 200;
-                    ColumnaEmpresa.ReadOnly = true;
+                    ColumnaEmpresa.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                   
+                    ColumnaEmpresa.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    
                     dataGridView1.Columns.Add(ColumnaEmpresa);
 
-                    DataGridViewColumn Porcentaje = new DataGridViewColumn();
-                    Porcentaje.HeaderText = "Porcentaje de facturas cobradas";
+                    DataGridViewTextBoxColumn Porcentaje = new DataGridViewTextBoxColumn();
+                  
                     Porcentaje.Width = 200;
-                    Porcentaje.ReadOnly = true;
-                    dataGridView1.Columns.Add(Porcentaje);
+                    Porcentaje.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
+                    Porcentaje.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     
+                    Porcentaje.Name = "Porcentaje de facturas cobradas";
+
+                    dataGridView1.Columns.Add(Porcentaje);
+                   
                     while (reader.Read())
                     {
                         //agregar fila, esto te devuelve de a una las filas de tu consulta select
-                       
-                        string[] fila = new string[]{  Convert.ToString(reader.GetValue(0)), Convert.ToString(reader.GetValue(1)) };
-                        object[] rows = new object[] { fila };
-                        dataGridView1.Rows.Add(rows);
+                         dataGridView1.Rows.Add(Convert.ToString(reader.GetValue(0)), Convert.ToString(reader.GetValue(1)));
+                        
+                        
                     }
-                    
-         
+             
                 }
                 else
                 {
-                    MessageBox.Show("Error en la consulta ", "Error");
+                    dataGridView1.Visible = false;
+                    MessageBox.Show("No se encontraron facturas cobradas ", "Informacion");
                 }
                 reader.Close();
             
@@ -79,16 +88,20 @@ namespace PagoAgilFrba.ListadoEstadistico
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    DataGridViewColumn ColumnaEmpresa = new DataGridViewColumn();
-                    ColumnaEmpresa.HeaderText = "Nombre de la Empresa";
+                    DataGridViewTextBoxColumn ColumnaEmpresa = new DataGridViewTextBoxColumn();
+                    ColumnaEmpresa.Name = "Nombre de la Empresa";
                     ColumnaEmpresa.Width = 200;
-                    ColumnaEmpresa.ReadOnly = true;
+                    ColumnaEmpresa.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+                    ColumnaEmpresa.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dataGridView1.Columns.Add(ColumnaEmpresa);
 
-                    DataGridViewColumn MontoRendido = new DataGridViewColumn();
+                    DataGridViewTextBoxColumn MontoRendido = new DataGridViewTextBoxColumn();
                     MontoRendido.HeaderText = "Monto Rendido";
-                    MontoRendido.Width = 200;
-                    MontoRendido.ReadOnly = true;
+                    MontoRendido.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+                    MontoRendido.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    MontoRendido.Width = 200;                  
                     dataGridView1.Columns.Add(MontoRendido);
 
                     while (reader.Read())
@@ -100,7 +113,8 @@ namespace PagoAgilFrba.ListadoEstadistico
                 }
                 else
                 {
-                    MessageBox.Show("No hay facturas rendidas ", "Advertencia");
+                    dataGridView1.Visible = false;
+                    MessageBox.Show("No hay facturas rendidas ", "Informacion");
                 }
                 reader.Close();
 
@@ -116,16 +130,22 @@ namespace PagoAgilFrba.ListadoEstadistico
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    DataGridViewColumn NombreApellidoCliente = new DataGridViewColumn();
-                    NombreApellidoCliente.HeaderText = "Nombre y Apellido";
+                    DataGridViewTextBoxColumn NombreApellidoCliente = new DataGridViewTextBoxColumn();
+                    NombreApellidoCliente.Name = "Nombre y Apellido";
                     NombreApellidoCliente.Width = 200;
-                    NombreApellidoCliente.ReadOnly = true;
+                    NombreApellidoCliente.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+                    NombreApellidoCliente.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                  
                     dataGridView1.Columns.Add(NombreApellidoCliente);
 
-                    DataGridViewColumn CantidadPagos = new DataGridViewColumn();
-                    CantidadPagos.HeaderText = "Cantidad de pagos efectuados";
+                    DataGridViewTextBoxColumn CantidadPagos = new DataGridViewTextBoxColumn();
+                    CantidadPagos.Name = "Cantidad de pagos efectuados";
                     CantidadPagos.Width = 200;
-                    CantidadPagos.ReadOnly = true;
+                    CantidadPagos.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+                    CantidadPagos.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                   
                     dataGridView1.Columns.Add(CantidadPagos);
 
                     while (reader.Read())
@@ -134,36 +154,38 @@ namespace PagoAgilFrba.ListadoEstadistico
                         dataGridView1.Rows.Add(Convert.ToString(reader.GetValue(0)), Convert.ToString(reader.GetValue(1)));
                     }
                     
-                   
-                    MessageBox.Show("asd");
-
-
-                }
+               }
                 else
                 {
-                    MessageBox.Show("Error en la consulta ", "Error");
+                    dataGridView1.Visible = false;
+                    MessageBox.Show("No se encontraron pagos", "Informacion");
                 }
                 reader.Close();
             }
             else{
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select TOP 5 c.cli_apellido+','+c.cli_nombre ApellidoNombre , COUNT(f.fac_id)*100/(select COUNT(f1.fac_id) cantidadTotal from GOQ.Factura f1 where f1.fac_cli_id = c.cli_id) PorcentajeFacturasPagadas from GOQ.Cliente c inner join GOQ.Factura f on(c.cli_id = f.fac_cli_id) inner join GOQ.Pago_Factura pf on(pf.pago_fac_fac_id = f.fac_id) inner join GOQ.Pago p on(p.pago_id = pf.pago_fac_pago_id) where year(p.pago_fecha_cobro) = @año and month(pago_fecha_cobro) between @mesInicio and @mesFin group by c.cli_id order by 2 DESC", PagoAgilFrba.ModuloGlobal.getConexion());
+                SqlCommand cmd = new SqlCommand("select TOP 5 c.cli_apellido+','+c.cli_nombre ApellidoNombre , COUNT(f.fac_id)*100/(select COUNT(f1.fac_id) cantidadTotal from GOQ.Factura f1 where f1.fac_cli_id = c.cli_id) PorcentajeFacturasPagadas from GOQ.Cliente c inner join GOQ.Factura f on(c.cli_id = f.fac_cli_id) inner join GOQ.Pago_Factura pf on(pf.pago_fac_fac_id = f.fac_id) inner join GOQ.Pago p on(p.pago_id = pf.pago_fac_pago_id) where year(p.pago_fecha_cobro) = @año and month(pago_fecha_cobro) between @mesInicio and @mesFin group by c.cli_apellido,c.cli_nombre,c.cli_id order by 2 DESC", PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("año", SqlDbType.Int).Value = año;
                 cmd.Parameters.Add("mesInicio", SqlDbType.Int).Value = mesInicio;
                 cmd.Parameters.Add("mesFin", SqlDbType.Int).Value = mesFin;
                 reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    DataGridViewColumn NombreApellidoCliente = new DataGridViewColumn();
-                    NombreApellidoCliente.HeaderText = "Nombre de la Empresa";
+                    DataGridViewTextBoxColumn NombreApellidoCliente = new DataGridViewTextBoxColumn();
+                    NombreApellidoCliente.Name = "Nombre y apellido";
                     NombreApellidoCliente.Width = 200;
-                    NombreApellidoCliente.ReadOnly = true;
+                    NombreApellidoCliente.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+                    NombreApellidoCliente.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                   
                     dataGridView1.Columns.Add(NombreApellidoCliente);
 
-                    DataGridViewColumn Porcentaje = new DataGridViewColumn();
-                    Porcentaje.HeaderText = "Porcentaje de facturas cobradas";
+                    DataGridViewTextBoxColumn Porcentaje = new DataGridViewTextBoxColumn();
+                    Porcentaje.Name = "Porcentaje de facturas pagadas";
                     Porcentaje.Width = 200;
-                    Porcentaje.ReadOnly = true;
+                    Porcentaje.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
+                    Porcentaje.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dataGridView1.Columns.Add(Porcentaje);
 
                     while (reader.Read())
@@ -175,7 +197,8 @@ namespace PagoAgilFrba.ListadoEstadistico
                 }
                 else
                 {
-                    MessageBox.Show("Error en la consulta ", "Error");
+                    dataGridView1.Visible = false;
+                    MessageBox.Show("No se encontraron clientes con pagos realizados", "Informacion");
                 }
                 reader.Close();
             
