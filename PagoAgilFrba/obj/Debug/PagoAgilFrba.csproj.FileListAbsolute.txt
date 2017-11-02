@@ -64,3 +64,4 @@ C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrb
 C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
 C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Devolucion.Devolucion.resources
 C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmSucursal.ABMSucursal.resources

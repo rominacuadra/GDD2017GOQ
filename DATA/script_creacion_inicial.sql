@@ -134,8 +134,6 @@ create table GOQ.Pago(
 	pago_importe numeric(18,0) not null CHECK(pago_importe>0),
 	pago_tipo_id int , /* FK a GOQ.Tipo_Pago*/
 	pago_sucursal_id int /* FK a GOQ.Sucursal*/
-
-	--///////////////////////////////////////CAMBIO ACA////////////////////////////////////////////
 );
 
 GO

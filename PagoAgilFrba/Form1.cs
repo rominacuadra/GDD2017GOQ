@@ -125,9 +125,7 @@ namespace PagoAgilFrba
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            //this.Close();
-            RegistroPago.RegistroPago p = new RegistroPago.RegistroPago();
-            p.ShowDialog();
+            this.Close();
         }
 
         private int cargarRoles(string id)

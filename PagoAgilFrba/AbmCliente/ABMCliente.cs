@@ -24,7 +24,6 @@ namespace PagoAgilFrba.AbmCliente
             comboBoxFiltro.Items.Add("Nombre");
         }
 
-        private Form1 general = new Form1();
         private int DNIAModificar = 0, DNISinModificar = 0;
         private string ApellidoAModificar = "", NombreAModificar = "", MailSinModificar = "";
 
@@ -105,15 +104,13 @@ namespace PagoAgilFrba.AbmCliente
             labelTitulo.Visible = false;
             buttonAceptar.Visible = false;
             buttonLimpiar.Visible = false;
-            //extrasModificacion
+
             buttonBuscar.Visible = false;
             labelResultadoBusqueda.Visible = false;
             comboBoxResultadoBusqueda.Visible = false;
-
             labelFiltro.Visible = false;
             comboBoxFiltro.Visible = false;
             checkBoxCliente.Visible = false;
-            //AGREGAR TODOS ACA
         }
 
         private void accionBotonAlta()
@@ -122,7 +119,6 @@ namespace PagoAgilFrba.AbmCliente
             {
                 if (mailNoEstaRepetido(textBoxMail.Text))
                 {
-                    //Depto y localidad no se usa en la base de datos, preguntar, asi esta en la master: Avenida San Juan 6237
                     darAltaCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
                 }
                 else
@@ -140,9 +136,8 @@ namespace PagoAgilFrba.AbmCliente
         {
             if (todosLosCamposCompletos())
             {
-                //Depto y localidad no se usa en la base de datos, preguntar, asi esta en la master: Avenida San Juan 6237
                 modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
-               
+
             }
             else
             {
@@ -153,14 +148,14 @@ namespace PagoAgilFrba.AbmCliente
         private bool todosLosCamposCompletos()
         {
             return textBoxNombre.Text.Length > 0 && textBoxApellido.Text.Length > 0 && textBoxDNI.Text.Length > 0 && textBoxMail.Text.Length > 0 &&
-                textBoxTelefono.Text.Length > 0 && textBoxCalle.Text.Length > 0 && textBoxNroPiso.Text.Length > 0  &&
+                textBoxTelefono.Text.Length > 0 && textBoxCalle.Text.Length > 0 && textBoxNroPiso.Text.Length > 0 &&
                 textBoxLocalidad.Text.Length > 0 && textBoxCodigoPostal.Text.Length > 0 && textBoxFechaDeNacimiento.Text.Length > 0 ? true : false;
         }
 
         private bool mailNoEstaRepetido(string Mail)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT cli_id FROM GOQ.Cliente WHERE cli_mail = @MAIL", PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+            SqlCommand cmd = new SqlCommand("SELECT cli_id FROM GOQ.Cliente WHERE cli_mail = @MAIL", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("MAIL", SqlDbType.NVarChar).Value = Mail;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -173,15 +168,14 @@ namespace PagoAgilFrba.AbmCliente
                 reader.Close();
                 return true;
             }
-            
+
         }
 
-        //REVISAR LOS TIPOS DE DATOS A ENVIAR, TELEFONO DEBERIA SER INT POR EJEMPLO
         private void darAltaCliente(string Nombre, string Apellido, int DNI, string Mail, int Telefono, string Direccion, string CodigoPostal, DateTime FechaDeNacimiento)
         {
             int filasRetornadas;
             SqlCommand cmd = new SqlCommand(string.Format("INSERT INTO GOQ.Cliente (cli_nombre, cli_apellido, cli_dni, cli_mail, cli_tel, cli_dir, cli_cp, cli_habilitado, cli_fecha_nac) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')",
-                Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, 1, FechaDeNacimiento), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, 1, FechaDeNacimiento), PagoAgilFrba.ModuloGlobal.getConexion());
             filasRetornadas = cmd.ExecuteNonQuery();
             if (filasRetornadas > 0)
             {
@@ -195,11 +189,8 @@ namespace PagoAgilFrba.AbmCliente
 
         private void modificarCliente(string Nombre, string Apellido, int DNI, string Mail, int Telefono, string Direccion, string CodigoPostal, DateTime FechaDeNacimiento)
         {
-            //MODIFICAR DSD LOS DATOS OBTENIDOS DEL COMBOBOX
-            //DEBERIA FIJARME DE DONDE OBTENER EL DNI ANTES DE SER MODIFICADO, EL NOMBRE, y EL APELLIDO PARA UBICAR AL CLIENTE
-            //UNA SOLUCION QUE SE ME OCURRE ES DEJAR UNOS LABELS OCULTOS, O UNAS VARIABLES ACA, ESO DEBERIA FUNCIONAR CORRECTAMENTE
             int filasRetornadas, habilitado;
-            if(checkBoxCliente.Visible && checkBoxCliente.Checked)
+            if (checkBoxCliente.Visible && checkBoxCliente.Checked)
             {
                 habilitado = 1;
             }
@@ -211,11 +202,12 @@ namespace PagoAgilFrba.AbmCliente
             {
                 habilitado = 1;
             }
-            if(MailSinModificar == Mail && DNISinModificar != DNI){
+            if (MailSinModificar == Mail && DNISinModificar != DNI)
+            {
                 //modifica DNI, MAIL no
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
                 Nombre, Apellido, DNI, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
-                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
             }
             else if (MailSinModificar != Mail && DNISinModificar == DNI)
@@ -223,7 +215,7 @@ namespace PagoAgilFrba.AbmCliente
                 ////modifica Mail, DNI no
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_mail = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
                 Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
-                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
             }
             else if (MailSinModificar != Mail && DNISinModificar != DNI)
@@ -231,7 +223,7 @@ namespace PagoAgilFrba.AbmCliente
                 ////modifica Mail y DNI
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido = '{10}' AND cli_nombre = '{11}'",
                 Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
-                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
             }
             else
@@ -239,7 +231,7 @@ namespace PagoAgilFrba.AbmCliente
                 ////no modifica Mail ni DNI
                 SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_tel = '{2}', cli_dir = '{3}', cli_cp = '{4}', cli_habilitado = '{5}', cli_fecha_nac =  '{6}' WHERE cli_dni = '{7}' AND cli_apellido = '{8}' AND cli_nombre = '{9}'",
                 Nombre, Apellido, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
-                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
             }
 
@@ -280,7 +272,7 @@ namespace PagoAgilFrba.AbmCliente
             {
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE",
-                    PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                    PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = Convert.ToInt32(textBoxDNI.Text);
                 cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = textBoxApellido.Text;
                 cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
@@ -304,7 +296,7 @@ namespace PagoAgilFrba.AbmCliente
             {
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_dni = @DNI",
-                    PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                    PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = Convert.ToInt32(textBoxDNI.Text);
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -326,7 +318,7 @@ namespace PagoAgilFrba.AbmCliente
             {
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_apellido = @APELLIDO",
-                    PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                    PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = textBoxApellido.Text;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -348,7 +340,7 @@ namespace PagoAgilFrba.AbmCliente
             {
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_nombre = @NOMBRE",
-                    PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                    PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -371,7 +363,7 @@ namespace PagoAgilFrba.AbmCliente
         private void inhabilitarCliente(int DNI, string Apellido, string Nombre)
         {
             SqlCommand cmd = new SqlCommand("UPDATE GOQ.Cliente SET cli_habilitado = 0 WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE",
-                    PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                    PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = DNI;
             cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = Apellido;
             cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = Nombre;
@@ -406,7 +398,7 @@ namespace PagoAgilFrba.AbmCliente
         {
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("SELECT cli_nombre, cli_apellido, cli_dni, cli_mail, cli_tel, cli_dir, cli_cp, cli_fecha_nac, cli_habilitado FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE",
-                PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = DNI;
             cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = Apellido;
             cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = Nombre;
@@ -435,7 +427,7 @@ namespace PagoAgilFrba.AbmCliente
             }
             else
             {
-                MessageBox.Show("Ocurrió un error al obtener los datos del cliente.","Error");
+                MessageBox.Show("Ocurrió un error al obtener los datos del cliente.", "Error");
             }
             reader.Close();
         }
@@ -444,23 +436,23 @@ namespace PagoAgilFrba.AbmCliente
         {
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("SELECT cli_id FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE AND cli_habilitado = 0",
-                    PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                    PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = DNI;
             cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = Apellido;
             cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = Nombre;
-           reader = cmd.ExecuteReader();
-           if (reader.HasRows)
-           {
-               return false;
-           }
-           else
-           {
-               return true;
-           }
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
 
-            //////////////////////////////////////////////COMIENZO CLICKS
+        //////////////////////////////////////////////COMIENZO CLICKS
 
         private void altaToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
@@ -491,7 +483,6 @@ namespace PagoAgilFrba.AbmCliente
 
         private void buttonBuscar_Click_1(object sender, EventArgs e)
         {
-            //REALIZAR BUSQUEDA Y DEVOLVER RESULTADO, DEBERIA MOSTRARME UN LISTADO CON TODOS LOS CLIENTES POSIBLES, UNA VEZ QUE ELIJO EL DESEADO, AHI HAGO LA MODIFICACION O LA BAJA
             if (camposDeBusquedaCompletos())
             {
                 if (realizarBusquedayDevolverResultado())
@@ -508,12 +499,11 @@ namespace PagoAgilFrba.AbmCliente
             {
                 MessageBox.Show("Complete alguno de los campos para realizar la búsqueda.", "Error");
             }
-            
+
         }
 
         private void comboBoxResultadoBusqueda_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //al elegir al usuario del combobox
             if (labelTitulo.Text == "MODIFICACION")
             {
                 if (MessageBox.Show("¿Desea modificar el usuario seleccionado?", "Información",
@@ -543,7 +533,7 @@ namespace PagoAgilFrba.AbmCliente
                     {
                         MessageBox.Show("El cliente ya se encuentra eliminado, intente con otro.", "Información");
                     }
-                    
+
                 }
             }
         }
@@ -552,8 +542,6 @@ namespace PagoAgilFrba.AbmCliente
 
         private void comboBoxResultadoBusqueda_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            MessageBox.Show("ESTOY", "Error");
-            //al elegir al usuario del combobox
             if (labelTitulo.Text == "MODIFICACION")
             {
                 if (MessageBox.Show("¿Desea modificar el usuario seleccionado?", "Información",
@@ -653,11 +641,6 @@ namespace PagoAgilFrba.AbmCliente
                 accionBotonModificacion();
             }
         }
-
-
-
-
-
     }
 }
 

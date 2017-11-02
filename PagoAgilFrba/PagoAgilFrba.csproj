@@ -69,11 +69,11 @@
     <Compile Include="AbmRol\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmSucursal\Form1.cs">
+    <Compile Include="AbmSucursal\ABMSucursal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmSucursal\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmSucursal\ABMSucursal.Designer.cs">
+      <DependentUpon>ABMSucursal.cs</DependentUpon>
     </Compile>
     <Compile Include="Devolucion\Devolucion.cs">
       <SubType>Form</SubType>
@@ -120,6 +120,7 @@
     <EmbeddedResource Include="AbmRol\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmSucursal\ABMSucursal.resx" />
     <EmbeddedResource Include="Devolucion\Devolucion.resx">
       <DependentUpon>Devolucion.cs</DependentUpon>
     </EmbeddedResource>
