@@ -46,6 +46,7 @@
             this.rendiciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listadoEstadisticoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.devoluciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.registroDePagoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,15 +151,16 @@
             // rendiciónDePagoToolStripMenuItem
             // 
             this.rendiciónDePagoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.rendiciónToolStripMenuItem});
+            this.rendiciónToolStripMenuItem,
+            this.registroDePagoToolStripMenuItem});
             this.rendiciónDePagoToolStripMenuItem.Name = "rendiciónDePagoToolStripMenuItem";
-            this.rendiciónDePagoToolStripMenuItem.Size = new System.Drawing.Size(118, 20);
-            this.rendiciónDePagoToolStripMenuItem.Text = "Rendición de Pago";
+            this.rendiciónDePagoToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.rendiciónDePagoToolStripMenuItem.Text = "Pago";
             // 
             // rendiciónToolStripMenuItem
             // 
             this.rendiciónToolStripMenuItem.Name = "rendiciónToolStripMenuItem";
-            this.rendiciónToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.rendiciónToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.rendiciónToolStripMenuItem.Text = "Rendición";
             // 
             // listadoEstadisticoToolStripMenuItem
@@ -174,6 +176,12 @@
             this.devoluciónToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.devoluciónToolStripMenuItem.Text = "Devolución";
             this.devoluciónToolStripMenuItem.Click += new System.EventHandler(this.devoluciónToolStripMenuItem_Click);
+            // 
+            // registroDePagoToolStripMenuItem
+            // 
+            this.registroDePagoToolStripMenuItem.Name = "registroDePagoToolStripMenuItem";
+            this.registroDePagoToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.registroDePagoToolStripMenuItem.Text = "Registro de Pago";
             // 
             // PantallaPrincipal
             // 
@@ -212,5 +220,6 @@
         private System.Windows.Forms.ToolStripMenuItem rendiciónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem listadoEstadisticoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem devoluciónToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem registroDePagoToolStripMenuItem;
     }
 }
