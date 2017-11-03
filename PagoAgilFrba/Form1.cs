@@ -21,6 +21,7 @@ namespace PagoAgilFrba
     public partial class Form1 : Form
     {
         bool yaSeLogueoPorOK = false;
+        int id_usuario;
 
         public Form1()
         {
@@ -177,9 +178,13 @@ namespace PagoAgilFrba
                 
             if ((txtUsuario.Text.Length > 0) && (txtClave.Text.Length > 0))
             {
-                                            if (logueoCorrecto(txtUsuario.Text, txtClave.Text).HasRows)
+                SqlDataReader reader = null;
+                reader = logueoCorrecto(txtUsuario.Text, txtClave.Text);
+                                            if (reader.HasRows)
                                             {
-                                                MessageBox.Show("Login Aceptado.", "Información");
+                                                
+                                                id_usuario = reader.GetInt32(0);
+                                                
 
                                                     if (cbRol.Text.Length == 0)
                                                     {
@@ -187,6 +192,9 @@ namespace PagoAgilFrba
                                                         if (cargarRoles(logueoCorrecto(txtUsuario.Text, txtClave.Text).GetValue(0).ToString()) > 0)
                                                         {
                                                             MessageBox.Show("Seleccione un Rol...", "Información");
+                                                            lblRol.Enabled = true;
+                                                            cbRol.Enabled = true;
+                                                           
                                                             yaSeLogueoPorOK=true; //Bandera para controlar el segundo "Aceptar" con Rol incluido.
 
                                                             if (logueoCorrecto(txtUsuario.Text, txtClave.Text).GetInt32(1)!=3)
@@ -234,6 +242,54 @@ namespace PagoAgilFrba
                 }
             }
 
+        private void cbRol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+             if((cbRol.SelectedItem.ToString())=="Cobrador") {
+                 
+
+                 cargarSucursales();
+                 
+             }
+
+
+        }
+
+        private  void cargarSucursales() {
+            int cant = 0;
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT S.sucu_nombre,S.sucu_id FROM [GOQ].[Sucursal] S INNER JOIN [GOQ].[CobradorSucursal] C ON(S.sucu_id=C.sucu_id) INNER JOIN [GOQ].[Usuario] U ON (C.usu_id=U.usu_id) WHERE U.usu_id= @ID AND S.sucu_habilitado=1", PagoAgilFrba.ModuloGlobal.getConexion());
+
+            cmd.Parameters.Add("ID", SqlDbType.NVarChar).Value = id_usuario;
+
+            reader = cmd.ExecuteReader();
+
+        
+            if (reader.HasRows)
+            {
+
+                lblSuc.Enabled = true;
+                cbSuc.Enabled = true;
+                cbSuc.Visible = true;
+                while (reader.Read())
+                {
+                    
+                    cbSuc.Items.Add(reader.GetString(0));
+                    cant += 1;
+                }
+            }
+            else
+            {
+
+                MessageBox.Show("No tiene sucursales asignadas.", "Información");
+                ModuloGlobal.suc_cob_id = null;
+            }
+            
+        }
+
+        private void cbSuc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ModuloGlobal.suc_cob_id = cbSuc.SelectedItem.ToString();
+        }
 
         }
 
