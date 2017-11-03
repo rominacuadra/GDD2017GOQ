@@ -28,7 +28,7 @@ namespace PagoAgilFrba.Devolucion
         private void llenarFacturasEnElCombo()
         {
              SqlDataReader reader = null;
-             SqlCommand cmd = new SqlCommand("select TOP 50 fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) group by fac_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) and COUNT(r.ren_id)=0", PagoAgilFrba.ModuloGlobal.getConexion());
+             SqlCommand cmd = new SqlCommand("select TOP 50 fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) group by fac_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) and COUNT(r.ren_id)=0 ORDER BY 1 ASC", PagoAgilFrba.ModuloGlobal.getConexion());
              reader = cmd.ExecuteReader();
              while (reader.Read())
              {

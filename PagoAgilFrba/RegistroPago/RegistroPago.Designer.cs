@@ -58,6 +58,8 @@
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.labelTipoPago = new System.Windows.Forms.Label();
             this.comboBoxTipoPago = new System.Windows.Forms.ComboBox();
+            this.labelFacEnc = new System.Windows.Forms.Label();
+            this.comboBoxFacEnc = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // labelTitulo
@@ -144,7 +146,7 @@
             // 
             // buttonFact
             // 
-            this.buttonFact.Location = new System.Drawing.Point(88, 397);
+            this.buttonFact.Location = new System.Drawing.Point(62, 392);
             this.buttonFact.Name = "buttonFact";
             this.buttonFact.Size = new System.Drawing.Size(75, 23);
             this.buttonFact.TabIndex = 9;
@@ -155,7 +157,7 @@
             // listBoxFacturas
             // 
             this.listBoxFacturas.FormattingEnabled = true;
-            this.listBoxFacturas.Location = new System.Drawing.Point(340, 81);
+            this.listBoxFacturas.Location = new System.Drawing.Point(477, 113);
             this.listBoxFacturas.Name = "listBoxFacturas";
             this.listBoxFacturas.Size = new System.Drawing.Size(228, 160);
             this.listBoxFacturas.TabIndex = 10;
@@ -164,7 +166,7 @@
             // labelFactAPagar
             // 
             this.labelFactAPagar.AutoSize = true;
-            this.labelFactAPagar.Location = new System.Drawing.Point(337, 53);
+            this.labelFactAPagar.Location = new System.Drawing.Point(474, 85);
             this.labelFactAPagar.Name = "labelFactAPagar";
             this.labelFactAPagar.Size = new System.Drawing.Size(91, 13);
             this.labelFactAPagar.TabIndex = 11;
@@ -172,7 +174,7 @@
             // 
             // buttonPagar
             // 
-            this.buttonPagar.Location = new System.Drawing.Point(493, 282);
+            this.buttonPagar.Location = new System.Drawing.Point(630, 314);
             this.buttonPagar.Name = "buttonPagar";
             this.buttonPagar.Size = new System.Drawing.Size(75, 23);
             this.buttonPagar.TabIndex = 12;
@@ -182,7 +184,7 @@
             // 
             // buttonQuitar
             // 
-            this.buttonQuitar.Location = new System.Drawing.Point(340, 282);
+            this.buttonQuitar.Location = new System.Drawing.Point(477, 314);
             this.buttonQuitar.Name = "buttonQuitar";
             this.buttonQuitar.Size = new System.Drawing.Size(75, 23);
             this.buttonQuitar.TabIndex = 13;
@@ -193,7 +195,7 @@
             // labelTotAPagar
             // 
             this.labelTotAPagar.AutoSize = true;
-            this.labelTotAPagar.Location = new System.Drawing.Point(337, 254);
+            this.labelTotAPagar.Location = new System.Drawing.Point(474, 286);
             this.labelTotAPagar.Name = "labelTotAPagar";
             this.labelTotAPagar.Size = new System.Drawing.Size(74, 13);
             this.labelTotAPagar.TabIndex = 14;
@@ -210,7 +212,7 @@
             // 
             // textBoxNroFact
             // 
-            this.textBoxNroFact.Location = new System.Drawing.Point(213, 110);
+            this.textBoxNroFact.Location = new System.Drawing.Point(289, 113);
             this.textBoxNroFact.Name = "textBoxNroFact";
             this.textBoxNroFact.Size = new System.Drawing.Size(100, 20);
             this.textBoxNroFact.TabIndex = 16;
@@ -218,17 +220,17 @@
             // comboBoxEmp
             // 
             this.comboBoxEmp.FormattingEnabled = true;
-            this.comboBoxEmp.Location = new System.Drawing.Point(213, 180);
+            this.comboBoxEmp.Location = new System.Drawing.Point(289, 180);
             this.comboBoxEmp.Name = "comboBoxEmp";
-            this.comboBoxEmp.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxEmp.Size = new System.Drawing.Size(182, 21);
             this.comboBoxEmp.TabIndex = 17;
             // 
             // comboBoxCli
             // 
             this.comboBoxCli.FormattingEnabled = true;
-            this.comboBoxCli.Location = new System.Drawing.Point(213, 213);
+            this.comboBoxCli.Location = new System.Drawing.Point(289, 216);
             this.comboBoxCli.Name = "comboBoxCli";
-            this.comboBoxCli.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxCli.Size = new System.Drawing.Size(182, 21);
             this.comboBoxCli.TabIndex = 18;
             // 
             // labelRNroFac
@@ -297,7 +299,7 @@
             // labelRTot
             // 
             this.labelRTot.AutoSize = true;
-            this.labelRTot.Location = new System.Drawing.Point(417, 254);
+            this.labelRTot.Location = new System.Drawing.Point(554, 286);
             this.labelRTot.Name = "labelRTot";
             this.labelRTot.Size = new System.Drawing.Size(10, 13);
             this.labelRTot.TabIndex = 26;
@@ -305,7 +307,7 @@
             // 
             // buttonBuscar
             // 
-            this.buttonBuscar.Location = new System.Drawing.Point(190, 397);
+            this.buttonBuscar.Location = new System.Drawing.Point(164, 392);
             this.buttonBuscar.Name = "buttonBuscar";
             this.buttonBuscar.Size = new System.Drawing.Size(75, 23);
             this.buttonBuscar.TabIndex = 27;
@@ -327,14 +329,34 @@
             this.comboBoxTipoPago.FormattingEnabled = true;
             this.comboBoxTipoPago.Location = new System.Drawing.Point(137, 352);
             this.comboBoxTipoPago.Name = "comboBoxTipoPago";
-            this.comboBoxTipoPago.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxTipoPago.Size = new System.Drawing.Size(160, 21);
             this.comboBoxTipoPago.TabIndex = 29;
+            // 
+            // labelFacEnc
+            // 
+            this.labelFacEnc.AutoSize = true;
+            this.labelFacEnc.Location = new System.Drawing.Point(12, 77);
+            this.labelFacEnc.Name = "labelFacEnc";
+            this.labelFacEnc.Size = new System.Drawing.Size(114, 13);
+            this.labelFacEnc.TabIndex = 33;
+            this.labelFacEnc.Text = "Facturas Encontradas:";
+            // 
+            // comboBoxFacEnc
+            // 
+            this.comboBoxFacEnc.FormattingEnabled = true;
+            this.comboBoxFacEnc.Location = new System.Drawing.Point(132, 74);
+            this.comboBoxFacEnc.Name = "comboBoxFacEnc";
+            this.comboBoxFacEnc.Size = new System.Drawing.Size(336, 21);
+            this.comboBoxFacEnc.TabIndex = 32;
+            this.comboBoxFacEnc.SelectedIndexChanged += new System.EventHandler(this.comboBoxFacEnc_SelectedIndexChanged_1);
             // 
             // RegistroPago
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 448);
+            this.ClientSize = new System.Drawing.Size(720, 427);
+            this.Controls.Add(this.labelFacEnc);
+            this.Controls.Add(this.comboBoxFacEnc);
             this.Controls.Add(this.comboBoxTipoPago);
             this.Controls.Add(this.labelTipoPago);
             this.Controls.Add(this.buttonBuscar);
@@ -405,5 +427,7 @@
         private System.Windows.Forms.Button buttonBuscar;
         private System.Windows.Forms.Label labelTipoPago;
         private System.Windows.Forms.ComboBox comboBoxTipoPago;
+        private System.Windows.Forms.Label labelFacEnc;
+        private System.Windows.Forms.ComboBox comboBoxFacEnc;
     }
 }

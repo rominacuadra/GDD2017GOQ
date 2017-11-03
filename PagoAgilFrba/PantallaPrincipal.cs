@@ -66,6 +66,12 @@ namespace PagoAgilFrba
             sucursal.ShowDialog();
         }
 
+        private void registroDePagoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RegistroPago.RegistroPago pago = new RegistroPago.RegistroPago();
+            pago.ShowDialog();
+        }
+
 
     }
 }
