@@ -131,7 +131,8 @@ create table GOQ.Pago(
 	pago_cliente_id int, /* FK a GOQ.Cliente*/
 	pago_importe numeric(18,0) not null CHECK(pago_importe>0),
 	pago_tipo_id int , /* FK a GOQ.Tipo_Pago*/
-	pago_sucursal_id int /* FK a GOQ.Sucursal*/
+	pago_sucursal_id int, /* FK a GOQ.Sucursal*/
+	pago_ren_id numeric(18,0) null /* FK a GOQ.Rendicion*/
 );
 
 GO
@@ -432,22 +433,49 @@ where t.FormaPagoDescripcion is not null;
 /******************************PAGO*****************************************/
 GO
 INSERT INTO [GOQ].[Pago]
-           ([pago_id] 
-		   ,[pago_fecha_cobro]
-		   ,[pago_cliente_id]
-		   ,[pago_importe]
-		   ,[pago_tipo_id]
-		   ,[pago_sucursal_id])
+           ([pago_id]
+           ,[pago_fecha_cobro]
+           ,[pago_cliente_id]
+           ,[pago_importe]
+           ,[pago_tipo_id]
+           ,[pago_sucursal_id]
+           ,[pago_ren_id])
 select distinct p.Pago_nro ,
 				p.Pago_Fecha, 
 				c.cli_id, 
 				p.Total, 
 				tp.tipo_pago_id,
 				1
+				,p.Rendicion_Nro
 from [gd_esquema].[Maestra] p
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
 inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
-inner join [GOQ].[Tipo_Pago] tp on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion);
+inner join [GOQ].[Tipo_Pago] tp on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion)
+where p.Rendicion_Nro is not null
+order by 1 asc; 
+
+INSERT INTO [GOQ].[Pago]
+           ([pago_id]
+           ,[pago_fecha_cobro]
+           ,[pago_cliente_id]
+           ,[pago_importe]
+           ,[pago_tipo_id]
+           ,[pago_sucursal_id]
+           ,[pago_ren_id])
+select distinct p.Pago_nro ,
+				p.Pago_Fecha, 
+				c.cli_id, 
+				p.Total, 
+				tp.tipo_pago_id,
+				1
+				,p.Rendicion_Nro
+from [gd_esquema].[Maestra] p
+inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
+inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
+inner join [GOQ].[Tipo_Pago] tp on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion)
+where p.Rendicion_Nro is null
+and p.Pago_nro not in (select distinct pago_id from [GOQ].[Pago])
+order by 1 asc; 
 
 /******************************PAGO_FACTURA*****************************************/
 GO
@@ -490,5 +518,24 @@ group by m.Rendicion_Nro, m.Rendicion_Fecha,e.ID_empresa,pc.porc_comi_id;
 /*******************DEVOLUCION*******--NO HAY NADA PARA MIGRAR*************************/	
 
 /******************************************** FIN - LLENADO DE TABLAS *********************************************/
-/******************************************** INICIO - TRIGGERS *****************************************/
+/******************************************** INICIO - TRIGGERS Y PROCEDURES *****************************************/
+
+ CREATE PROCEDURE GOQ.InsercionDePagos
+    (
+		@FECHACOBRO datetime,
+        @CLI_ID int,
+        @IMP numeric(18,0),
+        @TIPO int,
+        @SUCU int
+    )
+
+    AS
+        SET NOCOUNT ON 
+    
+    INSERT INTO GOQ.Pago
+                      (pago_fecha_cobro , pago_cliente_id, pago_importe, pago_tipo_id, pago_sucursal_id)
+    VALUES     (@FECHACOBRO, @CLI_ID, @IMP, @TIPO, @SUCU)
+
+    RETURN SCOPE_IDENTITY()
+
 /******************************************** FIN - TRIGGERS *****************************************/

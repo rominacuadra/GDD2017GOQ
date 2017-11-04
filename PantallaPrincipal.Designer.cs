@@ -44,9 +44,9 @@
             this.sucursalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rendiciónDePagoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rendiciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.registroDePagoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listadoEstadisticoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.devoluciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.registroDePagoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -163,13 +163,6 @@
             this.rendiciónToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.rendiciónToolStripMenuItem.Text = "Rendición";
             // 
-            // registroDePagoToolStripMenuItem
-            // 
-            this.registroDePagoToolStripMenuItem.Name = "registroDePagoToolStripMenuItem";
-            this.registroDePagoToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.registroDePagoToolStripMenuItem.Text = "Registro de Pago";
-            this.registroDePagoToolStripMenuItem.Click += new System.EventHandler(this.registroDePagoToolStripMenuItem_Click);
-            // 
             // listadoEstadisticoToolStripMenuItem
             // 
             this.listadoEstadisticoToolStripMenuItem.Name = "listadoEstadisticoToolStripMenuItem";
@@ -183,6 +176,12 @@
             this.devoluciónToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.devoluciónToolStripMenuItem.Text = "Devolución";
             this.devoluciónToolStripMenuItem.Click += new System.EventHandler(this.devoluciónToolStripMenuItem_Click);
+            // 
+            // registroDePagoToolStripMenuItem
+            // 
+            this.registroDePagoToolStripMenuItem.Name = "registroDePagoToolStripMenuItem";
+            this.registroDePagoToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.registroDePagoToolStripMenuItem.Text = "Registro de Pago";
             // 
             // PantallaPrincipal
             // 
