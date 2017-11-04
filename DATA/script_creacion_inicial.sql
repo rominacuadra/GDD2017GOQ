@@ -131,7 +131,8 @@ create table GOQ.Pago(
 	pago_cliente_id int, /* FK a GOQ.Cliente*/
 	pago_importe numeric(18,0) not null CHECK(pago_importe>0),
 	pago_tipo_id int , /* FK a GOQ.Tipo_Pago*/
-	pago_sucursal_id int /* FK a GOQ.Sucursal*/
+	pago_sucursal_id int, /* FK a GOQ.Sucursal*/
+	pago_ren_id numeric(18,0) null /* FK a GOQ.Rendicion*/
 );
 
 GO
@@ -443,7 +444,8 @@ select distinct p.Pago_nro ,
 				c.cli_id, 
 				p.Total, 
 				tp.tipo_pago_id,
-				1
+				1,
+				p.Rendicion_Nro
 from [gd_esquema].[Maestra] p
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
 inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
