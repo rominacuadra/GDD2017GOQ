@@ -490,5 +490,24 @@ group by m.Rendicion_Nro, m.Rendicion_Fecha,e.ID_empresa,pc.porc_comi_id;
 /*******************DEVOLUCION*******--NO HAY NADA PARA MIGRAR*************************/	
 
 /******************************************** FIN - LLENADO DE TABLAS *********************************************/
-/******************************************** INICIO - TRIGGERS *****************************************/
+/******************************************** INICIO - TRIGGERS Y PROCEDURES *****************************************/
+
+ CREATE PROCEDURE GOQ.InsercionDePagos
+    (
+		@FECHACOBRO datetime,
+        @CLI_ID int,
+        @IMP numeric(18,0),
+        @TIPO int,
+        @SUCU int
+    )
+
+    AS
+        SET NOCOUNT ON 
+    
+    INSERT INTO GOQ.Pago
+                      (pago_fecha_cobro , pago_cliente_id, pago_importe, pago_tipo_id, pago_sucursal_id)
+    VALUES     (@FECHACOBRO, @CLI_ID, @IMP, @TIPO, @SUCU)
+
+    RETURN SCOPE_IDENTITY()
+
 /******************************************** FIN - TRIGGERS *****************************************/
