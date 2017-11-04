@@ -438,7 +438,8 @@ INSERT INTO [GOQ].[Pago]
 		   ,[pago_cliente_id]
 		   ,[pago_importe]
 		   ,[pago_tipo_id]
-		   ,[pago_sucursal_id])
+		   ,[pago_sucursal_id]
+	   	   ,[pago_ren_id])
 select distinct p.Pago_nro ,
 				p.Pago_Fecha, 
 				c.cli_id, 
