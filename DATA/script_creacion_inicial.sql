@@ -433,24 +433,49 @@ where t.FormaPagoDescripcion is not null;
 /******************************PAGO*****************************************/
 GO
 INSERT INTO [GOQ].[Pago]
-           ([pago_id] 
-		   ,[pago_fecha_cobro]
-		   ,[pago_cliente_id]
-		   ,[pago_importe]
-		   ,[pago_tipo_id]
-		   ,[pago_sucursal_id]
-	   	   ,[pago_ren_id])
+           ([pago_id]
+           ,[pago_fecha_cobro]
+           ,[pago_cliente_id]
+           ,[pago_importe]
+           ,[pago_tipo_id]
+           ,[pago_sucursal_id]
+           ,[pago_ren_id])
 select distinct p.Pago_nro ,
 				p.Pago_Fecha, 
 				c.cli_id, 
 				p.Total, 
 				tp.tipo_pago_id,
-				1,
-				p.Rendicion_Nro
+				1
+				,p.Rendicion_Nro
 from [gd_esquema].[Maestra] p
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
 inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
-inner join [GOQ].[Tipo_Pago] tp on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion);
+inner join [GOQ].[Tipo_Pago] tp on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion)
+where p.Rendicion_Nro is not null
+order by 1 asc; 
+
+INSERT INTO [GOQ].[Pago]
+           ([pago_id]
+           ,[pago_fecha_cobro]
+           ,[pago_cliente_id]
+           ,[pago_importe]
+           ,[pago_tipo_id]
+           ,[pago_sucursal_id]
+           ,[pago_ren_id])
+select distinct p.Pago_nro ,
+				p.Pago_Fecha, 
+				c.cli_id, 
+				p.Total, 
+				tp.tipo_pago_id,
+				1
+				,p.Rendicion_Nro
+from [gd_esquema].[Maestra] p
+inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
+inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
+inner join [GOQ].[Tipo_Pago] tp on (tp.tipo_pago_descripcion  = p.FormaPagoDescripcion)
+where p.Rendicion_Nro is null
+and p.Pago_nro not in (select distinct pago_id from [GOQ].[Pago])
+order by 1 asc; 
 
 /******************************PAGO_FACTURA*****************************************/
 GO
