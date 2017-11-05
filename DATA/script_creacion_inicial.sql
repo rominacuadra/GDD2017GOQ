@@ -132,8 +132,7 @@ create table GOQ.Pago(
 	pago_cliente_id int, /* FK a GOQ.Cliente*/
 	pago_importe numeric(18,0) not null CHECK(pago_importe>0),
 	pago_tipo_id int , /* FK a GOQ.Tipo_Pago*/
-	pago_sucursal_id int, /* FK a GOQ.Sucursal*/
-	pago_ren_id numeric(18,0) null /* FK a GOQ.Rendicion*/
+	pago_sucursal_id int /* FK a GOQ.Sucursal*/
 );
 
 GO
