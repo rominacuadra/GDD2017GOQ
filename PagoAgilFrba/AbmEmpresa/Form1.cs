@@ -588,5 +588,10 @@ namespace PagoAgilFrba.AbmEmpresa
         {
 
         }
+
+        private void buttonLimpiar_Click(object sender, EventArgs e)
+        {
+            limpiarCampos();
+        }
     }
 }

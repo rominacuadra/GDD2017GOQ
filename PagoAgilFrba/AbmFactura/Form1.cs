@@ -33,7 +33,7 @@ namespace PagoAgilFrba.AbmFactura
             labelCliente.Visible = false;
             comboBoxCliente.Visible = false;
             labelFechaDeVenc.Visible = false;
-            monthCalendar1.Visible = false;
+            dtFechaVen.Visible = false;
             buttonAceptar.Visible = false;
             buttonLimpiar.Visible = false;
             labelTitulo.Visible = false;
@@ -67,7 +67,7 @@ namespace PagoAgilFrba.AbmFactura
         {
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 cli_nombre + ' ' + cli_apellido FROM GOQ.Cliente",
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 cli_nombre + '/' + cli_apellido FROM GOQ.Cliente",
             PagoAgilFrba.ModuloGlobal.getConexion());
             reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -88,7 +88,7 @@ namespace PagoAgilFrba.AbmFactura
             textBoxNroFac.Text = "";
             comboBoxEmpresa.Text = "";
             comboBoxCliente.Text = "";
-            monthCalendar1.Text = "";
+            dtFechaVen.Text = "";
         }
 
         private void mostrarAlta()
@@ -100,7 +100,7 @@ namespace PagoAgilFrba.AbmFactura
             labelCliente.Visible = true;
             comboBoxCliente.Visible = true;
             labelFechaDeVenc.Visible = true;
-            monthCalendar1.Visible = true;
+            dtFechaVen.Visible = true;
             buttonAceptar.Visible = true;
             buttonLimpiar.Visible = true;
             labelTitulo.Visible = true;
@@ -131,7 +131,7 @@ namespace PagoAgilFrba.AbmFactura
         private bool facturaNoEstaRepetido(long NroFac)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT fac_id FROM GOQ.Factura WHERE empresa_cuit = @NroFac", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT fac_id FROM GOQ.Factura WHERE fac_id = @NroFac", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("NroFac", SqlDbType.Decimal).Value = NroFac;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -163,12 +163,12 @@ namespace PagoAgilFrba.AbmFactura
                empresa_id = Convert.ToInt32(reader.GetValue(0));
            }
 
-           string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { ' ' });
+           string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
            string nombre = Convert.ToString(camposABuscar[0]);
            string apellido = Convert.ToString(camposABuscar[1]);
            
            SqlDataReader reader1 = null;
-           SqlCommand cmd1 = new SqlCommand("SELECT ID_empresa FROM GOQ.Cliente WHERE cli_nombre = @NOMBRE AND cli_apellido= @APELLIDO",
+           SqlCommand cmd1 = new SqlCommand("SELECT cli_id FROM GOQ.Cliente WHERE cli_nombre = @NOMBRE AND cli_apellido= @APELLIDO",
            PagoAgilFrba.ModuloGlobal.getConexion());
            cmd1.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = nombre;
            cmd1.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = apellido;
@@ -185,7 +185,7 @@ namespace PagoAgilFrba.AbmFactura
 
                 if (filasRetornadas > 0)
                 {
-                    SqlParameter[] sqls = new SqlParameter[1];
+                    SqlParameter[] sqls = new SqlParameter[2];
                     sqls[0] = new SqlParameter("MONTO", ItemMonto);
                     sqls[1] = new SqlParameter("CANTIDAD", ItemCantidad);
                     SqlCommand cmd3 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
@@ -223,11 +223,11 @@ namespace PagoAgilFrba.AbmFactura
                 return;
             }
 
-            /*if (monthCalendar1.Text.Length == 0)
+            if (dtFechaVen.Value == null)
             {
                 MessageBox.Show("Por favor, complete el campo Fecha de vencimiento e inténtelo nuevamente");
                 return;
-            }*/
+            }
 
             if (textBoxFechaAlta.Text.Length == 0)
             {
@@ -237,7 +237,7 @@ namespace PagoAgilFrba.AbmFactura
 
             if (textBoxTotal.Text.Length == 0)
             {
-                MessageBox.Show("Por favor, complete el campo Fecha de Total e inténtelo nuevamente");
+                MessageBox.Show("Por favor, complete el campo Total e inténtelo nuevamente");
                 return;
             }
 
@@ -255,7 +255,7 @@ namespace PagoAgilFrba.AbmFactura
             
             if (facturaNoEstaRepetido(Convert.ToInt64(textBoxNroFac.Text)))
             {
-                darAltaFactura(Convert.ToInt64(textBoxNroFac.Text), comboBoxEmpresa.Text, comboBoxCliente.Text, monthCalendar1.Text, textBoxFechaAlta.Text, textBoxTotal.Text, textBoxItemMonto.Text, textBoxItemCantidad.Text);
+                darAltaFactura(Convert.ToInt64(textBoxNroFac.Text), comboBoxEmpresa.Text, comboBoxCliente.Text, dtFechaVen.Text, textBoxFechaAlta.Text, textBoxTotal.Text, textBoxItemMonto.Text, textBoxItemCantidad.Text);
             }
             else
             {

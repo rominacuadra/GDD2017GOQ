@@ -135,8 +135,8 @@ namespace PagoAgilFrba
 
         private void administraciónToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            //AbmFactura.AbmFactura factura = new AbmFactura.AbmFactura();
-            //factura.ShowDialog();
+            AbmFactura.AbmFactura factura = new AbmFactura.AbmFactura();
+            factura.ShowDialog();
         }
 
 

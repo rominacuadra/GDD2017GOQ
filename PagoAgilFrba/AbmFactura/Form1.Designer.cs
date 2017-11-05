@@ -43,7 +43,6 @@
             this.labelCliente = new System.Windows.Forms.Label();
             this.comboBoxCliente = new System.Windows.Forms.ComboBox();
             this.labelFechaDeVenc = new System.Windows.Forms.Label();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.labelFechaAlta = new System.Windows.Forms.Label();
@@ -54,6 +53,7 @@
             this.labelItemCantidad = new System.Windows.Forms.Label();
             this.textBoxItemMonto = new System.Windows.Forms.TextBox();
             this.textBoxItemCantidad = new System.Windows.Forms.TextBox();
+            this.dtFechaVen = new System.Windows.Forms.DateTimePicker();
             this.menuABMCli.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -182,15 +182,9 @@
             this.labelFechaDeVenc.TabIndex = 126;
             this.labelFechaDeVenc.Text = "Fecha de vencimiento:";
             // 
-            // monthCalendar1
-            // 
-            this.monthCalendar1.Location = new System.Drawing.Point(180, 286);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 127;
-            // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(57, 619);
+            this.buttonAceptar.Location = new System.Drawing.Point(65, 524);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 132;
@@ -200,7 +194,7 @@
             // 
             // buttonLimpiar
             // 
-            this.buttonLimpiar.Location = new System.Drawing.Point(190, 619);
+            this.buttonLimpiar.Location = new System.Drawing.Point(180, 524);
             this.buttonLimpiar.Name = "buttonLimpiar";
             this.buttonLimpiar.Size = new System.Drawing.Size(75, 23);
             this.buttonLimpiar.TabIndex = 133;
@@ -211,7 +205,7 @@
             // labelFechaAlta
             // 
             this.labelFechaAlta.AutoSize = true;
-            this.labelFechaAlta.Location = new System.Drawing.Point(54, 468);
+            this.labelFechaAlta.Location = new System.Drawing.Point(57, 340);
             this.labelFechaAlta.Name = "labelFechaAlta";
             this.labelFechaAlta.Size = new System.Drawing.Size(75, 13);
             this.labelFechaAlta.TabIndex = 134;
@@ -219,7 +213,7 @@
             // 
             // textBoxFechaAlta
             // 
-            this.textBoxFechaAlta.Location = new System.Drawing.Point(180, 468);
+            this.textBoxFechaAlta.Location = new System.Drawing.Point(180, 337);
             this.textBoxFechaAlta.Name = "textBoxFechaAlta";
             this.textBoxFechaAlta.Size = new System.Drawing.Size(114, 20);
             this.textBoxFechaAlta.TabIndex = 135;
@@ -227,7 +221,7 @@
             // labelTotal
             // 
             this.labelTotal.AutoSize = true;
-            this.labelTotal.Location = new System.Drawing.Point(54, 506);
+            this.labelTotal.Location = new System.Drawing.Point(62, 385);
             this.labelTotal.Name = "labelTotal";
             this.labelTotal.Size = new System.Drawing.Size(34, 13);
             this.labelTotal.TabIndex = 136;
@@ -235,7 +229,7 @@
             // 
             // textBoxTotal
             // 
-            this.textBoxTotal.Location = new System.Drawing.Point(180, 503);
+            this.textBoxTotal.Location = new System.Drawing.Point(180, 382);
             this.textBoxTotal.Name = "textBoxTotal";
             this.textBoxTotal.Size = new System.Drawing.Size(114, 20);
             this.textBoxTotal.TabIndex = 137;
@@ -243,7 +237,7 @@
             // labelItemMonto
             // 
             this.labelItemMonto.AutoSize = true;
-            this.labelItemMonto.Location = new System.Drawing.Point(54, 542);
+            this.labelItemMonto.Location = new System.Drawing.Point(62, 430);
             this.labelItemMonto.Name = "labelItemMonto";
             this.labelItemMonto.Size = new System.Drawing.Size(63, 13);
             this.labelItemMonto.TabIndex = 138;
@@ -252,7 +246,7 @@
             // labelItemCantidad
             // 
             this.labelItemCantidad.AutoSize = true;
-            this.labelItemCantidad.Location = new System.Drawing.Point(54, 575);
+            this.labelItemCantidad.Location = new System.Drawing.Point(62, 478);
             this.labelItemCantidad.Name = "labelItemCantidad";
             this.labelItemCantidad.Size = new System.Drawing.Size(75, 13);
             this.labelItemCantidad.TabIndex = 139;
@@ -261,23 +255,34 @@
             // 
             // textBoxItemMonto
             // 
-            this.textBoxItemMonto.Location = new System.Drawing.Point(180, 539);
+            this.textBoxItemMonto.Location = new System.Drawing.Point(180, 427);
             this.textBoxItemMonto.Name = "textBoxItemMonto";
             this.textBoxItemMonto.Size = new System.Drawing.Size(114, 20);
             this.textBoxItemMonto.TabIndex = 140;
             // 
             // textBoxItemCantidad
             // 
-            this.textBoxItemCantidad.Location = new System.Drawing.Point(180, 572);
+            this.textBoxItemCantidad.Location = new System.Drawing.Point(180, 478);
             this.textBoxItemCantidad.Name = "textBoxItemCantidad";
             this.textBoxItemCantidad.Size = new System.Drawing.Size(114, 20);
             this.textBoxItemCantidad.TabIndex = 141;
+            // 
+            // dtFechaVen
+            // 
+            this.dtFechaVen.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtFechaVen.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtFechaVen.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtFechaVen.Location = new System.Drawing.Point(180, 286);
+            this.dtFechaVen.Name = "dtFechaVen";
+            this.dtFechaVen.Size = new System.Drawing.Size(114, 26);
+            this.dtFechaVen.TabIndex = 142;
             // 
             // AbmFactura
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(654, 664);
+            this.ClientSize = new System.Drawing.Size(654, 564);
+            this.Controls.Add(this.dtFechaVen);
             this.Controls.Add(this.textBoxItemCantidad);
             this.Controls.Add(this.textBoxItemMonto);
             this.Controls.Add(this.labelItemCantidad);
@@ -288,7 +293,6 @@
             this.Controls.Add(this.labelFechaAlta);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.buttonAceptar);
-            this.Controls.Add(this.monthCalendar1);
             this.Controls.Add(this.labelFechaDeVenc);
             this.Controls.Add(this.comboBoxCliente);
             this.Controls.Add(this.labelCliente);
@@ -325,7 +329,6 @@
         private System.Windows.Forms.Label labelCliente;
         private System.Windows.Forms.ComboBox comboBoxCliente;
         private System.Windows.Forms.Label labelFechaDeVenc;
-        private System.Windows.Forms.MonthCalendar monthCalendar1;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Label labelFechaAlta;
@@ -336,5 +339,6 @@
         private System.Windows.Forms.Label labelItemCantidad;
         private System.Windows.Forms.TextBox textBoxItemMonto;
         private System.Windows.Forms.TextBox textBoxItemCantidad;
+        private System.Windows.Forms.DateTimePicker dtFechaVen;
     }
 }
