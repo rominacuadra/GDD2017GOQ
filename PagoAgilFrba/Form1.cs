@@ -222,7 +222,7 @@ namespace PagoAgilFrba
 
                                                             if (logueoCorrecto(txtUsuario.Text, txtClave.Text).GetInt32(1)!=3)
                                                             {
-                                                                MessageBox.Show("reseteando intentos", "Información");
+                                                                
                                                                 resetearIntentos(3);
                                                             }
                                                             logueoCorrecto(txtUsuario.Text, txtClave.Text).Close();
