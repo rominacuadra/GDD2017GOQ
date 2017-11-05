@@ -17,6 +17,7 @@ namespace PagoAgilFrba
     class ModuloGlobal
     {
         public static string usuarioLogueado="";
+        public static string nombre_rol = "";
         public static string suc_cob_id="";
 
         public static SqlConnection getConexion()

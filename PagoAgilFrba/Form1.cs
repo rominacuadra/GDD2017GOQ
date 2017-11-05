@@ -164,10 +164,33 @@ namespace PagoAgilFrba
             
             if (yaSeLogueoPorOK) {
 
-                            if (cbRol.SelectedItem.ToString().Length > 0) 
+                            if (cbRol.SelectedItem.ToString().Length > 0)
                             {
+                                
+                                if (cbRol.SelectedItem.ToString()!= "Cobrador")
+                                {
+
+                                    PagoAgilFrba.ModuloGlobal.nombre_rol = cbRol.SelectedItem.ToString();
                                     PagoAgilFrba.ModuloGlobal.usuarioLogueado = txtUsuario.Text.ToUpper();
                                     abrirPantallaPrincipal();
+
+                                }
+                                else
+                                {
+                                    
+                                    if (cbSuc.SelectedIndex!=-1)
+                                    {
+                                        PagoAgilFrba.ModuloGlobal.nombre_rol = cbRol.SelectedItem.ToString();
+                                        PagoAgilFrba.ModuloGlobal.usuarioLogueado = txtUsuario.Text.ToUpper();
+                                        abrirPantallaPrincipal();
+                                    }
+                                    else 
+                                    {
+                                        MessageBox.Show("Debe seleccionar una sucursal.", "Información");
+                                        cbSuc.Focus();
+                                    }
+                                }
+
                             }
                             else 
                             {
@@ -191,7 +214,7 @@ namespace PagoAgilFrba
 
                                                         if (cargarRoles(logueoCorrecto(txtUsuario.Text, txtClave.Text).GetValue(0).ToString()) > 0)
                                                         {
-                                                            MessageBox.Show("Seleccione un Rol...", "Información");
+                                                            
                                                             lblRol.Enabled = true;
                                                             cbRol.Enabled = true;
                                                            
