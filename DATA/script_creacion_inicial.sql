@@ -138,12 +138,12 @@ create table GOQ.Pago(
 
 GO
 create table GOQ.Rendicion(
-	ren_id numeric(18,0) CONSTRAINT PK_ren_id PRIMARY KEY,
+	ren_id numeric(18,0) CONSTRAINT PK_ren_id PRIMARY KEY IDENTITY(34620,1),
 	ren_fecha_ren datetime not null,
 	ren_cant_fac int not null,
 	ren_imp_comision numeric(18,0) not null,
-	ren_empresa_id int, /*FK GOQ.Empresa*/
-	ren_porc_comision_id int, /*FK GOQ.Porcentaje_Comision*/
+	ren_empresa_id int, /FK GOQ.Empresa/
+	ren_porc_comision_id int, /FK GOQ.Porcentaje_Comision/
 	ren_imp_total numeric(18,2) not null
 );
 
@@ -268,11 +268,19 @@ GO
 /*************************************** FIN / CREACION - FUNCIONES ***************************************/
 /***************************** INICIO / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
 
-CREATE PROCEDURE GOQ.SP_Insertar_Servicio_Empresa	@idServicio intASBEGIN TRAN	declare @idEmpresaInsertado int
+CREATE PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
+	@idServicio int
+AS
+BEGIN TRAN
+	declare @idEmpresaInsertado int
 	SET @idEmpresaInsertado = @@IDENTITY
 	INSERT INTO [GOQ].Servicio_Empresa (ID_servicio,ID_empresa) VALUES (@idServicio,@idEmpresaInsertado);
 	
-	if @@ERROR <> 0 		BEGIN 			rollback tran		ENDCOMMIT TRAN;
+	if @@ERROR <> 0 
+		BEGIN 
+			rollback tran
+		END
+COMMIT TRAN;
 
 /***************************** FIN / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
 
