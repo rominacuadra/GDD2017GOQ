@@ -5,6 +5,7 @@ IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
 
 	BEGIN
 		DROP FUNCTION GOQ.F_Hash256
+		DROP PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
 		DROP TABLE GOQ.CobradorSucursal
 		DROP TABLE GOQ.Devolucion
 		DROP TABLE GOQ.Funcionalidad_Rol
@@ -266,6 +267,13 @@ GO
 
 /*************************************** FIN / CREACION - FUNCIONES ***************************************/
 /***************************** INICIO / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
+
+CREATE PROCEDURE GOQ.SP_Insertar_Servicio_Empresa	@idServicio intASBEGIN TRAN	declare @idEmpresaInsertado int
+	SET @idEmpresaInsertado = @@IDENTITY
+	INSERT INTO [GOQ].Servicio_Empresa (ID_servicio,ID_empresa) VALUES (@idServicio,@idEmpresaInsertado);
+	
+	if @@ERROR <> 0 		BEGIN 			rollback tran		ENDCOMMIT TRAN;
+
 /***************************** FIN / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
 
 /******************************************** INICIO - LLENADO DE TABLAS *********************************************/
