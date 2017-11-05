@@ -142,8 +142,8 @@ create table GOQ.Rendicion(
 	ren_fecha_ren datetime not null,
 	ren_cant_fac int not null,
 	ren_imp_comision numeric(18,0) not null,
-	ren_empresa_id int, /FK GOQ.Empresa/
-	ren_porc_comision_id int, /FK GOQ.Porcentaje_Comision/
+	ren_empresa_id int, /*FK GOQ.Empresa*/
+	ren_porc_comision_id int, /*FK GOQ.Porcentaje_Comision*/
 	ren_imp_total numeric(18,2) not null
 );
 
