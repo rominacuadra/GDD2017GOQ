@@ -127,7 +127,7 @@ create table GOQ.Servicio(
 
 GO
 create table GOQ.Pago(
-	pago_id numeric(18,0) CONSTRAINT PK_pago_id PRIMARY KEY,
+	pago_id numeric(18,0) CONSTRAINT PK_pago_id PRIMARY KEY IDENTITY(1,1),
 	pago_fecha_cobro datetime not null,
 	pago_cliente_id int, /* FK a GOQ.Cliente*/
 	pago_importe numeric(18,0) not null CHECK(pago_importe>0),
@@ -351,6 +351,50 @@ where U.usu_id != 1;
 
 /*********************************CLIENTE*****************************/
 GO
+create table GOQ.MailsRepetidos(
+	cli_nombre nvarchar(255) not null,
+	cli_apellido nvarchar(255) not null,
+	cli_dni numeric(18,0) not null,
+	cli_mail nvarchar(255) not null,
+	cli_tel numeric(18,0) not null,
+	cli_dir nvarchar(255) not null,
+	cli_cp nvarchar(255) not null,
+	cli_habilitado bit DEFAULT 1,
+	cli_fecha_nac datetime not null
+)
+
+GO
+INSERT INTO GOQ.MailsRepetidos
+           ([cli_nombre]
+           ,[cli_apellido]
+           ,[cli_dni]
+           ,[cli_mail]
+           ,[cli_tel]
+           ,[cli_dir]
+           ,[cli_cp]
+           ,[cli_fecha_nac])
+select distinct	m.[Cliente-Nombre],
+			m.[Cliente-Apellido],
+			m.[Cliente-Dni],
+			m.Cliente_Mail,
+			0000000000 as telefono,
+			m.Cliente_Direccion,
+			m.Cliente_Codigo_Postal,
+			m.[Cliente-Fecha_Nac]  
+from [gd_esquema].[Maestra] m
+
+GO
+update GOQ.MailsRepetidos 
+set
+cli_mail='pedirActualizarMail1@mail.com'
+where cli_dni=31294365
+GO
+update GOQ.MailsRepetidos 
+set
+cli_mail='pedirActualizarMail2@mail.com'
+where cli_dni = 3703799
+
+GO
 INSERT INTO [GOQ].[Cliente]
            ([cli_nombre]
            ,[cli_apellido]
@@ -361,16 +405,18 @@ INSERT INTO [GOQ].[Cliente]
            ,[cli_cp]
            ,[cli_habilitado]
            ,[cli_fecha_nac])
-select distinct	m.[Cliente-Nombre],
-			m.[Cliente-Apellido],
-			m.[Cliente-Dni],
-			m.Cliente_Mail,
+select distinct	m.[cli_nombre],
+			m.[cli_apellido],
+			m.[cli_dni],
+			m.[cli_mail],
 			0000000000 as telefono,
-			m.Cliente_Direccion,
-			m.Cliente_Codigo_Postal,
+			m.[cli_dir],
+			m.[cli_cp],
 			1,
-			m.[Cliente-Fecha_Nac]  
-from [gd_esquema].[Maestra] m ;
+			m.[cli_fecha_nac]  
+from GOQ.MailsRepetidos m
+GO
+drop table GOQ.MailsRepetidos
 
 /***************************EMPRESA*************************************/
 GO
@@ -449,15 +495,13 @@ where t.FormaPagoDescripcion is not null;
 /******************************PAGO*****************************************/
 GO
 INSERT INTO [GOQ].[Pago]
-           ([pago_id]
-           ,[pago_fecha_cobro]
+           ([pago_fecha_cobro]
            ,[pago_cliente_id]
            ,[pago_importe]
            ,[pago_tipo_id]
            ,[pago_sucursal_id]
            ,[pago_ren_id])
-select distinct p.Pago_nro ,
-				p.Pago_Fecha, 
+select distinct p.Pago_Fecha, 
 				c.cli_id, 
 				p.Total, 
 				tp.tipo_pago_id,
@@ -471,15 +515,13 @@ where p.Rendicion_Nro is not null
 order by 1 asc; 
 
 INSERT INTO [GOQ].[Pago]
-           ([pago_id]
-           ,[pago_fecha_cobro]
+           ([pago_fecha_cobro]
            ,[pago_cliente_id]
            ,[pago_importe]
            ,[pago_tipo_id]
            ,[pago_sucursal_id]
            ,[pago_ren_id])
-select distinct p.Pago_nro ,
-				p.Pago_Fecha, 
+select distinct p.Pago_Fecha, 
 				c.cli_id, 
 				p.Total, 
 				tp.tipo_pago_id,
@@ -511,15 +553,14 @@ VALUES (2), (3), (5), (10);
 
 /******************* RENDICION ****************************/	
 GO	
-INSERT INTO [GOQ].Rendicion ([ren_id]
-       ,[ren_fecha_ren]
+INSERT INTO [GOQ].Rendicion (
+		[ren_fecha_ren]
        ,[ren_cant_fac]
        ,[ren_imp_comision]
        ,[ren_empresa_id]
        ,[ren_porc_comision_id]
        ,[ren_imp_total])
-SELECT m.Rendicion_Nro, 
-	   m.Rendicion_Fecha,
+SELECT m.Rendicion_Fecha,
 	   COUNT(m.Nro_Factura) as ren_cant_fac,
 	   SUM(m.ItemRendicion_Importe) as ren_imp_comision,
 	   e.ID_empresa, 
@@ -534,24 +575,3 @@ group by m.Rendicion_Nro, m.Rendicion_Fecha,e.ID_empresa,pc.porc_comi_id;
 /*******************DEVOLUCION*******--NO HAY NADA PARA MIGRAR*************************/	
 
 /******************************************** FIN - LLENADO DE TABLAS *********************************************/
-/******************************************** INICIO - TRIGGERS Y PROCEDURES *****************************************/
-
- CREATE PROCEDURE GOQ.InsercionDePagos
-    (
-		@FECHACOBRO datetime,
-        @CLI_ID int,
-        @IMP numeric(18,0),
-        @TIPO int,
-        @SUCU int
-    )
-
-    AS
-        SET NOCOUNT ON 
-    
-    INSERT INTO GOQ.Pago
-                      (pago_fecha_cobro , pago_cliente_id, pago_importe, pago_tipo_id, pago_sucursal_id)
-    VALUES     (@FECHACOBRO, @CLI_ID, @IMP, @TIPO, @SUCU)
-
-    RETURN SCOPE_IDENTITY()
-
-/******************************************** FIN - TRIGGERS *****************************************/

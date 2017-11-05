@@ -66,3 +66,8 @@ C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Devolucion
 C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
 C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmSucursal.ABMSucursal.resources
 C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmSucursal.ABMSucursal.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Interaction.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Extensibility.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\es\Microsoft.Windows.Design.Interaction.resources.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\es\Microsoft.Windows.Design.Extensibility.resources.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Rendicion.ABMRendicion.resources

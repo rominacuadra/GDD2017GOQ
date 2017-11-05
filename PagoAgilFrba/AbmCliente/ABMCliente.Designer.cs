@@ -67,6 +67,8 @@
             this.bajaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelTitulo = new System.Windows.Forms.Label();
+            this.buttonMail1 = new System.Windows.Forms.Button();
+            this.buttonMail2 = new System.Windows.Forms.Button();
             this.menuABMCli.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -139,7 +141,7 @@
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(163, 568);
+            this.buttonAceptar.Location = new System.Drawing.Point(174, 567);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 57;
@@ -402,11 +404,33 @@
             this.labelTitulo.TabIndex = 67;
             this.labelTitulo.Text = "TITULO";
             // 
+            // buttonMail1
+            // 
+            this.buttonMail1.Location = new System.Drawing.Point(174, 567);
+            this.buttonMail1.Name = "buttonMail1";
+            this.buttonMail1.Size = new System.Drawing.Size(75, 23);
+            this.buttonMail1.TabIndex = 69;
+            this.buttonMail1.Text = "Aceptar";
+            this.buttonMail1.UseVisualStyleBackColor = true;
+            this.buttonMail1.Click += new System.EventHandler(this.buttonMail1_Click);
+            // 
+            // buttonMail2
+            // 
+            this.buttonMail2.Location = new System.Drawing.Point(174, 567);
+            this.buttonMail2.Name = "buttonMail2";
+            this.buttonMail2.Size = new System.Drawing.Size(75, 23);
+            this.buttonMail2.TabIndex = 70;
+            this.buttonMail2.Text = "Aceptar";
+            this.buttonMail2.UseVisualStyleBackColor = true;
+            this.buttonMail2.Click += new System.EventHandler(this.buttonMail2_Click);
+            // 
             // ABMCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(705, 605);
+            this.Controls.Add(this.buttonMail2);
+            this.Controls.Add(this.buttonMail1);
             this.Controls.Add(this.labelTitulo);
             this.Controls.Add(this.menuABMCli);
             this.Controls.Add(this.groupBox1);
@@ -492,5 +516,7 @@
         private System.Windows.Forms.ToolStripMenuItem bajaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarToolStripMenuItem;
         private System.Windows.Forms.Label labelTitulo;
+        private System.Windows.Forms.Button buttonMail1;
+        private System.Windows.Forms.Button buttonMail2;
     }
 }

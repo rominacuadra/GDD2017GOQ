@@ -241,14 +241,21 @@ namespace PagoAgilFrba.RegistroPago
                 reader.Read();
                 return Convert.ToInt32(reader.GetValue(0));
             }
-            else{
+            else
+            {
                 return 0;
             }
         }
 
         private void registrarPagoParaLasFacturasDeLaLista()
         {
+
+
+            //----------
+
             int IDSucursal = 0;
+            int insert = 0;
+            int IDPago = -1;
             IDSucursal = buscarIDSucursal(PagoAgilFrba.ModuloGlobal.suc_cob_id);
             bool error = false;
             foreach (string Item in listBoxFacturas.Items)
@@ -263,37 +270,26 @@ namespace PagoAgilFrba.RegistroPago
                 cmd.Parameters.Add("TIPOPAGO", SqlDbType.NVarChar).Value = direccion[3];
                 reader = cmd.ExecuteReader();
                 reader.Read();
-                // Parametros de la BBDD
-                SqlParameter[] sqls = new SqlParameter[5];
-                sqls[0] = new SqlParameter("FECHACOBRO", DateTime.Today);
-                sqls[1] = new SqlParameter("CLI_ID", Convert.ToInt32(reader.GetValue(0)));
-                sqls[2] = new SqlParameter("IMP", Convert.ToDecimal(direccion[5]));
-                sqls[3] = new SqlParameter("TIPO", Convert.ToInt32(reader.GetValue(1)));
-                sqls[4] = new SqlParameter("SUCU", IDSucursal);
+
+                SqlCommand cmd2 = new SqlCommand("INSERT INTO GOQ.Pago (pago_fecha_cobro , pago_cliente_id, pago_importe, pago_tipo_id, pago_sucursal_id) VALUES (@FECHACOBRO, @CLI_ID, @IMP, @TIPO, @SUCU); SELECT SCOPE_IDENTITY();",
+                    PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd2.Parameters.Add("FECHACOBRO", SqlDbType.DateTime).Value = DateTime.Today;
+                cmd2.Parameters.Add("CLI_ID", SqlDbType.Int).Value = Convert.ToInt32(reader.GetValue(0));
+                cmd2.Parameters.Add("IMP", SqlDbType.Decimal).Value = Convert.ToDecimal(direccion[5]);
+                cmd2.Parameters.Add("TIPO", SqlDbType.Int).Value = Convert.ToInt32(reader.GetValue(1));
+                cmd2.Parameters.Add("SUCU", SqlDbType.Int).Value = IDSucursal;
+                IDPago = Convert.ToInt32(cmd2.ExecuteScalar());
 
                 reader.Close();
 
-                // Llamo al procedimiento
-                SqlCommand cmd2 = new SqlCommand("GOQ.InsercionDePagos", PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd2.CommandType = CommandType.StoredProcedure;
-                cmd2.Parameters.AddRange(sqls);
+                SqlCommand cmd3 = new SqlCommand("INSERT INTO GOQ.Pago_Factura VALUES(@PAGOID, @FACID)",
+                PagoAgilFrba.ModuloGlobal.getConexion());
 
-                // Añado un parámetro que recogerá el valor de retorno
-                SqlParameter retValue = new SqlParameter("@RETURN_VALUE", SqlDbType.Decimal);
-                retValue.Direction = ParameterDirection.ReturnValue;
-                cmd.Parameters.Add(retValue);
-
-                //SqlDataReader dr = cmd.ExecuteReader();
-                cmd.ExecuteReader();
-                int IDPago = -1;
-                IDPago = Convert.ToInt32(retValue.Value);
-                if (IDPago != -1)
+                cmd3.Parameters.Add("FACID", SqlDbType.Decimal).Value = Convert.ToInt32(direccion[1]);
+                cmd3.Parameters.Add("PAGOID", SqlDbType.Decimal).Value = IDPago;
+                insert = cmd3.ExecuteNonQuery();
+                if (insert > 0)
                 {
-                    SqlCommand cmd3 = new SqlCommand("INSERT INTO GOQ.Pago_Factura VALUES(@PAGOID, @FACID)",
-                    PagoAgilFrba.ModuloGlobal.getConexion());
-
-                    cmd3.Parameters.Add("FACID", SqlDbType.Decimal).Value = Convert.ToInt32(direccion[1]);
-                    cmd3.Parameters.Add("PAGOID", SqlDbType.Decimal).Value = IDPago;
                     error = false;
                 }
                 else
