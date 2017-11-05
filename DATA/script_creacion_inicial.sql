@@ -282,6 +282,23 @@ BEGIN TRAN
 		END
 COMMIT TRAN;
 
+GO
+CREATE PROCEDURE GOQ.SP_Insertar_Item	
+	@monto numeric(18,2),	
+	@cantidad numeric(18,0)
+AS
+BEGIN TRAN	declare @idFacturaInsertado int
+
+	SET @idFacturaInsertado = @@IDENTITY
+	INSERT INTO [GOQ].Item(fac_id,Monto,Cantidad) VALUES (@idFacturaInsertado,@monto,@cantidad);
+	
+	if @@ERROR <> 0 		
+		BEGIN 			
+			rollback tran		
+		END
+COMMIT TRAN;
+
+GO
 /***************************** FIN / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
 
 /******************************************** INICIO - LLENADO DE TABLAS *********************************************/
