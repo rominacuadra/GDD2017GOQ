@@ -86,24 +86,80 @@ namespace PagoAgilFrba.Rendicion
            
         }
 
+        private string dameUltRenId() {
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT max([ren_id]) FROM [GD2C2017].[GOQ].[Rendicion]", PagoAgilFrba.ModuloGlobal.getConexion());
+            
+            reader = cmd.ExecuteReader();
+            reader.Read();
+
+            //MessageBox.Show(reader.GetValue(0).ToString());
+
+            return reader.GetValue(0).ToString();
+        }
+
+
+        private int dameElIdDeComision(int Comision) {
+
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT distinct [porc_comi_id] FROM [GD2C2017].[GOQ].[Porcentaje_Comision] where [porc_periodo]=@COMISION", PagoAgilFrba.ModuloGlobal.getConexion());
+
+            cmd.Parameters.Add("COMISION", SqlDbType.Int).Value = Comision;
+
+            reader = cmd.ExecuteReader();
+            reader.Read();
+
+            return reader.GetInt32(0);
+        
+        
+        }
+
         private void btnRendir_Click(object sender, EventArgs e)
         {
+            int maxRenId;
+            string queryInsertRendicion = "";
+            queryInsertRendicion = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total]) select @FECHARENDICION as ren_fecha_ren,COUNT(f.fac_id) as ren_cant_fac,cast((SUM(f.fac_total*@COMISION)/100) as decimal(18,2)) as ren_imp_comision,e.ID_empresa as ren_empresa_id, @COMISION as ren_porc_comision, SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Empresa]e on(e.ID_empresa=@EMPRESAID) inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Item] i on(i.fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where f.fac_ren_id is null and format (p.pago_fecha_cobro,'yyyyMM') =format (@FECHARENDICION,'yyyyMM') group by e.ID_empresa;";
             
-            string query = "";
-            query = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total])select format (@FECHARENDICION,'yyyyMMdd') as ren_fecha_ren,COUNT(f.fac_id) as ren_cant_fac,SUM(i.Monto) as ren_imp_comision,e.ID_empresa as ren_empresa_id, round((sum(i.Monto)*100 / SUM(f.fac_total)),0) as ren_porc_comision,SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Empresa]e on(e.ID_empresa=@EMPRESAID) inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Item] i on(i.fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where pago_ren_id is null and format (p.pago_fecha_cobro,'yyyyMM') =format (@FECHARENDICION,'yyyyMM') group by f.fac_id,e.ID_empresa;";
+            string queryUpdateEmpresaRen_Id = "";
+            queryUpdateEmpresaRen_Id = "UPDATE [GOQ].[Factura] SET [fac_ren_id] = @MAXRENID WHERE [fac_id] in (select distinct f.fac_id from [GOQ].[Factura] f inner join [GOQ].[Empresa]e on(e.ID_empresa=1) inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Item] i on(i.fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where f.fac_ren_id is null and format (p.pago_fecha_cobro,'yyyyMM') ='201702');";
 
-            SqlCommand cmd = new SqlCommand(query, PagoAgilFrba.ModuloGlobal.getConexion());
 
-            cmd.Parameters.Add("FECHARENDICION", SqlDbType.Date).Value = dtRendicion.Value;
 
-            cmd.Parameters.Add("EMPRESAID", SqlDbType.Int).Value = idEmpresa(cbEmpresa.SelectedItem.ToString().Trim());
+            SqlCommand cmdInsertRendicion = new SqlCommand(queryInsertRendicion, PagoAgilFrba.ModuloGlobal.getConexion());
 
-            int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+            cmdInsertRendicion.Parameters.Add("FECHARENDICION", SqlDbType.Date).Value = dtRendicion.Value;
+
+            cmdInsertRendicion.Parameters.Add("EMPRESAID", SqlDbType.Int).Value = idEmpresa(cbEmpresa.SelectedItem.ToString().Trim());
+
+            cmdInsertRendicion.Parameters.Add("COMISION", SqlDbType.Int).Value = dameElIdDeComision(Convert.ToInt32(cbPorcComision.SelectedItem.ToString().Trim()));
+
+            maxRenId = Convert.ToInt32(dameUltRenId());
+
+
+
+            int cantidadFilasAfectadas = cmdInsertRendicion.ExecuteNonQuery();
 
             if (cantidadFilasAfectadas > 0)
             {
-                //FALTA actualizar Pago pago_ren_id y Factura fac_rend_id
-                MessageBox.Show("Facturas Rendidas " + cantidadFilasAfectadas.ToString()+ ".", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SqlCommand cmdUpdateEmpresaRen_Id = new SqlCommand(queryUpdateEmpresaRen_Id, PagoAgilFrba.ModuloGlobal.getConexion());
+
+
+                cmdUpdateEmpresaRen_Id.Parameters.Add("FECHARENDICION", SqlDbType.Date).Value = dtRendicion.Value;
+
+                cmdUpdateEmpresaRen_Id.Parameters.Add("EMPRESAID", SqlDbType.Int).Value = idEmpresa(cbEmpresa.SelectedItem.ToString().Trim());
+
+                cmdUpdateEmpresaRen_Id.Parameters.Add("COMISION", SqlDbType.Int).Value = Convert.ToInt32(cbPorcComision.SelectedItem.ToString().Trim());
+
+                cmdUpdateEmpresaRen_Id.Parameters.Add("MAXRENID", SqlDbType.Int).Value = maxRenId;
+
+
+                int cantidadFilasActualizadas = cmdUpdateEmpresaRen_Id.ExecuteNonQuery();
+
+                if (cantidadFilasActualizadas > 0) {
+                    MessageBox.Show("Facturas Rendidas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                
             }
             else
             {
