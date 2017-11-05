@@ -516,13 +516,12 @@ INSERT INTO [GOQ].[Pago]
            ,[pago_importe]
            ,[pago_tipo_id]
            ,[pago_sucursal_id]
-           ,[pago_ren_id])
+           )
 select distinct p.Pago_Fecha, 
 				c.cli_id, 
 				p.Total, 
 				tp.tipo_pago_id,
 				1
-				,p.Rendicion_Nro
 from [gd_esquema].[Maestra] p
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
 inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
@@ -536,13 +535,12 @@ INSERT INTO [GOQ].[Pago]
            ,[pago_importe]
            ,[pago_tipo_id]
            ,[pago_sucursal_id]
-           ,[pago_ren_id])
+           )
 select distinct p.Pago_Fecha, 
 				c.cli_id, 
 				p.Total, 
 				tp.tipo_pago_id,
 				1
-				,p.Rendicion_Nro
 from [gd_esquema].[Maestra] p
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = p.Empresa_Cuit)
 inner join [GOQ].[Cliente] c on (c.cli_dni = p.[Cliente-Dni])
