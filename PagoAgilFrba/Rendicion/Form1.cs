@@ -88,9 +88,7 @@ namespace PagoAgilFrba.Rendicion
 
         private void btnRendir_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(" " + dtRendicion.Value.ToShortDateString());
-
-
+            
             string query = "";
             query = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total])select format (@FECHARENDICION,'yyyyMMdd') as ren_fecha_ren,COUNT(f.fac_id) as ren_cant_fac,SUM(i.Monto) as ren_imp_comision,e.ID_empresa as ren_empresa_id, round((sum(i.Monto)*100 / SUM(f.fac_total)),0) as ren_porc_comision,SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Empresa]e on(e.ID_empresa=@EMPRESAID) inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Item] i on(i.fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where pago_ren_id is null and format (p.pago_fecha_cobro,'yyyyMM') =format (@FECHARENDICION,'yyyyMM') group by f.fac_id,e.ID_empresa;";
 
@@ -109,7 +107,7 @@ namespace PagoAgilFrba.Rendicion
             }
             else
             {
-                MessageBox.Show("No se han podido rendir las facturas.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No hay facturas para rendir en esta fecha para la empresa.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
