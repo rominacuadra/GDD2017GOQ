@@ -30,12 +30,12 @@
         {
             this.cbEmpresa = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblEmpresa = new System.Windows.Forms.Label();
-            this.dtRendicion = new System.Windows.Forms.DateTimePicker();
-            this.lblFechaRendicion = new System.Windows.Forms.Label();
-            this.btnRendir = new System.Windows.Forms.Button();
-            this.lblPorcentaje = new System.Windows.Forms.Label();
             this.cbPorcComision = new System.Windows.Forms.ComboBox();
+            this.lblPorcentaje = new System.Windows.Forms.Label();
+            this.btnRendir = new System.Windows.Forms.Button();
+            this.lblFechaRendicion = new System.Windows.Forms.Label();
+            this.dtRendicion = new System.Windows.Forms.DateTimePicker();
+            this.lblEmpresa = new System.Windows.Forms.Label();
             this.btnCerrar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -65,36 +65,26 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Rendición";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // lblEmpresa
+            // cbPorcComision
             // 
-            this.lblEmpresa.AutoSize = true;
-            this.lblEmpresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmpresa.Location = new System.Drawing.Point(8, 50);
-            this.lblEmpresa.Name = "lblEmpresa";
-            this.lblEmpresa.Size = new System.Drawing.Size(73, 20);
-            this.lblEmpresa.TabIndex = 1;
-            this.lblEmpresa.Text = "Empresa";
+            this.cbPorcComision.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbPorcComision.FormattingEnabled = true;
+            this.cbPorcComision.Location = new System.Drawing.Point(683, 46);
+            this.cbPorcComision.Name = "cbPorcComision";
+            this.cbPorcComision.Size = new System.Drawing.Size(42, 23);
+            this.cbPorcComision.TabIndex = 6;
             // 
-            // dtRendicion
+            // lblPorcentaje
             // 
-            this.dtRendicion.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtRendicion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtRendicion.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtRendicion.Location = new System.Drawing.Point(390, 47);
-            this.dtRendicion.Name = "dtRendicion";
-            this.dtRendicion.Size = new System.Drawing.Size(104, 26);
-            this.dtRendicion.TabIndex = 2;
-            // 
-            // lblFechaRendicion
-            // 
-            this.lblFechaRendicion.AutoSize = true;
-            this.lblFechaRendicion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFechaRendicion.Location = new System.Drawing.Point(257, 50);
-            this.lblFechaRendicion.Name = "lblFechaRendicion";
-            this.lblFechaRendicion.Size = new System.Drawing.Size(129, 20);
-            this.lblFechaRendicion.TabIndex = 3;
-            this.lblFechaRendicion.Text = "Fecha Rendición";
+            this.lblPorcentaje.AutoSize = true;
+            this.lblPorcentaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPorcentaje.Location = new System.Drawing.Point(503, 50);
+            this.lblPorcentaje.Name = "lblPorcentaje";
+            this.lblPorcentaje.Size = new System.Drawing.Size(176, 20);
+            this.lblPorcentaje.TabIndex = 5;
+            this.lblPorcentaje.Text = "Porcentaje de Comisión";
             // 
             // btnRendir
             // 
@@ -107,24 +97,35 @@
             this.btnRendir.UseVisualStyleBackColor = true;
             this.btnRendir.Click += new System.EventHandler(this.btnRendir_Click);
             // 
-            // lblPorcentaje
+            // lblFechaRendicion
             // 
-            this.lblPorcentaje.AutoSize = true;
-            this.lblPorcentaje.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPorcentaje.Location = new System.Drawing.Point(503, 50);
-            this.lblPorcentaje.Name = "lblPorcentaje";
-            this.lblPorcentaje.Size = new System.Drawing.Size(176, 20);
-            this.lblPorcentaje.TabIndex = 5;
-            this.lblPorcentaje.Text = "Porcentaje de Comisión";
+            this.lblFechaRendicion.AutoSize = true;
+            this.lblFechaRendicion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFechaRendicion.Location = new System.Drawing.Point(257, 50);
+            this.lblFechaRendicion.Name = "lblFechaRendicion";
+            this.lblFechaRendicion.Size = new System.Drawing.Size(129, 20);
+            this.lblFechaRendicion.TabIndex = 3;
+            this.lblFechaRendicion.Text = "Fecha Rendición";
             // 
-            // cbPorcComision
+            // dtRendicion
             // 
-            this.cbPorcComision.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPorcComision.FormattingEnabled = true;
-            this.cbPorcComision.Location = new System.Drawing.Point(683, 46);
-            this.cbPorcComision.Name = "cbPorcComision";
-            this.cbPorcComision.Size = new System.Drawing.Size(42, 23);
-            this.cbPorcComision.TabIndex = 6;
+            this.dtRendicion.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtRendicion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtRendicion.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtRendicion.Location = new System.Drawing.Point(390, 47);
+            this.dtRendicion.Name = "dtRendicion";
+            this.dtRendicion.Size = new System.Drawing.Size(104, 26);
+            this.dtRendicion.TabIndex = 2;
+            // 
+            // lblEmpresa
+            // 
+            this.lblEmpresa.AutoSize = true;
+            this.lblEmpresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEmpresa.Location = new System.Drawing.Point(8, 50);
+            this.lblEmpresa.Name = "lblEmpresa";
+            this.lblEmpresa.Size = new System.Drawing.Size(73, 20);
+            this.lblEmpresa.TabIndex = 1;
+            this.lblEmpresa.Text = "Empresa";
             // 
             // btnCerrar
             // 

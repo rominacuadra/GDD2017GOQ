@@ -102,6 +102,7 @@
             this.cerrarToolStripMenuItem.Name = "cerrarToolStripMenuItem";
             this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.cerrarToolStripMenuItem.Text = "Cerrar";
+            this.cerrarToolStripMenuItem.Click += new System.EventHandler(this.cerrarToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -304,6 +305,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuABMCli);
             this.Name = "AbmFactura";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Administracion de Factura";
             this.menuABMCli.ResumeLayout(false);
             this.menuABMCli.PerformLayout();

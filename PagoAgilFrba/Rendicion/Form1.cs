@@ -121,7 +121,7 @@ namespace PagoAgilFrba.Rendicion
             queryInsertRendicion = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total]) select @FECHARENDICION as ren_fecha_ren,COUNT(f.fac_id) as ren_cant_fac,cast((SUM(f.fac_total*@COMISION)/100) as decimal(18,2)) as ren_imp_comision,e.ID_empresa as ren_empresa_id, @COMISION as ren_porc_comision, SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Empresa]e on(e.ID_empresa=@EMPRESAID) inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Item] i on(i.fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where f.fac_ren_id is null and format (p.pago_fecha_cobro,'yyyyMM') =format (@FECHARENDICION,'yyyyMM') group by e.ID_empresa;";
             
             string queryUpdateEmpresaRen_Id = "";
-            queryUpdateEmpresaRen_Id = "UPDATE [GOQ].[Factura] SET [fac_ren_id] = @MAXRENID WHERE [fac_id] in (select distinct f.fac_id from [GOQ].[Factura] f inner join [GOQ].[Empresa]e on(e.ID_empresa=1) inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Item] i on(i.fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where f.fac_ren_id is null and format (p.pago_fecha_cobro,'yyyyMM') ='201702');";
+            queryUpdateEmpresaRen_Id = "UPDATE [GOQ].[Factura] SET [fac_ren_id] = @MAXRENID WHERE [fac_id] in (select distinct f.fac_id from [GOQ].[Factura] f inner join [GOQ].[Empresa]e on(e.ID_empresa=@EMPRESAID) inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Item] i on(i.fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where f.fac_ren_id is null and format (p.pago_fecha_cobro,'yyyyMM') =format (@FECHARENDICION,'yyyyMM'));";
 
 
 
@@ -165,6 +165,11 @@ namespace PagoAgilFrba.Rendicion
             {
                 MessageBox.Show("No hay facturas para rendir en esta fecha para la empresa.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
 
         }
     }

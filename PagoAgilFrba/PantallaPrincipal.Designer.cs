@@ -182,6 +182,7 @@
             this.registroDePagoToolStripMenuItem.Name = "registroDePagoToolStripMenuItem";
             this.registroDePagoToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.registroDePagoToolStripMenuItem.Text = "Registro de Pago";
+            this.registroDePagoToolStripMenuItem.Click += new System.EventHandler(this.registroDePagoToolStripMenuItem_Click);
             // 
             // listadoEstadisticoToolStripMenuItem
             // 

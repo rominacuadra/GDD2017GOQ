@@ -293,6 +293,7 @@
             this.Controls.Add(this.menuABMCli);
             this.Controls.Add(this.groupBox1);
             this.Name = "AbmEmpresa";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Administracion de Empresa";
             this.menuABMCli.ResumeLayout(false);
             this.menuABMCli.PerformLayout();

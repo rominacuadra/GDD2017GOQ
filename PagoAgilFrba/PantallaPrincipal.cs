@@ -146,6 +146,12 @@ namespace PagoAgilFrba
             p.ShowDialog();
         }
 
+        private void registroDePagoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RegistroPago.RegistroPago p = new RegistroPago.RegistroPago();
+            p.ShowDialog();
+        }
+
 
     }
 }

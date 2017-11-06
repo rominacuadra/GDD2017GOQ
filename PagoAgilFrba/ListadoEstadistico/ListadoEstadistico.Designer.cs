@@ -118,6 +118,7 @@
             this.Controls.Add(this.labelingresaranio);
             this.Controls.Add(this.dataGridView1);
             this.Name = "ListadoEstadistico";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Listado Estadistico";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

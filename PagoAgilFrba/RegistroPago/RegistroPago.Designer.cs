@@ -388,7 +388,8 @@
             this.Controls.Add(this.comboBoxFiltro);
             this.Controls.Add(this.labelTitulo);
             this.Name = "RegistroPago";
-            this.Text = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Registro de Pago";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
