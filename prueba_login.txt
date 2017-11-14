@@ -1,8 +1,0 @@
-USE [GD2C2017]
-GO
-
-INSERT INTO [GOQ].[Rol_Usuario]
-           ([rol_usu_rol_id]
-           ,[rol_usu_usu_id])
-     VALUES
-           (1,1)
