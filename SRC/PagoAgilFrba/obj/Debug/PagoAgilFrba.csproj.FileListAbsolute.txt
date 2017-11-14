@@ -1,0 +1,119 @@
+\\VBOXSVR\PagoAgil2C2017\src\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\bin\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\Facultad\Desktop\Aplicacion Desktop\PagoAgilFrba_romi_28102017\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.ListadoEstadistico.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.ListadoEstadistico.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
+C:\Users\Leandro\Desktop\tpcopia\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Devolucion.Devolucion.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.ListadoEstadistico.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Devolucion.Devolucion.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmSucursal.ABMSucursal.resources
+C:\Users\sho_m\Desktop\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmSucursal.ABMSucursal.resources
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Interaction.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Extensibility.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\es\Microsoft.Windows.Design.Interaction.resources.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\bin\Debug\es\Microsoft.Windows.Design.Extensibility.resources.dll
+C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Rendicion.ABMRendicion.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Interaction.dll
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Extensibility.dll
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\bin\Debug\es\Microsoft.Windows.Design.Interaction.resources.dll
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\bin\Debug\es\Microsoft.Windows.Design.Extensibility.resources.dll
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmSucursal.ABMSucursal.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.Devolucion.Devolucion.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.ListadoEstadistico.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.Rendicion.ABMRendicion.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmEmpresa.AbmEmpresa.resources
+C:\Users\Facultad\Desktop\TP2C2017K3673GOQ03\TP2C2017 K3051 GOQ 03\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmFactura.AbmFactura.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.exe
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\bin\Debug\PagoAgilFrba.pdb
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Interaction.dll
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\bin\Debug\Microsoft.Windows.Design.Extensibility.dll
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\bin\Debug\en\Microsoft.Windows.Design.Interaction.resources.dll
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\bin\Debug\en\Microsoft.Windows.Design.Extensibility.resources.dll
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csprojResolveAssemblyReference.cache
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmCliente.ABMCliente.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmEmpresa.AbmEmpresa.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmFactura.AbmFactura.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmRol.Roles.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.AbmSucursal.ABMSucursal.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Devolucion.Devolucion.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Form1.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.ListadoEstadistico.ListadoEstadistico.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.PantallaPrincipal.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Properties.Resources.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.Rendicion.ABMRendicion.resources
+C:\Users\Romina\Desktop\PAGOAGIL\tp-1erReentrega\GDD2017GOQ\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
