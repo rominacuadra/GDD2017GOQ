@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegistroPago));
             this.comboBoxFiltro = new System.Windows.Forms.ComboBox();
             this.labelFiltro = new System.Windows.Forms.Label();
             this.labelFechaCobro = new System.Windows.Forms.Label();
@@ -388,6 +389,7 @@
             this.Controls.Add(this.labelFechaCobro);
             this.Controls.Add(this.labelFiltro);
             this.Controls.Add(this.comboBoxFiltro);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RegistroPago";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro de Pago";

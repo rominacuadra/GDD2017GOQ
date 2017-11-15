@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ABMCliente));
             this.checkBoxCliente = new System.Windows.Forms.CheckBox();
             this.labelFiltro = new System.Windows.Forms.Label();
             this.comboBoxFiltro = new System.Windows.Forms.ComboBox();
@@ -465,6 +466,7 @@
             this.Controls.Add(this.labelDNI);
             this.Controls.Add(this.labelApellido);
             this.Controls.Add(this.labelNombre);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ABMCliente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Administración del Cliente";

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Devolucion));
             this.comboFacturas = new System.Windows.Forms.ComboBox();
             this.TextFacturas = new System.Windows.Forms.Label();
             this.TextIngreso = new System.Windows.Forms.Label();
@@ -244,6 +245,7 @@
             this.Controls.Add(this.TextMotivo);
             this.Controls.Add(this.TextIngreso);
             this.Controls.Add(this.TextFacturas);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Devolucion";
             this.Text = "Devolucion";
             this.groupBox1.ResumeLayout(false);

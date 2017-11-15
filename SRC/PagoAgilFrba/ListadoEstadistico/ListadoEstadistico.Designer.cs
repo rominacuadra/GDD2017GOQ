@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListadoEstadistico));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.labelingresaranio = new System.Windows.Forms.Label();
             this.textAño = new System.Windows.Forms.TextBox();
@@ -130,6 +131,7 @@
             this.Controls.Add(this.textAño);
             this.Controls.Add(this.labelingresaranio);
             this.Controls.Add(this.dataGridView1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ListadoEstadistico";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Listado Estadistico";
