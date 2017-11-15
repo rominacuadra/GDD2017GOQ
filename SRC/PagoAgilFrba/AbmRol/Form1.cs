@@ -14,6 +14,7 @@ using Microsoft.VisualBasic;
 using System.Globalization;
 
 
+
 namespace PagoAgilFrba.AbmRol
 {
     public partial class Roles : Form
@@ -311,7 +312,9 @@ namespace PagoAgilFrba.AbmRol
                     {
                         insertarFuncionalidad(rol_id, 9);
                     }
-                     MessageBox.Show("Aplicado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                     MessageBox.Show("Aplicado. Los cambios se verán reflejados cuando vuelva a loguearse.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                     
+                    
                 }
                 else
                 {
@@ -336,5 +339,6 @@ namespace PagoAgilFrba.AbmRol
         {
 
         }
+
     }
 }
