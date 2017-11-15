@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelTitulo = new System.Windows.Forms.Label();
             this.comboBoxFiltro = new System.Windows.Forms.ComboBox();
             this.labelFiltro = new System.Windows.Forms.Label();
             this.labelFechaCobro = new System.Windows.Forms.Label();
@@ -60,22 +59,13 @@
             this.comboBoxTipoPago = new System.Windows.Forms.ComboBox();
             this.labelFacEnc = new System.Windows.Forms.Label();
             this.comboBoxFacEnc = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
-            // 
-            // labelTitulo
-            // 
-            this.labelTitulo.AutoSize = true;
-            this.labelTitulo.Location = new System.Drawing.Point(13, 13);
-            this.labelTitulo.Name = "labelTitulo";
-            this.labelTitulo.Size = new System.Drawing.Size(66, 13);
-            this.labelTitulo.TabIndex = 0;
-            this.labelTitulo.Text = "COBRANZA";
-            this.labelTitulo.Click += new System.EventHandler(this.labelTitulo_Click);
             // 
             // comboBoxFiltro
             // 
             this.comboBoxFiltro.FormattingEnabled = true;
-            this.comboBoxFiltro.Location = new System.Drawing.Point(89, 39);
+            this.comboBoxFiltro.Location = new System.Drawing.Point(89, 62);
             this.comboBoxFiltro.Name = "comboBoxFiltro";
             this.comboBoxFiltro.Size = new System.Drawing.Size(121, 21);
             this.comboBoxFiltro.TabIndex = 1;
@@ -84,7 +74,7 @@
             // labelFiltro
             // 
             this.labelFiltro.AutoSize = true;
-            this.labelFiltro.Location = new System.Drawing.Point(12, 42);
+            this.labelFiltro.Location = new System.Drawing.Point(12, 65);
             this.labelFiltro.Name = "labelFiltro";
             this.labelFiltro.Size = new System.Drawing.Size(62, 13);
             this.labelFiltro.TabIndex = 2;
@@ -93,7 +83,7 @@
             // labelFechaCobro
             // 
             this.labelFechaCobro.AutoSize = true;
-            this.labelFechaCobro.Location = new System.Drawing.Point(13, 146);
+            this.labelFechaCobro.Location = new System.Drawing.Point(13, 169);
             this.labelFechaCobro.Name = "labelFechaCobro";
             this.labelFechaCobro.Size = new System.Drawing.Size(86, 13);
             this.labelFechaCobro.TabIndex = 3;
@@ -102,7 +92,7 @@
             // labelEmp
             // 
             this.labelEmp.AutoSize = true;
-            this.labelEmp.Location = new System.Drawing.Point(12, 180);
+            this.labelEmp.Location = new System.Drawing.Point(12, 203);
             this.labelEmp.Name = "labelEmp";
             this.labelEmp.Size = new System.Drawing.Size(51, 13);
             this.labelEmp.TabIndex = 4;
@@ -111,7 +101,7 @@
             // labelCli
             // 
             this.labelCli.AutoSize = true;
-            this.labelCli.Location = new System.Drawing.Point(12, 213);
+            this.labelCli.Location = new System.Drawing.Point(12, 236);
             this.labelCli.Name = "labelCli";
             this.labelCli.Size = new System.Drawing.Size(42, 13);
             this.labelCli.TabIndex = 5;
@@ -120,7 +110,7 @@
             // labelFechaVenc
             // 
             this.labelFechaVenc.AutoSize = true;
-            this.labelFechaVenc.Location = new System.Drawing.Point(13, 248);
+            this.labelFechaVenc.Location = new System.Drawing.Point(13, 271);
             this.labelFechaVenc.Name = "labelFechaVenc";
             this.labelFechaVenc.Size = new System.Drawing.Size(116, 13);
             this.labelFechaVenc.TabIndex = 6;
@@ -129,7 +119,7 @@
             // labelImporte
             // 
             this.labelImporte.AutoSize = true;
-            this.labelImporte.Location = new System.Drawing.Point(15, 283);
+            this.labelImporte.Location = new System.Drawing.Point(15, 306);
             this.labelImporte.Name = "labelImporte";
             this.labelImporte.Size = new System.Drawing.Size(45, 13);
             this.labelImporte.TabIndex = 7;
@@ -138,7 +128,7 @@
             // labelSuc
             // 
             this.labelSuc.AutoSize = true;
-            this.labelSuc.Location = new System.Drawing.Point(12, 321);
+            this.labelSuc.Location = new System.Drawing.Point(12, 344);
             this.labelSuc.Name = "labelSuc";
             this.labelSuc.Size = new System.Drawing.Size(51, 13);
             this.labelSuc.TabIndex = 8;
@@ -146,7 +136,7 @@
             // 
             // buttonFact
             // 
-            this.buttonFact.Location = new System.Drawing.Point(62, 392);
+            this.buttonFact.Location = new System.Drawing.Point(62, 415);
             this.buttonFact.Name = "buttonFact";
             this.buttonFact.Size = new System.Drawing.Size(75, 23);
             this.buttonFact.TabIndex = 9;
@@ -157,7 +147,7 @@
             // listBoxFacturas
             // 
             this.listBoxFacturas.FormattingEnabled = true;
-            this.listBoxFacturas.Location = new System.Drawing.Point(477, 113);
+            this.listBoxFacturas.Location = new System.Drawing.Point(477, 136);
             this.listBoxFacturas.Name = "listBoxFacturas";
             this.listBoxFacturas.Size = new System.Drawing.Size(228, 160);
             this.listBoxFacturas.TabIndex = 10;
@@ -166,7 +156,7 @@
             // labelFactAPagar
             // 
             this.labelFactAPagar.AutoSize = true;
-            this.labelFactAPagar.Location = new System.Drawing.Point(474, 85);
+            this.labelFactAPagar.Location = new System.Drawing.Point(474, 108);
             this.labelFactAPagar.Name = "labelFactAPagar";
             this.labelFactAPagar.Size = new System.Drawing.Size(91, 13);
             this.labelFactAPagar.TabIndex = 11;
@@ -174,7 +164,7 @@
             // 
             // buttonPagar
             // 
-            this.buttonPagar.Location = new System.Drawing.Point(630, 314);
+            this.buttonPagar.Location = new System.Drawing.Point(630, 337);
             this.buttonPagar.Name = "buttonPagar";
             this.buttonPagar.Size = new System.Drawing.Size(75, 23);
             this.buttonPagar.TabIndex = 12;
@@ -184,7 +174,7 @@
             // 
             // buttonQuitar
             // 
-            this.buttonQuitar.Location = new System.Drawing.Point(477, 314);
+            this.buttonQuitar.Location = new System.Drawing.Point(477, 337);
             this.buttonQuitar.Name = "buttonQuitar";
             this.buttonQuitar.Size = new System.Drawing.Size(75, 23);
             this.buttonQuitar.TabIndex = 13;
@@ -195,7 +185,7 @@
             // labelTotAPagar
             // 
             this.labelTotAPagar.AutoSize = true;
-            this.labelTotAPagar.Location = new System.Drawing.Point(474, 286);
+            this.labelTotAPagar.Location = new System.Drawing.Point(474, 309);
             this.labelTotAPagar.Name = "labelTotAPagar";
             this.labelTotAPagar.Size = new System.Drawing.Size(74, 13);
             this.labelTotAPagar.TabIndex = 14;
@@ -204,7 +194,7 @@
             // labelNroFac
             // 
             this.labelNroFac.AutoSize = true;
-            this.labelNroFac.Location = new System.Drawing.Point(13, 110);
+            this.labelNroFac.Location = new System.Drawing.Point(13, 133);
             this.labelNroFac.Name = "labelNroFac";
             this.labelNroFac.Size = new System.Drawing.Size(101, 13);
             this.labelNroFac.TabIndex = 15;
@@ -212,7 +202,7 @@
             // 
             // textBoxNroFact
             // 
-            this.textBoxNroFact.Location = new System.Drawing.Point(289, 113);
+            this.textBoxNroFact.Location = new System.Drawing.Point(289, 136);
             this.textBoxNroFact.Name = "textBoxNroFact";
             this.textBoxNroFact.Size = new System.Drawing.Size(100, 20);
             this.textBoxNroFact.TabIndex = 16;
@@ -220,7 +210,7 @@
             // comboBoxEmp
             // 
             this.comboBoxEmp.FormattingEnabled = true;
-            this.comboBoxEmp.Location = new System.Drawing.Point(289, 180);
+            this.comboBoxEmp.Location = new System.Drawing.Point(289, 203);
             this.comboBoxEmp.Name = "comboBoxEmp";
             this.comboBoxEmp.Size = new System.Drawing.Size(182, 21);
             this.comboBoxEmp.TabIndex = 17;
@@ -228,7 +218,7 @@
             // comboBoxCli
             // 
             this.comboBoxCli.FormattingEnabled = true;
-            this.comboBoxCli.Location = new System.Drawing.Point(289, 216);
+            this.comboBoxCli.Location = new System.Drawing.Point(289, 239);
             this.comboBoxCli.Name = "comboBoxCli";
             this.comboBoxCli.Size = new System.Drawing.Size(182, 21);
             this.comboBoxCli.TabIndex = 18;
@@ -236,7 +226,7 @@
             // labelRNroFac
             // 
             this.labelRNroFac.AutoSize = true;
-            this.labelRNroFac.Location = new System.Drawing.Point(134, 113);
+            this.labelRNroFac.Location = new System.Drawing.Point(134, 136);
             this.labelRNroFac.Name = "labelRNroFac";
             this.labelRNroFac.Size = new System.Drawing.Size(10, 13);
             this.labelRNroFac.TabIndex = 19;
@@ -245,7 +235,7 @@
             // labelRFechaCob
             // 
             this.labelRFechaCob.AutoSize = true;
-            this.labelRFechaCob.Location = new System.Drawing.Point(134, 149);
+            this.labelRFechaCob.Location = new System.Drawing.Point(134, 172);
             this.labelRFechaCob.Name = "labelRFechaCob";
             this.labelRFechaCob.Size = new System.Drawing.Size(10, 13);
             this.labelRFechaCob.TabIndex = 20;
@@ -254,7 +244,7 @@
             // labelREmp
             // 
             this.labelREmp.AutoSize = true;
-            this.labelREmp.Location = new System.Drawing.Point(134, 183);
+            this.labelREmp.Location = new System.Drawing.Point(134, 206);
             this.labelREmp.Name = "labelREmp";
             this.labelREmp.Size = new System.Drawing.Size(10, 13);
             this.labelREmp.TabIndex = 21;
@@ -263,7 +253,7 @@
             // labelRCli
             // 
             this.labelRCli.AutoSize = true;
-            this.labelRCli.Location = new System.Drawing.Point(134, 216);
+            this.labelRCli.Location = new System.Drawing.Point(134, 239);
             this.labelRCli.Name = "labelRCli";
             this.labelRCli.Size = new System.Drawing.Size(10, 13);
             this.labelRCli.TabIndex = 22;
@@ -272,7 +262,7 @@
             // labelRFechaVenc
             // 
             this.labelRFechaVenc.AutoSize = true;
-            this.labelRFechaVenc.Location = new System.Drawing.Point(134, 248);
+            this.labelRFechaVenc.Location = new System.Drawing.Point(134, 271);
             this.labelRFechaVenc.Name = "labelRFechaVenc";
             this.labelRFechaVenc.Size = new System.Drawing.Size(10, 13);
             this.labelRFechaVenc.TabIndex = 23;
@@ -281,7 +271,7 @@
             // labelRImp
             // 
             this.labelRImp.AutoSize = true;
-            this.labelRImp.Location = new System.Drawing.Point(134, 283);
+            this.labelRImp.Location = new System.Drawing.Point(134, 306);
             this.labelRImp.Name = "labelRImp";
             this.labelRImp.Size = new System.Drawing.Size(10, 13);
             this.labelRImp.TabIndex = 24;
@@ -290,7 +280,7 @@
             // labelRSuc
             // 
             this.labelRSuc.AutoSize = true;
-            this.labelRSuc.Location = new System.Drawing.Point(134, 321);
+            this.labelRSuc.Location = new System.Drawing.Point(134, 344);
             this.labelRSuc.Name = "labelRSuc";
             this.labelRSuc.Size = new System.Drawing.Size(10, 13);
             this.labelRSuc.TabIndex = 25;
@@ -299,7 +289,7 @@
             // labelRTot
             // 
             this.labelRTot.AutoSize = true;
-            this.labelRTot.Location = new System.Drawing.Point(554, 286);
+            this.labelRTot.Location = new System.Drawing.Point(554, 309);
             this.labelRTot.Name = "labelRTot";
             this.labelRTot.Size = new System.Drawing.Size(10, 13);
             this.labelRTot.TabIndex = 26;
@@ -307,7 +297,7 @@
             // 
             // buttonBuscar
             // 
-            this.buttonBuscar.Location = new System.Drawing.Point(164, 392);
+            this.buttonBuscar.Location = new System.Drawing.Point(164, 415);
             this.buttonBuscar.Name = "buttonBuscar";
             this.buttonBuscar.Size = new System.Drawing.Size(75, 23);
             this.buttonBuscar.TabIndex = 27;
@@ -318,7 +308,7 @@
             // labelTipoPago
             // 
             this.labelTipoPago.AutoSize = true;
-            this.labelTipoPago.Location = new System.Drawing.Point(12, 355);
+            this.labelTipoPago.Location = new System.Drawing.Point(12, 378);
             this.labelTipoPago.Name = "labelTipoPago";
             this.labelTipoPago.Size = new System.Drawing.Size(82, 13);
             this.labelTipoPago.TabIndex = 28;
@@ -327,7 +317,7 @@
             // comboBoxTipoPago
             // 
             this.comboBoxTipoPago.FormattingEnabled = true;
-            this.comboBoxTipoPago.Location = new System.Drawing.Point(137, 352);
+            this.comboBoxTipoPago.Location = new System.Drawing.Point(137, 375);
             this.comboBoxTipoPago.Name = "comboBoxTipoPago";
             this.comboBoxTipoPago.Size = new System.Drawing.Size(160, 21);
             this.comboBoxTipoPago.TabIndex = 29;
@@ -335,7 +325,7 @@
             // labelFacEnc
             // 
             this.labelFacEnc.AutoSize = true;
-            this.labelFacEnc.Location = new System.Drawing.Point(12, 77);
+            this.labelFacEnc.Location = new System.Drawing.Point(12, 100);
             this.labelFacEnc.Name = "labelFacEnc";
             this.labelFacEnc.Size = new System.Drawing.Size(114, 13);
             this.labelFacEnc.TabIndex = 33;
@@ -344,17 +334,29 @@
             // comboBoxFacEnc
             // 
             this.comboBoxFacEnc.FormattingEnabled = true;
-            this.comboBoxFacEnc.Location = new System.Drawing.Point(132, 74);
+            this.comboBoxFacEnc.Location = new System.Drawing.Point(132, 97);
             this.comboBoxFacEnc.Name = "comboBoxFacEnc";
             this.comboBoxFacEnc.Size = new System.Drawing.Size(336, 21);
             this.comboBoxFacEnc.TabIndex = 32;
             this.comboBoxFacEnc.SelectedIndexChanged += new System.EventHandler(this.comboBoxFacEnc_SelectedIndexChanged_1);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(631, 41);
+            this.groupBox1.TabIndex = 66;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Registro de Pagos";
+            // 
             // RegistroPago
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(720, 427);
+            this.ClientSize = new System.Drawing.Size(720, 450);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.labelFacEnc);
             this.Controls.Add(this.comboBoxFacEnc);
             this.Controls.Add(this.comboBoxTipoPago);
@@ -386,7 +388,6 @@
             this.Controls.Add(this.labelFechaCobro);
             this.Controls.Add(this.labelFiltro);
             this.Controls.Add(this.comboBoxFiltro);
-            this.Controls.Add(this.labelTitulo);
             this.Name = "RegistroPago";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro de Pago";
@@ -398,7 +399,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label labelTitulo;
         private System.Windows.Forms.ComboBox comboBoxFiltro;
         private System.Windows.Forms.Label labelFiltro;
         private System.Windows.Forms.Label labelFechaCobro;
@@ -430,5 +430,6 @@
         private System.Windows.Forms.ComboBox comboBoxTipoPago;
         private System.Windows.Forms.Label labelFacEnc;
         private System.Windows.Forms.ComboBox comboBoxFacEnc;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

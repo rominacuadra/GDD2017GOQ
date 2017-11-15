@@ -35,6 +35,7 @@
             this.listadotrimestre = new System.Windows.Forms.ComboBox();
             this.labellistado = new System.Windows.Forms.Label();
             this.listadoMostrar = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,7 +45,7 @@
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(101, 133);
+            this.dataGridView1.Location = new System.Drawing.Point(101, 158);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(510, 293);
@@ -54,7 +55,7 @@
             // labelingresaranio
             // 
             this.labelingresaranio.AutoSize = true;
-            this.labelingresaranio.Location = new System.Drawing.Point(46, 41);
+            this.labelingresaranio.Location = new System.Drawing.Point(46, 66);
             this.labelingresaranio.Name = "labelingresaranio";
             this.labelingresaranio.Size = new System.Drawing.Size(124, 13);
             this.labelingresaranio.TabIndex = 1;
@@ -63,7 +64,7 @@
             // 
             // textAño
             // 
-            this.textAño.Location = new System.Drawing.Point(176, 38);
+            this.textAño.Location = new System.Drawing.Point(176, 63);
             this.textAño.Name = "textAño";
             this.textAño.Size = new System.Drawing.Size(62, 20);
             this.textAño.TabIndex = 2;
@@ -72,7 +73,7 @@
             // labeltrimestre
             // 
             this.labeltrimestre.AutoSize = true;
-            this.labeltrimestre.Location = new System.Drawing.Point(376, 41);
+            this.labeltrimestre.Location = new System.Drawing.Point(376, 66);
             this.labeltrimestre.Name = "labeltrimestre";
             this.labeltrimestre.Size = new System.Drawing.Size(108, 13);
             this.labeltrimestre.TabIndex = 3;
@@ -81,7 +82,7 @@
             // listadotrimestre
             // 
             this.listadotrimestre.FormattingEnabled = true;
-            this.listadotrimestre.Location = new System.Drawing.Point(490, 38);
+            this.listadotrimestre.Location = new System.Drawing.Point(490, 63);
             this.listadotrimestre.Name = "listadotrimestre";
             this.listadotrimestre.Size = new System.Drawing.Size(171, 21);
             this.listadotrimestre.TabIndex = 4;
@@ -90,7 +91,7 @@
             // labellistado
             // 
             this.labellistado.AutoSize = true;
-            this.labellistado.Location = new System.Drawing.Point(116, 81);
+            this.labellistado.Location = new System.Drawing.Point(116, 106);
             this.labellistado.Name = "labellistado";
             this.labellistado.Size = new System.Drawing.Size(189, 13);
             this.labellistado.TabIndex = 5;
@@ -99,17 +100,29 @@
             // listadoMostrar
             // 
             this.listadoMostrar.FormattingEnabled = true;
-            this.listadoMostrar.Location = new System.Drawing.Point(311, 78);
+            this.listadoMostrar.Location = new System.Drawing.Point(311, 103);
             this.listadoMostrar.Name = "listadoMostrar";
             this.listadoMostrar.Size = new System.Drawing.Size(300, 21);
             this.listadoMostrar.TabIndex = 6;
             this.listadoMostrar.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(631, 41);
+            this.groupBox1.TabIndex = 67;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Listados Estadísticos";
+            // 
             // ListadoEstadistico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(716, 438);
+            this.ClientSize = new System.Drawing.Size(716, 485);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.listadoMostrar);
             this.Controls.Add(this.labellistado);
             this.Controls.Add(this.listadotrimestre);
@@ -136,6 +149,7 @@
         private System.Windows.Forms.ComboBox listadotrimestre;
         private System.Windows.Forms.Label labellistado;
         private System.Windows.Forms.ComboBox listadoMostrar;
+        private System.Windows.Forms.GroupBox groupBox1;
        
     }
 }

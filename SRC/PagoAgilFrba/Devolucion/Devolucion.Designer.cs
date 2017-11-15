@@ -45,6 +45,7 @@
             this.botonIngrese = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.botonBuscar = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +62,7 @@
             // TextFacturas
             // 
             this.TextFacturas.AutoSize = true;
-            this.TextFacturas.Location = new System.Drawing.Point(39, 21);
+            this.TextFacturas.Location = new System.Drawing.Point(39, 88);
             this.TextFacturas.Name = "TextFacturas";
             this.TextFacturas.Size = new System.Drawing.Size(163, 13);
             this.TextFacturas.TabIndex = 1;
@@ -71,7 +72,7 @@
             // TextIngreso
             // 
             this.TextIngreso.AutoSize = true;
-            this.TextIngreso.Location = new System.Drawing.Point(132, 51);
+            this.TextIngreso.Location = new System.Drawing.Point(132, 118);
             this.TextIngreso.Name = "TextIngreso";
             this.TextIngreso.Size = new System.Drawing.Size(71, 13);
             this.TextIngreso.TabIndex = 3;
@@ -109,23 +110,23 @@
             // TextMotivo
             // 
             this.TextMotivo.AutoSize = true;
-            this.TextMotivo.Location = new System.Drawing.Point(39, 108);
+            this.TextMotivo.Location = new System.Drawing.Point(39, 175);
             this.TextMotivo.Name = "TextMotivo";
-            this.TextMotivo.Size = new System.Drawing.Size(164, 13);
+            this.TextMotivo.Size = new System.Drawing.Size(167, 13);
             this.TextMotivo.TabIndex = 7;
-            this.TextMotivo.Text = "Seleccione motivo de devolucion";
+            this.TextMotivo.Text = "Seleccione motivo de devolución:";
             // 
             // listBoxFacturas
             // 
             this.listBoxFacturas.FormattingEnabled = true;
-            this.listBoxFacturas.Location = new System.Drawing.Point(360, 38);
+            this.listBoxFacturas.Location = new System.Drawing.Point(360, 105);
             this.listBoxFacturas.Name = "listBoxFacturas";
             this.listBoxFacturas.Size = new System.Drawing.Size(243, 173);
             this.listBoxFacturas.TabIndex = 8;
             // 
             // quitar
             // 
-            this.quitar.Location = new System.Drawing.Point(379, 225);
+            this.quitar.Location = new System.Drawing.Point(379, 292);
             this.quitar.Name = "quitar";
             this.quitar.Size = new System.Drawing.Size(75, 23);
             this.quitar.TabIndex = 9;
@@ -135,7 +136,7 @@
             // 
             // devolver
             // 
-            this.devolver.Location = new System.Drawing.Point(508, 225);
+            this.devolver.Location = new System.Drawing.Point(508, 292);
             this.devolver.Name = "devolver";
             this.devolver.Size = new System.Drawing.Size(75, 23);
             this.devolver.TabIndex = 10;
@@ -145,7 +146,7 @@
             // 
             // agregar
             // 
-            this.agregar.Location = new System.Drawing.Point(91, 225);
+            this.agregar.Location = new System.Drawing.Point(91, 292);
             this.agregar.Name = "agregar";
             this.agregar.Size = new System.Drawing.Size(100, 23);
             this.agregar.TabIndex = 11;
@@ -156,7 +157,7 @@
             // textLista
             // 
             this.textLista.AutoSize = true;
-            this.textLista.Location = new System.Drawing.Point(357, 17);
+            this.textLista.Location = new System.Drawing.Point(357, 84);
             this.textLista.Name = "textLista";
             this.textLista.Size = new System.Drawing.Size(107, 13);
             this.textLista.TabIndex = 12;
@@ -179,9 +180,9 @@
             this.groupBox1.Controls.Add(this.botonFactura);
             this.groupBox1.Controls.Add(this.comboFacturas);
             this.groupBox1.Controls.Add(this.boxIngreso);
-            this.groupBox1.Location = new System.Drawing.Point(209, -5);
+            this.groupBox1.Location = new System.Drawing.Point(209, 59);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(118, 86);
+            this.groupBox1.Size = new System.Drawing.Size(118, 89);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             // 
@@ -199,7 +200,7 @@
             // 
             this.groupBox2.Controls.Add(this.radioButtonError);
             this.groupBox2.Controls.Add(this.radioButtonCliente);
-            this.groupBox2.Location = new System.Drawing.Point(52, 124);
+            this.groupBox2.Location = new System.Drawing.Point(52, 191);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(139, 78);
             this.groupBox2.TabIndex = 15;
@@ -207,7 +208,7 @@
             // 
             // botonBuscar
             // 
-            this.botonBuscar.Location = new System.Drawing.Point(235, 87);
+            this.botonBuscar.Location = new System.Drawing.Point(235, 154);
             this.botonBuscar.Name = "botonBuscar";
             this.botonBuscar.Size = new System.Drawing.Size(75, 23);
             this.botonBuscar.TabIndex = 16;
@@ -215,11 +216,23 @@
             this.botonBuscar.UseVisualStyleBackColor = true;
             this.botonBuscar.Click += new System.EventHandler(this.botonBuscar_Click);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.groupBox3.Location = new System.Drawing.Point(12, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(606, 41);
+            this.groupBox3.TabIndex = 68;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Devoluciones";
+            // 
             // Devolucion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 260);
+            this.ClientSize = new System.Drawing.Size(630, 359);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.botonBuscar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -261,5 +274,6 @@
         private System.Windows.Forms.RadioButton botonIngrese;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button botonBuscar;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
