@@ -168,6 +168,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Imagenes\Icono ABM.ico" />
+    <Content Include="Imagenes\Icono Devolucion.ico" />
+    <Content Include="Imagenes\Icono ListadoEstadistico.ico" />
+    <Content Include="Imagenes\Icono Pago.ico" />
+    <Content Include="Imagenes\Icono Principal.ico" />
+    <Content Include="Imagenes\Icono Rendicion.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
