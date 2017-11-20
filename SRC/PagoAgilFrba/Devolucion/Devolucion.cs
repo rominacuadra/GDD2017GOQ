@@ -113,6 +113,8 @@ namespace PagoAgilFrba.Devolucion
 
         private void botonBuscar_Click(object sender, EventArgs e)
         {
+            int esNumero;
+
             if(botonFactura.Checked &&  !comboFacturas.SelectedItem.Equals(-1)){
                 numerofactura = comboFacturas.SelectedItem.ToString();
                 TextMotivo.Visible = true;
@@ -121,7 +123,8 @@ namespace PagoAgilFrba.Devolucion
               
                
             }
-            else if(botonIngrese.Checked && boxIngreso.Text.Length > 0){
+            else if (botonIngrese.Checked && boxIngreso.Text.Length > 0 && Int32.TryParse(boxIngreso.Text.ToString(), out esNumero))
+            {
 
                 if (Factura_valida(boxIngreso.Text))
                 {
@@ -135,7 +138,7 @@ namespace PagoAgilFrba.Devolucion
                 }
             }
             else{
-                MessageBox.Show("Elija o ingrese numero de factura","Error");
+                MessageBox.Show("Elija o ingrese numero de factura válido","Error");
             
             }
         }

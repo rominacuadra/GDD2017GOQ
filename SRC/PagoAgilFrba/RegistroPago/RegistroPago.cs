@@ -340,7 +340,8 @@ namespace PagoAgilFrba.RegistroPago
             ocultarElementos();
             if (comboBoxFiltro.SelectedItem.ToString() == "Nro de Factura")
             {
-                if (textBoxNroFact.TextLength > 0)
+                int esNumero;
+                if (textBoxNroFact.TextLength > 0 && Int32.TryParse(textBoxNroFact.Text.ToString(), out esNumero))
                 {
                     if (esFacturaValidaParaElPago(Convert.ToInt32(textBoxNroFact.Text)))
                     {
