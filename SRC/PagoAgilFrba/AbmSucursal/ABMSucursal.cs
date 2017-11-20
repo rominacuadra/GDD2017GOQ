@@ -82,13 +82,21 @@ namespace PagoAgilFrba.AbmSucursal
         {
             if (todosLosCamposCompletos())
             {
-                if (codigoPostalNoEstaRepetido(Convert.ToInt32(textBoxCodigoPostal.Text)))
+                int esNumero;
+                if (Int32.TryParse(textBoxCodigoPostal.Text.ToString(), out esNumero))
                 {
-                    darAltaSucursal(textBoxNombre.Text, textBoxDirec.Text, Convert.ToInt32(textBoxCodigoPostal.Text));
+                    if (codigoPostalNoEstaRepetido(Convert.ToInt32(textBoxCodigoPostal.Text)))
+                    {
+                        darAltaSucursal(textBoxNombre.Text, textBoxDirec.Text, Convert.ToInt32(textBoxCodigoPostal.Text));
+                    }
+                    else
+                    {
+                        MessageBox.Show("El Codigo Postal ingresado ya se encuentra registrado, intente con otro.", "Error");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("El Codigo Postal ingresado ya se encuentra registrado, intente con otro.", "Error");
+                    MessageBox.Show("El siguiente campo: Código Postal, es inválido.", "Error");
                 }
             }
             else
@@ -101,8 +109,15 @@ namespace PagoAgilFrba.AbmSucursal
         {
             if (todosLosCamposCompletos())
             {
-                modificarSucursal(textBoxNombre.Text, textBoxDirec.Text, Convert.ToInt32(textBoxCodigoPostal.Text));
-
+                int esNumero;
+                if (Int32.TryParse(textBoxCodigoPostal.Text.ToString(), out esNumero))
+                {
+                    modificarSucursal(textBoxNombre.Text, textBoxDirec.Text, Convert.ToInt32(textBoxCodigoPostal.Text));
+                }
+                else
+                {
+                    MessageBox.Show("El siguiente campo: Código Postal, es inválido.", "Error");
+                }
             }
             else
             {
@@ -327,6 +342,7 @@ namespace PagoAgilFrba.AbmSucursal
             textBoxNombre.Text = "";
             textBoxDirec.Text = "";
             textBoxCodigoPostal.Text = "";
+            checkBoxSucu.Checked = false;
             comboBoxResultadoBusqueda.Items.Clear();
         }
 
@@ -495,7 +511,7 @@ namespace PagoAgilFrba.AbmSucursal
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     ocultarTodosLosItems();
-                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Split(new Char[] { '/' });
                     limpiarCampos();
                     //CP, DIRECCION, NOMBRE
                     llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]);
@@ -507,7 +523,7 @@ namespace PagoAgilFrba.AbmSucursal
                 if (MessageBox.Show("¿Desea eliminar la sucursal seleccionada?", "Información",
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Split(new Char[] { '/' });
                     //int CP, string Direccion, string Nombre
                     if (sucursalNoEstaInhabilitada(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]))
                     {

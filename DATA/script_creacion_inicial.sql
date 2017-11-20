@@ -6,6 +6,7 @@ IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
 	BEGIN
 		DROP FUNCTION GOQ.F_Hash256
 		DROP PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
+		DROP PROCEDURE GOQ.SP_Insertar_Item
 		DROP TABLE GOQ.CobradorSucursal
 		DROP TABLE GOQ.Devolucion
 		DROP TABLE GOQ.Funcionalidad_Rol

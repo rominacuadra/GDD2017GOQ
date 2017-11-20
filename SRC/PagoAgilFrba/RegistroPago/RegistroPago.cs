@@ -243,7 +243,8 @@ namespace PagoAgilFrba.RegistroPago
             }
             else
             {
-                return 0;
+                //antes iba 0, como es un FK el sucuID, no esta encontrando la sucursal 0 y no se puede registrar el pago
+                return 1;
             }
         }
 

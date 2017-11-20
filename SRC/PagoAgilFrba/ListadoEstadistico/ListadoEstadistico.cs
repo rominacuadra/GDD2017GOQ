@@ -251,7 +251,8 @@ namespace PagoAgilFrba.ListadoEstadistico
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (textAño.Text.Length > 0 && listadotrimestre.SelectedItem.ToString().Length > 0)
+            int esNumero;
+            if (textAño.Text.Length > 0 && Int32.TryParse(textAño.Text.ToString(), out esNumero) && listadotrimestre.SelectedItem.ToString().Length > 0)
             {
                 dataGridView1.Visible = true;
                 int año = Convert.ToInt32(textAño.Text);
@@ -264,7 +265,7 @@ namespace PagoAgilFrba.ListadoEstadistico
             }
             else
             {
-                MessageBox.Show("Complete los campos solicitados","Error");
+                MessageBox.Show("Complete los campos solicitados correctamente","Error");
             
             }
         }

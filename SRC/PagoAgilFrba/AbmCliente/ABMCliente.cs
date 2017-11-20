@@ -23,65 +23,10 @@ namespace PagoAgilFrba.AbmCliente
             comboBoxFiltro.Items.Add("DNI");
             comboBoxFiltro.Items.Add("Apellido");
             comboBoxFiltro.Items.Add("Nombre");
-
-            mail1NecesitaSerActualizado();
         }
 
         private int DNIAModificar = 0, DNISinModificar = 0;
         private string ApellidoAModificar = "", NombreAModificar = "", MailSinModificar = "";
-
-        private void mail1NecesitaSerActualizado()
-        {
-
-            SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT cli_apellido + '  ' + cli_nombre FROM GOQ.Cliente where cli_mail = 'pedirActualizarMail1@mail.com'",
-                PagoAgilFrba.ModuloGlobal.getConexion());
-            reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                menuABMCli.Enabled = false;
-                reader.Read();
-                MessageBox.Show("El mail del cliente " + Convert.ToString(reader.GetValue(0)) + " debe ser actualizado, modifiquelo a continuación.", "Advertencia");
-                ocultarTodosLosItems();
-                labelTitulo.Text = "MODIFICACION EXCLUSIVA";
-                limpiarCampos();
-                llenarCamposParaModificar(31294365, "Álvarez", "ALBANA");
-                DNIAModificar = 31294365;
-                ApellidoAModificar = "Álvarez";
-                NombreAModificar = "ALBANA";
-                mostrarAlta();
-                buttonMail2.Visible = false;
-                buttonAceptar.Visible = false;
-                buttonLimpiar.Visible = false;
-                buttonMail1.Visible = true;
-            }
-            reader.Close();
-        }
-
-        private void mail2NecesitaSerActualizado()
-        {
-            SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT cli_apellido + '  ' + cli_nombre FROM GOQ.Cliente where cli_mail = 'pedirActualizarMail2@mail.com'",
-                PagoAgilFrba.ModuloGlobal.getConexion());
-            reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                reader.Read();
-                MessageBox.Show("El mail del cliente " + Convert.ToString(reader.GetValue(0)) + " debe ser actualizado, modifiquelo a continuación.", "Advertencia");
-                ocultarTodosLosItems();
-                labelTitulo.Text = "MODIFICACION EXCLUSIVA";
-                limpiarCampos();
-                llenarCamposParaModificar(3703799, "Moreno", "DAILA");
-                DNIAModificar = 3703799;
-                ApellidoAModificar = "Moreno";
-                NombreAModificar = "DAILA";
-                mostrarAlta();
-                buttonLimpiar.Visible = false;
-                buttonAceptar.Visible = false;
-                buttonMail2.Visible = true;
-            }
-            reader.Close();
-        }
 
         private void mostrarAlta()
         {
@@ -92,8 +37,6 @@ namespace PagoAgilFrba.AbmCliente
             labelTelefono.Visible = true;
             labelDireccion.Visible = true;
             labelNroPiso.Visible = true;
-            labelDepto.Visible = true;
-            labelLocalidad.Visible = true;
             labelCodigoPostal.Visible = true;
             labelFechaDeNacimiento.Visible = true;
             labelCalle.Visible = true;
@@ -104,8 +47,6 @@ namespace PagoAgilFrba.AbmCliente
             textBoxTelefono.Visible = true;
             textBoxCalle.Visible = true;
             textBoxNroPiso.Visible = true;
-            textBoxDepto.Visible = true;
-            textBoxLocalidad.Visible = true;
             textBoxCodigoPostal.Visible = true;
             textBoxFechaDeNacimiento.Visible = true;
             labelTitulo.Visible = true;
@@ -141,8 +82,6 @@ namespace PagoAgilFrba.AbmCliente
             labelTelefono.Visible = false;
             labelDireccion.Visible = false;
             labelNroPiso.Visible = false;
-            labelDepto.Visible = false;
-            labelLocalidad.Visible = false;
             labelCodigoPostal.Visible = false;
             labelFechaDeNacimiento.Visible = false;
             labelCalle.Visible = false;
@@ -153,8 +92,6 @@ namespace PagoAgilFrba.AbmCliente
             textBoxTelefono.Visible = false;
             textBoxCalle.Visible = false;
             textBoxNroPiso.Visible = false;
-            textBoxDepto.Visible = false;
-            textBoxLocalidad.Visible = false;
             textBoxCodigoPostal.Visible = false;
             textBoxFechaDeNacimiento.Visible = false;
             labelTitulo.Visible = false;
@@ -167,8 +104,35 @@ namespace PagoAgilFrba.AbmCliente
             labelFiltro.Visible = false;
             comboBoxFiltro.Visible = false;
             checkBoxCliente.Visible = false;
-            buttonMail1.Visible = false;
-            buttonMail2.Visible = false;
+        }
+
+        private bool camposIngresadosSonValidos()
+        {
+            string mensaje = "";
+            bool respuesta = true;
+            int esNumero;
+            DateTime esFecha;
+            if(!Int32.TryParse(textBoxDNI.Text.ToString(), out esNumero)){
+                mensaje = mensaje + "DNI, ";
+                respuesta = false;
+            }
+            if(!textBoxMail.Text.ToString().Contains("@")){
+                mensaje = mensaje + "Mail, ";
+                respuesta = false;
+            }
+            if(!Int32.TryParse(textBoxTelefono.Text.ToString(), out esNumero)){
+                mensaje = mensaje + "Teléfono, ";
+                respuesta = false;
+            }
+            if(!DateTime.TryParse(textBoxFechaDeNacimiento.Text.ToString(), out esFecha)){
+                mensaje = mensaje + "Fecha de Nacimiento, ";
+                respuesta = false;
+            }
+            if(!respuesta){
+                MessageBox.Show("El/los siguientes campos: " + mensaje + " son inválidos.", "Error");
+            }
+            return respuesta;
+
         }
 
         private void accionBotonAlta()
@@ -177,7 +141,10 @@ namespace PagoAgilFrba.AbmCliente
             {
                 if (mailNoEstaRepetido(textBoxMail.Text))
                 {
-                    darAltaCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
+                    if (camposIngresadosSonValidos())
+                    {
+                        darAltaCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
+                    }
                 }
                 else
                 {
@@ -186,7 +153,7 @@ namespace PagoAgilFrba.AbmCliente
             }
             else
             {
-                MessageBox.Show("Debe completar todos los campos.", "Error");
+                MessageBox.Show("Debe completar todos los campos correctamente.", "Error");
             }
         }
 
@@ -194,20 +161,22 @@ namespace PagoAgilFrba.AbmCliente
         {
             if (todosLosCamposCompletos())
             {
-                modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
-
+                if (camposIngresadosSonValidos())
+                {
+                    modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
+                }
             }
             else
             {
-                MessageBox.Show("Debe completar todos los campos.", "Error");
+                MessageBox.Show("Debe completar todos los campos correctamente.", "Error");
             }
         }
 
         private bool todosLosCamposCompletos()
-        {
+        {   
             return textBoxNombre.Text.Length > 0 && textBoxApellido.Text.Length > 0 && textBoxDNI.Text.Length > 0 && textBoxMail.Text.Length > 0 &&
                 textBoxTelefono.Text.Length > 0 && textBoxCalle.Text.Length > 0 && textBoxNroPiso.Text.Length > 0 &&
-                textBoxLocalidad.Text.Length > 0 && textBoxCodigoPostal.Text.Length > 0 && textBoxFechaDeNacimiento.Text.Length > 0 ? true : false;
+                textBoxCodigoPostal.Text.Length > 0 && textBoxFechaDeNacimiento.Text.Length > 0;
         }
 
         private bool mailNoEstaRepetido(string Mail)
@@ -445,10 +414,9 @@ namespace PagoAgilFrba.AbmCliente
             textBoxTelefono.Text = "";
             textBoxCalle.Text = "";
             textBoxNroPiso.Text = "";
-            textBoxDepto.Text = "";
-            textBoxLocalidad.Text = "";
             textBoxCodigoPostal.Text = "";
             textBoxFechaDeNacimiento.Text = "";
+            checkBoxCliente.Checked = false;
             comboBoxResultadoBusqueda.Items.Clear();
         }
 
@@ -474,8 +442,6 @@ namespace PagoAgilFrba.AbmCliente
                 string[] direccion = Convert.ToString(reader.GetValue(5)).Split(new Char[] { ' ' });
                 textBoxNroPiso.Text = Convert.ToString(direccion[direccion.Length - 1]);
                 textBoxCalle.Text = Convert.ToString(reader.GetValue(5)).Remove((reader.GetString(5).Length - direccion[direccion.Length - 1].Length), direccion[direccion.Length - 1].Length);
-                textBoxLocalidad.Text = "-";
-                textBoxDepto.Text = "-";
                 textBoxCodigoPostal.Text = Convert.ToString(reader.GetValue(6));
                 textBoxFechaDeNacimiento.Text = Convert.ToString(reader.GetValue(7));
                 if (Convert.ToInt32(reader.GetValue(8)) == 0)
@@ -575,6 +541,10 @@ namespace PagoAgilFrba.AbmCliente
                     ApellidoAModificar = camposABuscar[1];
                     NombreAModificar = camposABuscar[2];
                     mostrarAlta();
+                    if (textBoxMail.Text.Contains("pedirActualizarMail") && textBoxMail.Text.Contains("@mail.com"))
+                    {
+                        MessageBox.Show("Hubo un inconveniente con el mail del cliente y se encuentra desactualizado, se le recomienda actualizarlo", "Advertencia!");
+                    }
                 }
             }
             else
@@ -595,47 +565,6 @@ namespace PagoAgilFrba.AbmCliente
                 }
             }
         }
-
-
-
-        private void comboBoxResultadoBusqueda_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            if (labelTitulo.Text == "MODIFICACION")
-            {
-                if (MessageBox.Show("¿Desea modificar el usuario seleccionado?", "Información",
-                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    ocultarTodosLosItems();
-                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '-' });
-                    limpiarCampos();
-                    llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]);
-                    DNIAModificar = Convert.ToInt32(camposABuscar[0]);
-                    ApellidoAModificar = camposABuscar[1];
-                    NombreAModificar = camposABuscar[2];
-                    mostrarAlta();
-                }
-            }
-            else
-            {
-                if (MessageBox.Show("¿Desea eliminar al usuario seleccionado?", "Información",
-                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '-' });
-                    if (clienteNoEstaInhabilitado(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]))
-                    {
-                        inhabilitarCliente(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]);
-                    }
-                    else
-                    {
-                        MessageBox.Show("El cliente ya se encuentra eliminado, intente con otro.", "Información");
-                    }
-
-                }
-            }
-        }
-
-
-
 
         private void bajaToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -697,49 +626,6 @@ namespace PagoAgilFrba.AbmCliente
             else if (labelTitulo.Text == "MODIFICACION")
             {
                 accionBotonModificacion();
-            }
-        }
-
-        private void buttonMail1_Click(object sender, EventArgs e)
-        {
-            if (todosLosCamposCompletos())
-            {
-                if (textBoxMail.Text == "pedirActualizarMail1@mail.com")
-                {
-                    MessageBox.Show("Debe actualizar el mail.", "Error");
-                }
-                else
-                {
-                    modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
-                    buttonMail1.Visible = false;
-                    mail2NecesitaSerActualizado();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Debe completar todos los campos.", "Error");
-            }
-        }
-
-        private void buttonMail2_Click(object sender, EventArgs e)
-        {
-            if (todosLosCamposCompletos())
-            {
-                if (textBoxMail.Text == "pedirActualizarMail2@mail.com")
-                {
-                    MessageBox.Show("Debe actualizar el mail.", "Error");
-                }
-                else
-                {
-                    modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
-                    buttonMail2.Visible = false;
-                    menuABMCli.Enabled = true;
-                    ocultarTodosLosItems();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Debe completar todos los campos.", "Error");
             }
         }
     }

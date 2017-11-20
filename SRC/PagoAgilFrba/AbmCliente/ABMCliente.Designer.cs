@@ -39,8 +39,6 @@
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.textBoxFechaDeNacimiento = new System.Windows.Forms.TextBox();
             this.textBoxCodigoPostal = new System.Windows.Forms.TextBox();
-            this.textBoxLocalidad = new System.Windows.Forms.TextBox();
-            this.textBoxDepto = new System.Windows.Forms.TextBox();
             this.textBoxNroPiso = new System.Windows.Forms.TextBox();
             this.textBoxCalle = new System.Windows.Forms.TextBox();
             this.textBoxTelefono = new System.Windows.Forms.TextBox();
@@ -51,8 +49,6 @@
             this.labelCalle = new System.Windows.Forms.Label();
             this.labelFechaDeNacimiento = new System.Windows.Forms.Label();
             this.labelCodigoPostal = new System.Windows.Forms.Label();
-            this.labelLocalidad = new System.Windows.Forms.Label();
-            this.labelDepto = new System.Windows.Forms.Label();
             this.labelNroPiso = new System.Windows.Forms.Label();
             this.labelDireccion = new System.Windows.Forms.Label();
             this.labelTelefono = new System.Windows.Forms.Label();
@@ -68,8 +64,6 @@
             this.bajaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelTitulo = new System.Windows.Forms.Label();
-            this.buttonMail1 = new System.Windows.Forms.Button();
-            this.buttonMail2 = new System.Windows.Forms.Button();
             this.menuABMCli.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,20 +158,6 @@
             this.textBoxCodigoPostal.Size = new System.Drawing.Size(100, 20);
             this.textBoxCodigoPostal.TabIndex = 54;
             // 
-            // textBoxLocalidad
-            // 
-            this.textBoxLocalidad.Location = new System.Drawing.Point(473, 426);
-            this.textBoxLocalidad.Name = "textBoxLocalidad";
-            this.textBoxLocalidad.Size = new System.Drawing.Size(100, 20);
-            this.textBoxLocalidad.TabIndex = 53;
-            // 
-            // textBoxDepto
-            // 
-            this.textBoxDepto.Location = new System.Drawing.Point(347, 426);
-            this.textBoxDepto.Name = "textBoxDepto";
-            this.textBoxDepto.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDepto.TabIndex = 52;
-            // 
             // textBoxNroPiso
             // 
             this.textBoxNroPiso.Location = new System.Drawing.Point(220, 426);
@@ -253,24 +233,6 @@
             this.labelCodigoPostal.Size = new System.Drawing.Size(75, 13);
             this.labelCodigoPostal.TabIndex = 42;
             this.labelCodigoPostal.Text = "Código Postal:";
-            // 
-            // labelLocalidad
-            // 
-            this.labelLocalidad.AutoSize = true;
-            this.labelLocalidad.Location = new System.Drawing.Point(470, 400);
-            this.labelLocalidad.Name = "labelLocalidad";
-            this.labelLocalidad.Size = new System.Drawing.Size(56, 13);
-            this.labelLocalidad.TabIndex = 41;
-            this.labelLocalidad.Text = "Localidad:";
-            // 
-            // labelDepto
-            // 
-            this.labelDepto.AutoSize = true;
-            this.labelDepto.Location = new System.Drawing.Point(344, 400);
-            this.labelDepto.Name = "labelDepto";
-            this.labelDepto.Size = new System.Drawing.Size(39, 13);
-            this.labelDepto.TabIndex = 40;
-            this.labelDepto.Text = "Depto:";
             // 
             // labelNroPiso
             // 
@@ -405,33 +367,11 @@
             this.labelTitulo.TabIndex = 67;
             this.labelTitulo.Text = "TITULO";
             // 
-            // buttonMail1
-            // 
-            this.buttonMail1.Location = new System.Drawing.Point(174, 567);
-            this.buttonMail1.Name = "buttonMail1";
-            this.buttonMail1.Size = new System.Drawing.Size(75, 23);
-            this.buttonMail1.TabIndex = 69;
-            this.buttonMail1.Text = "Aceptar";
-            this.buttonMail1.UseVisualStyleBackColor = true;
-            this.buttonMail1.Click += new System.EventHandler(this.buttonMail1_Click);
-            // 
-            // buttonMail2
-            // 
-            this.buttonMail2.Location = new System.Drawing.Point(174, 567);
-            this.buttonMail2.Name = "buttonMail2";
-            this.buttonMail2.Size = new System.Drawing.Size(75, 23);
-            this.buttonMail2.TabIndex = 70;
-            this.buttonMail2.Text = "Aceptar";
-            this.buttonMail2.UseVisualStyleBackColor = true;
-            this.buttonMail2.Click += new System.EventHandler(this.buttonMail2_Click);
-            // 
             // ABMCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(705, 605);
-            this.Controls.Add(this.buttonMail2);
-            this.Controls.Add(this.buttonMail1);
             this.Controls.Add(this.labelTitulo);
             this.Controls.Add(this.menuABMCli);
             this.Controls.Add(this.groupBox1);
@@ -445,8 +385,6 @@
             this.Controls.Add(this.buttonAceptar);
             this.Controls.Add(this.textBoxFechaDeNacimiento);
             this.Controls.Add(this.textBoxCodigoPostal);
-            this.Controls.Add(this.textBoxLocalidad);
-            this.Controls.Add(this.textBoxDepto);
             this.Controls.Add(this.textBoxNroPiso);
             this.Controls.Add(this.textBoxCalle);
             this.Controls.Add(this.textBoxTelefono);
@@ -457,8 +395,6 @@
             this.Controls.Add(this.labelCalle);
             this.Controls.Add(this.labelFechaDeNacimiento);
             this.Controls.Add(this.labelCodigoPostal);
-            this.Controls.Add(this.labelLocalidad);
-            this.Controls.Add(this.labelDepto);
             this.Controls.Add(this.labelNroPiso);
             this.Controls.Add(this.labelDireccion);
             this.Controls.Add(this.labelTelefono);
@@ -489,8 +425,6 @@
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.TextBox textBoxFechaDeNacimiento;
         private System.Windows.Forms.TextBox textBoxCodigoPostal;
-        private System.Windows.Forms.TextBox textBoxLocalidad;
-        private System.Windows.Forms.TextBox textBoxDepto;
         private System.Windows.Forms.TextBox textBoxNroPiso;
         private System.Windows.Forms.TextBox textBoxCalle;
         private System.Windows.Forms.TextBox textBoxTelefono;
@@ -501,8 +435,6 @@
         private System.Windows.Forms.Label labelCalle;
         private System.Windows.Forms.Label labelFechaDeNacimiento;
         private System.Windows.Forms.Label labelCodigoPostal;
-        private System.Windows.Forms.Label labelLocalidad;
-        private System.Windows.Forms.Label labelDepto;
         private System.Windows.Forms.Label labelNroPiso;
         private System.Windows.Forms.Label labelDireccion;
         private System.Windows.Forms.Label labelTelefono;
@@ -518,7 +450,5 @@
         private System.Windows.Forms.ToolStripMenuItem bajaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarToolStripMenuItem;
         private System.Windows.Forms.Label labelTitulo;
-        private System.Windows.Forms.Button buttonMail1;
-        private System.Windows.Forms.Button buttonMail2;
     }
 }
