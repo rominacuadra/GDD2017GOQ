@@ -19,6 +19,10 @@ namespace PagoAgilFrba.AbmRol
 {
     public partial class Roles : Form
     {
+        int indexUsuario = -1;
+        int indexRol= -1;
+
+
         public Roles()
         {
             InitializeComponent();
@@ -36,14 +40,70 @@ namespace PagoAgilFrba.AbmRol
 
         private void Roles_Load(object sender, EventArgs e)
         {
-            cargarRoles();
+            
+            
+        }
+
+        private void cargarUsuario() {
+
+            int cant = 0;
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT usu_id,usu_username,usu_habilitado FROM GOQ.Usuario WHERE usu_habilitado =1", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+
+            reader = cmd.ExecuteReader();
+            reader.Read();
+            
+            if (reader.HasRows)
+            {
+                
+                do
+                {
+                    cant += 1;
+                    lbUsuario.Items.Add(reader.GetString(1));
+                }
+                while (reader.Read());
+            }
+
+            if (!reader.HasRows)
+            {
+                MessageBox.Show("No hay roles habilitados.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            reader.Close();
+
+        }
+
+        private void cargarRolesHabilitados()
+        {
+            int cant = 0;
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT ROL_NOMBRE, ROL_ID FROM GOQ.ROL WHERE ROL_HABILITADO=1", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+
+            reader = cmd.ExecuteReader();
+            reader.Read();
+
+            if (reader.HasRows)
+            {
+                
+                do
+                {
+                    cant += 1;
+                    lbRolHab.Items.Add(reader.GetString(0));
+                }
+                while (reader.Read());
+            }
+
+            if (!reader.HasRows)
+            {
+                MessageBox.Show("No hay roles habilitados.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            reader.Close();
         }
 
         private void cargarRoles() {
 
             int cant = 0;
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT ROL_NOMBRE, ROL_ID FROM GOQ.ROL WHERE ROL_HABILITADO='1'", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT ROL_NOMBRE, ROL_ID FROM GOQ.ROL", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
 
             
             reader = cmd.ExecuteReader();
@@ -340,5 +400,152 @@ namespace PagoAgilFrba.AbmRol
 
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked==false) {
+                gbAdmRol.Enabled = false;
+                lbRoles.Items.Clear();
+            }else {
+                gbAdmRol.Enabled = true;
+                cargarRoles();
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked == false)
+            {
+                gbRolUsuario.Enabled = false;
+                lbUsuario.Items.Clear();
+                lbRolHab.Items.Clear();
+            } else {
+                gbRolUsuario.Enabled = true;
+                cargarUsuario();
+                cargarRolesHabilitados();
+            }
+        }
+
+        private int controlDeUsuarioRolExistente(int usu_id, int rol_id)
+        {
+                SqlDataReader readerRol = null;
+                SqlCommand cmdSelect = new SqlCommand("SELECT DISTINCT rol_usu_rol_id,rol_usu_usu_id FROM GOQ.Rol_Usuario WHERE rol_usu_rol_id=@ROL_ID AND rol_usu_usu_id=@USU_ID;", PagoAgilFrba.ModuloGlobal.getConexion());
+
+                cmdSelect.Parameters.Add("ROL_ID", SqlDbType.NVarChar).Value = usu_id;
+                cmdSelect.Parameters.Add("USU_ID", SqlDbType.NVarChar).Value = rol_id;
+
+                readerRol = cmdSelect.ExecuteReader();
+                readerRol.Read();
+
+                if (readerRol.HasRows)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+                     
+
+    }
+
+        private void btnAsgRol_Click(object sender, EventArgs e)
+        {
+            
+            if (lbUsuario.SelectedIndex >= 0) {
+
+                
+                SqlDataReader reader = null;
+                SqlCommand cmd = new SqlCommand("SELECT distinct usu_id FROM GOQ.Usuario WHERE usu_username=@USUARIO", PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd.Parameters.Add("USUARIO", SqlDbType.VarChar).Value = lbUsuario.SelectedItem.ToString();
+
+                reader = cmd.ExecuteReader();
+                reader.Read();
+
+                if (reader.HasRows)
+                {
+                    indexUsuario = reader.GetInt32(0);
+                }else{
+                    MessageBox.Show("Error al recuperar el Id del Usuario.", "Información");
+                }
+                                
+                reader.Close();
+            
+                if (lbRolHab.SelectedIndex>=0){
+
+
+                            SqlDataReader readerRol = null;
+                            SqlCommand cmdSelect = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE rol_nombre=@NOMBREROL;", PagoAgilFrba.ModuloGlobal.getConexion());
+
+                            cmdSelect.Parameters.Add("NOMBREROL", SqlDbType.NVarChar).Value = lbRolHab.SelectedItem.ToString();
+
+                            readerRol = cmdSelect.ExecuteReader();
+                            readerRol.Read();
+
+                            if (readerRol.HasRows)
+                            {
+                                
+                                indexRol = readerRol.GetInt32(0);
+
+                                if (controlDeUsuarioRolExistente(indexRol,indexUsuario) == 1) {
+
+                                    MessageBox.Show("El Rol ya existe para el usuario seleccionado.", "Información");
+
+                                }else{
+                                    int cant = 0;
+                                    SqlCommand cmdInsert = new SqlCommand("INSERT INTO GOQ.Rol_Usuario (rol_usu_rol_id,rol_usu_usu_id) VALUES (@ROL_ID,@USU_ID)",
+                                    PagoAgilFrba.ModuloGlobal.getConexion());
+                                    cmdInsert.Parameters.Add("ROL_ID", SqlDbType.Int).Value = indexRol;
+                                    cmdInsert.Parameters.Add("USU_ID", SqlDbType.Int).Value = indexUsuario;
+                                    cant=cmdInsert.ExecuteNonQuery();
+                                    if (cant > 0) { MessageBox.Show("Rol asignado correctamente.", "Información");
+                                    }
+                                    else { MessageBox.Show("Error en la asignación.", "Información"); }
+                                    
+                                }
+
+                                
+                            }
+                            else
+                            {
+                                MessageBox.Show("Error al recuperar el Id del Rol.", "Información");
+                            }
+
+
+                }else{
+                    MessageBox.Show("Debe seleccionar un rol.", "Information");
+                }
+
+            }else{
+                MessageBox.Show("Debe seleccionar un usuario.", "Information");
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (lbRoles.SelectedItem.ToString() != "")
+            {
+
+                SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 1 WHERE rol_nombre = @NOMBREROL",
+                PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd.Parameters.Add("NOMBREROL", SqlDbType.VarChar).Value = lbRoles.SelectedItem.ToString();
+
+                int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+                if (cantidadFilasAfectadas > 0)
+                {
+                    MessageBox.Show("Rol habilitado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    lbRoles.Items.Clear();
+                    cargarRoles();
+                }
+                else
+                {
+                    MessageBox.Show("Ocurrió un error al intentar habilitar al rol.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar un rol a habilitar.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }
