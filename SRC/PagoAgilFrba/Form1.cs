@@ -47,7 +47,7 @@ namespace PagoAgilFrba
         private SqlDataReader logueoCorrecto(String usuario, string password)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT USU_ID, USU_INTENTOS,USU_HABILITADO FROM GOQ.USUARIO WHERE USU_USERNAME = @USUARIO AND USU_PASSWORD = GOQ.F_Hash256(@PASS) AND USU_HABILITADO='1'", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT USU_ID, USU_INTENTOS,USU_HABILITADO FROM GOQ.USUARIO WHERE USU_USERNAME = @USUARIO AND USU_PASSWORD = GOQ.F_Hash256(@PASS)", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
 
             cmd.Parameters.Add("USUARIO", SqlDbType.NVarChar).Value = usuario;
             cmd.Parameters.Add("PASS", SqlDbType.NVarChar).Value = password;
@@ -63,7 +63,7 @@ namespace PagoAgilFrba
         private void inhabilitarUsuario(String usuario)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("UPDATE GOQ.USUARIO SET USU_HABILITADO ='I' WHERE USU_USERNAME = @USUARIO AND USU_HABILITADO='1'", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("UPDATE GOQ.USUARIO SET USU_HABILITADO =0 WHERE USU_USERNAME = @USUARIO AND USU_HABILITADO=1", PagoAgilFrba.ModuloGlobal.getConexion());
 
             cmd.Parameters.Add("USUARIO", SqlDbType.NVarChar).Value = txtUsuario.Text;
             reader = cmd.ExecuteReader();
@@ -77,7 +77,7 @@ namespace PagoAgilFrba
         private SqlDataReader usuarioExiste(String usuario)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT USU_INTENTOS FROM GOQ.USUARIO WHERE USU_USERNAME = @USUARIO AND USU_HABILITADO='1'", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT USU_INTENTOS FROM GOQ.USUARIO WHERE USU_USERNAME = @USUARIO AND USU_HABILITADO=1", PagoAgilFrba.ModuloGlobal.getConexion());
 
             cmd.Parameters.Add("USUARIO", SqlDbType.NVarChar).Value = txtUsuario.Text;
             reader = cmd.ExecuteReader();
@@ -90,7 +90,7 @@ namespace PagoAgilFrba
         private void resetearIntentos(int nro)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("UPDATE GOQ.USUARIO SET USU_INTENTOS=@NRO WHERE USU_USERNAME = @USUARIO", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("UPDATE GOQ.USUARIO SET USU_INTENTOS=@NRO, USU_HABILITADO=1 WHERE USU_USERNAME = @USUARIO", PagoAgilFrba.ModuloGlobal.getConexion());
 
             cmd.Parameters.Add("USUARIO", SqlDbType.NVarChar).Value = txtUsuario.Text;
             cmd.Parameters.Add("NRO", SqlDbType.NVarChar).Value = nro;
@@ -135,7 +135,7 @@ namespace PagoAgilFrba
             cbRol.Visible = true;
             
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select distinct rol_nombre from [GOQ].[Rol] where rol_id in (select distinct rol_usu_rol_id from [GOQ].[Rol_Usuario] where rol_usu_usu_id = @ID)", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select distinct rol_nombre from [GOQ].[Rol] where rol_id in (select distinct rol_usu_rol_id from [GOQ].[Rol_Usuario] where rol_usu_usu_id = @ID and rol_habilitado=1)", PagoAgilFrba.ModuloGlobal.getConexion());
             
             cmd.Parameters.Add("ID", SqlDbType.NVarChar).Value = id;
             
@@ -220,10 +220,10 @@ namespace PagoAgilFrba
                                                            
                                                             yaSeLogueoPorOK=true; //Bandera para controlar el segundo "Aceptar" con Rol incluido.
 
-                                                            if (logueoCorrecto(txtUsuario.Text, txtClave.Text).GetInt32(1)!=3)
+                                                            if ((logueoCorrecto(txtUsuario.Text, txtClave.Text).GetInt32(1))==3)
                                                             {
-                                                                
-                                                                resetearIntentos(3);
+
+                                                                resetearIntentos(0);//resetearIntentos(3);
                                                             }
                                                             logueoCorrecto(txtUsuario.Text, txtClave.Text).Close();
                                                         }
@@ -243,9 +243,9 @@ namespace PagoAgilFrba
 
                                             intento = usuarioExiste(txtUsuario.Text).GetInt32(0);
 
-                                            if (intento > 0)
+                                            if ((intento >= 0) && (intento < 3))
                                             {
-                                                resetearIntentos(intento - 1);
+                                                resetearIntentos(intento + 1);
                                             }
                                             else
                                             {
@@ -268,12 +268,43 @@ namespace PagoAgilFrba
         private void cbRol_SelectedIndexChanged(object sender, EventArgs e)
         {
              if((cbRol.SelectedItem.ToString())=="Cobrador") {
-                 
-
-                 cargarSucursales();
-                 
+                 cargarSucursales();                 
+             }
+             if ((cbRol.SelectedItem.ToString()) == "Administrador")
+             {
+                 cargarTodasLasSucursales();
              }
 
+        }
+
+        private void cargarTodasLasSucursales()
+        {
+            int cant = 0;
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT S.sucu_nombre,S.sucu_id FROM [GOQ].[Sucursal] S WHERE S.sucu_habilitado=1", PagoAgilFrba.ModuloGlobal.getConexion());
+
+            reader = cmd.ExecuteReader();
+
+
+            if (reader.HasRows)
+            {
+
+                lblSuc.Enabled = true;
+                cbSuc.Enabled = true;
+                cbSuc.Visible = true;
+                while (reader.Read())
+                {
+
+                    cbSuc.Items.Add(reader.GetString(0));
+                    cant += 1;
+                }
+            }
+            else
+            {
+
+                MessageBox.Show("No tiene sucursales asignadas.", "Información");
+                ModuloGlobal.suc_cob_id = null;
+            }
 
         }
 
