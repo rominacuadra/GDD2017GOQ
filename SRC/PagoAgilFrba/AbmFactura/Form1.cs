@@ -166,7 +166,7 @@ namespace PagoAgilFrba.AbmFactura
         }
 
        
-        private bool facturaNoEstaRepetido(long NroFac)
+        private bool facturaNoEstaRepetido(decimal NroFac)
         {
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("SELECT fac_id FROM GOQ.Factura WHERE fac_id = @NroFac", PagoAgilFrba.ModuloGlobal.getConexion());
@@ -194,10 +194,10 @@ namespace PagoAgilFrba.AbmFactura
                string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
                string nombre = Convert.ToString(camposABuscar[0]);
                string apellido = Convert.ToString(camposABuscar[1]);
-               long total = Convert.ToInt64(textBoxTotal.Text);
+               decimal total = Convert.ToDecimal(textBoxTotal.Text);
 
                SqlParameter[] sqls = new SqlParameter[7];
-               sqls[0] = new SqlParameter("nroFact", Convert.ToInt64(maskedTextBoxNroFact.Text));
+               sqls[0] = new SqlParameter("nroFact", Convert.ToDecimal(maskedTextBoxNroFact.Text));
                sqls[1] = new SqlParameter("empresa", empresa);
                sqls[2] = new SqlParameter("nombre", nombre);
                sqls[3] = new SqlParameter("apellido", apellido);
@@ -220,7 +220,7 @@ namespace PagoAgilFrba.AbmFactura
                         SqlParameter[] sqls1 = new SqlParameter[3];
                         sqls1[0] = new SqlParameter("monto", monto_cant[0]);
                         sqls1[1] = new SqlParameter("cantidad", monto_cant[1]);
-                        sqls1[2] = new SqlParameter("factura", Convert.ToInt64(maskedTextBoxNroFact.Text));
+                        sqls1[2] = new SqlParameter("factura", Convert.ToDecimal(maskedTextBoxNroFact.Text));
                         SqlCommand cmd2 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
                         cmd2.CommandType = CommandType.StoredProcedure;
                         cmd2.Parameters.AddRange(sqls1);
@@ -243,65 +243,67 @@ namespace PagoAgilFrba.AbmFactura
             }
         }
 
-        private void validarListaDeItems()
+        private bool validarListaDeItems()
         {
-            string message = "";
             if (listBoxItems.Items.Count < 1)
             {
-                message = message + "La factura debe tener al menos un item ";
+                MessageBox.Show("La factura debe tener al menos un item.", "Error");
+                return false;
             }
-
-            if (message != "")
+            else
             {
-                MessageBox.Show("Por favor, complete: \n" + message);
-                return;
+                return true;
             }
         }
 
-        private void validarCamposFactura()
+        private bool validarCamposFactura()
         {
             string message = "";
             
             if (maskedTextBoxNroFact.Text.Length == 0)
             {
-                message = message + "Nro Factura \n";
+                message = message + "Nro Factura, ";
             }
 
             if (comboBoxEmpresa.Text.Length == 0)
             {
-                message = message + "Empresa \n";
+                message = message + "Empresa, ";
             }
 
             if (comboBoxCliente.Text.Length == 0)
             {
-                message = message + "Cliente \n";
+                message = message + "Cliente, ";
             }
 
             if (dtFechaVen.Value == null)
             {
-                message = message + "Fecha de vencimiento \n";
+                message = message + "Fecha de vencimiento, ";
             }
 
             if (message != "")
             {
-                MessageBox.Show("Por favor, complete: \n" + message);
-                return;
+                MessageBox.Show("Por favor, complete: " + message + "requeridos correctamente.", "Error");
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
         private void accionBotonAlta()
         {
-            validarCamposFactura();
-            validarListaDeItems();
-            if (facturaNoEstaRepetido(Convert.ToInt64(maskedTextBoxNroFact.Text)))
+            if (validarCamposFactura() && validarListaDeItems())
             {
-                darAltaFactura();
+                if (facturaNoEstaRepetido(Convert.ToDecimal(maskedTextBoxNroFact.Text)))
+                {
+                    darAltaFactura();
+                }
+                else
+                {
+                    MessageBox.Show("La factura ingresada ya se encuentra registrada, intente con otra.", "Error");
+                }
             }
-            else
-            {
-                MessageBox.Show("La factura ingresada ya se encuentra registrada, intente con otra.", "Error");
-            }
-            
         }
 
         private void modificarFactura()
@@ -311,7 +313,7 @@ namespace PagoAgilFrba.AbmFactura
             string nombre = Convert.ToString(camposABuscar[0]);
             string apellido = Convert.ToString(camposABuscar[1]);
             int filasRetornadas;
-            int itemsRetornados;
+            int itemsRetornados = 0;
             int itemsBorrados;
             int filasRetornadas_fac;
 
@@ -347,22 +349,21 @@ namespace PagoAgilFrba.AbmFactura
                            string[] monto_cant = Item.Split(new Char[] { '/' });
 
                            SqlParameter[] sqls1 = new SqlParameter[3];
-                           sqls1[0] = new SqlParameter("monto", monto_cant[0]);
-                           sqls1[1] = new SqlParameter("cantidad", monto_cant[1]);
+                           sqls1[0] = new SqlParameter("monto", Convert.ToDecimal(monto_cant[0]));
+                           sqls1[1] = new SqlParameter("cantidad", Convert.ToDecimal(monto_cant[1]));
                            sqls1[2] = new SqlParameter("factura", idFacturaSinModificar);
                            SqlCommand cmd2 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
                            cmd2.CommandType = CommandType.StoredProcedure;
                            cmd2.Parameters.AddRange(sqls1);
                            itemsRetornados = cmd2.ExecuteNonQuery();
-
-                           if (itemsRetornados > 0)
-                           {
-                               MessageBox.Show("La factura se ha modificado con éxito!", "Información");
-                           }
-                           else
-                           {
-                               MessageBox.Show("Error al insertar los items", "Información");
-                           }
+                       }
+                       if (itemsRetornados > 0)
+                       {
+                           MessageBox.Show("La factura se ha modificado con éxito!", "Información");
+                       }
+                       else
+                       {
+                           MessageBox.Show("Error al insertar los items", "Información");
                        }
                    }
                    
@@ -399,13 +400,20 @@ namespace PagoAgilFrba.AbmFactura
 
         private void accionBotonModificacion()
         {
-           validarCamposFactura();
-
-            if (seModificanItems)
-            {
-                validarListaDeItems();
-            }
-            modificarFactura();
+           if (validarCamposFactura())
+           {
+               if (seModificanItems)
+               {
+                   if (validarListaDeItems())
+                   {
+                       modificarFactura();
+                   }
+               }
+               else
+               {
+                   modificarFactura();
+               }
+           }
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -433,34 +441,43 @@ namespace PagoAgilFrba.AbmFactura
         private void buttonAgregarItem_Click(object sender, EventArgs e)
         {
             string message_items = "";
+            int esNumero;
 
             if (textBoxItemMonto.Text.Length == 0)
             {
-                message_items = message_items + "Monto \n";
+                message_items = message_items + "Monto, ";
             }
 
             if (textBoxItemCantidad.Text.Length == 0)
             {
-                message_items = message_items + "Cantidad \n";
+                message_items = message_items + "Cantidad, ";
             }
             
             if (message_items != "")
             {
-                MessageBox.Show("Por favor, complete: \n" + message_items);
-                return;
+                MessageBox.Show("Por favor, complete: \n" + message_items + "requerido/os", "Error");
             }
-            listBoxItems.Items.Add(textBoxItemMonto.Text + "/" + textBoxItemCantidad.Text);
+            else{
+                if (Int32.TryParse(textBoxItemMonto.Text.ToString(), out esNumero) && Int32.TryParse(textBoxItemCantidad.Text.ToString(), out esNumero))
+                {
+                    listBoxItems.Items.Add(textBoxItemMonto.Text + "/" + textBoxItemCantidad.Text);
 
-            int cantidad = Convert.ToInt32(textBoxItemCantidad.Text);
-            decimal monto = Convert.ToDecimal(textBoxItemMonto.Text);
-            decimal montoxcant = cantidad * monto;
-            totalItems = totalItems + montoxcant;
-            textBoxTotal.Text = Convert.ToString(totalItems);
+                    int cantidad = Convert.ToInt32(textBoxItemCantidad.Text);
+                    decimal monto = Convert.ToDecimal(textBoxItemMonto.Text);
+                    decimal montoxcant = cantidad * monto;
+                    totalItems = totalItems + montoxcant;
+                    textBoxTotal.Text = Convert.ToString(totalItems);
 
-            decimal totalFactura = Convert.ToDecimal(textBoxTotal.Text);
+                    decimal totalFactura = Convert.ToDecimal(textBoxTotal.Text);
 
-            textBoxItemMonto.Text = "";
-            textBoxItemCantidad.Text = "";
+                    textBoxItemMonto.Text = "";
+                    textBoxItemCantidad.Text = "";
+                }
+                else
+                {
+                    MessageBox.Show("Los campos ingresados deben ser numéricos.", "Error");
+                }
+            }
         }
 
         private void buttonLimpiarItems_Click(object sender, EventArgs e)
@@ -663,63 +680,34 @@ namespace PagoAgilFrba.AbmFactura
        
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
-            if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
+
+            if (comboBoxFiltro.SelectedItem.ToString() == "Todos" && !validarCamposFactura())
             {
-                validarCamposFactura();
+
             }
-            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
+            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura" && maskedTextBoxNroFact.Text.Length == 0)
             {
-                string message = "";
-
-                if (maskedTextBoxNroFact.Text.Length == 0)
-                {
-                    message = message + "Nro Factura \n";
-                }
-
-                if (message != "")
-                {
-                    MessageBox.Show("Por favor, complete: \n" + message);
-                    return;
-                }
+                MessageBox.Show("Por favor, complete el número de factura.");
             }
-            else if (comboBoxFiltro.SelectedItem.ToString() == "Empresa")
+            else if (comboBoxFiltro.SelectedItem.ToString() == "Empresa" && comboBoxEmpresa.Text.Length == 0)
             {
-                string message = "";
-
-                if (comboBoxEmpresa.Text.Length == 0)
-                {
-                    message = message + "Empresa \n";
-                }
-
-                if (message != "")
-                {
-                    MessageBox.Show("Por favor, complete: \n" + message);
-                    return;
-                }
+                MessageBox.Show("Por favor, elija una empresa.");
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "Cliente" && comboBoxCliente.Text.Length == 0)
+            {
+                MessageBox.Show("Por favor, elija un cliente.");
             }
             else
             {
-                string message = "";
-                if (comboBoxCliente.Text.Length == 0)
+                if (realizarBusquedayDevolverResultado())
                 {
-                    message = message + "Cliente \n";
+                    MessageBox.Show("La factura fue encontrada.", "Información");
+                    mostrarResultadosBusqueda();
                 }
-
-                if (message != "")
+                else
                 {
-                    MessageBox.Show("Por favor, complete: \n" + message);
-                    return;
+                    MessageBox.Show("La factura no ha sido encontrada, puede que su factura ya se haya pagado o rendido.", "Error");
                 }
-            }
-
-            if (realizarBusquedayDevolverResultado())
-            {
-                MessageBox.Show("La factura fue encontrada.", "Información");
-                mostrarResultadosBusqueda();
-            }
-            else
-            {
-                MessageBox.Show("La factura no ha sido encontrada, puede que su factura ya se haya pagado o rendido.", "Error");
             }
         }
 
@@ -848,7 +836,7 @@ namespace PagoAgilFrba.AbmFactura
                     }
                     else
                     {
-                        MessageBox.Show("Error al borrar los items", "Información");
+                        MessageBox.Show("Los items no pudieron ser borrados.", "Información");
                     }
                 }
             }

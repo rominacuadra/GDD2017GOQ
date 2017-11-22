@@ -106,7 +106,7 @@
             // bajaToolStripMenuItem
             // 
             this.bajaToolStripMenuItem.Name = "bajaToolStripMenuItem";
-            this.bajaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.bajaToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.bajaToolStripMenuItem.Text = "Baja";
             this.bajaToolStripMenuItem.Click += new System.EventHandler(this.bajaToolStripMenuItem_Click);
             // 
@@ -338,7 +338,7 @@
             // maskedTextBoxNroFact
             // 
             this.maskedTextBoxNroFact.Location = new System.Drawing.Point(180, 161);
-            this.maskedTextBoxNroFact.Mask = "999999999999";
+            this.maskedTextBoxNroFact.Mask = "999999999";
             this.maskedTextBoxNroFact.Name = "maskedTextBoxNroFact";
             this.maskedTextBoxNroFact.Size = new System.Drawing.Size(114, 20);
             this.maskedTextBoxNroFact.TabIndex = 151;
