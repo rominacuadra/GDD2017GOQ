@@ -221,7 +221,7 @@ namespace PagoAgilFrba.AbmFactura
                         string[] monto_cant = Item.Split(new Char[] { '/'});
                        
                         SqlParameter[] sqls1 = new SqlParameter[3];
-                        sqls1[0] = new SqlParameter("monto", monto_cant[0]);
+                        sqls1[0] = new SqlParameter("monto", Convert.ToDecimal(monto_cant[0]));
                         sqls1[1] = new SqlParameter("cantidad", monto_cant[1]);
                         sqls1[2] = new SqlParameter("factura", Convert.ToDecimal(maskedTextBoxNroFact.Text));
                         SqlCommand cmd2 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
@@ -444,7 +444,7 @@ namespace PagoAgilFrba.AbmFactura
         private void buttonAgregarItem_Click(object sender, EventArgs e)
         {
             string message_items = "";
-            int esNumero;
+            decimal esNumero;
 
             if (textBoxItemMonto.Text.Length == 0)
             {
@@ -461,9 +461,11 @@ namespace PagoAgilFrba.AbmFactura
                 MessageBox.Show("Por favor, complete: \n" + message_items + "requerido/os", "Error");
             }
             else{
-                if (Int32.TryParse(textBoxItemMonto.Text.ToString(), out esNumero) && Int32.TryParse(textBoxItemCantidad.Text.ToString(), out esNumero))
+                if (decimal.TryParse(textBoxItemMonto.Text.ToString(), out esNumero) && decimal.TryParse(textBoxItemCantidad.Text.ToString(), out esNumero))
                 {
                     listBoxItems.Items.Add(textBoxItemMonto.Text + "/" + textBoxItemCantidad.Text);
+
+                    
 
                     int cantidad = Convert.ToInt32(textBoxItemCantidad.Text);
                     decimal monto = Convert.ToDecimal(textBoxItemMonto.Text);
