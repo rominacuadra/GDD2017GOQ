@@ -18,23 +18,31 @@ namespace PagoAgilFrba.AbmFactura
         public AbmFactura()
         {
             InitializeComponent();
+            comboBoxFiltro.Items.Add("Todos");
+            comboBoxFiltro.Items.Add("NroFactura");
+            comboBoxFiltro.Items.Add("Empresa");
+            comboBoxFiltro.Items.Add("Cliente");
             ocultarTodosLosItems();
             llenarComboBoxEmpresa();
             llenarComboBoxCliente();
             llenarFechaAlta();
         }
 
+        private Decimal totalItems = 0;
+        private bool seModificanItems = false;
+        private int idFacturaSinModificar = 0;
+        
         private void ocultarTodosLosItems()
         {
             labelNroFac.Visible = false;
-            textBoxNroFac.Visible = false;
+            maskedTextBoxNroFact.Visible = false;
             labelEmpresa.Visible = false;
             comboBoxEmpresa.Visible = false;
             labelCliente.Visible = false;
             comboBoxCliente.Visible = false;
             labelFechaDeVenc.Visible = false;
             dtFechaVen.Visible = false;
-            buttonAceptar.Visible = false;
+            buttonCrearFactura.Visible = false;
             buttonLimpiar.Visible = false;
             labelTitulo.Visible = false;
             textBoxFechaAlta.Visible = false;
@@ -45,6 +53,18 @@ namespace PagoAgilFrba.AbmFactura
             textBoxItemMonto.Visible = false;
             labelItemCantidad.Visible = false;
             textBoxItemCantidad.Visible = false;
+            buttonAgregarItem.Visible = false;
+            labelItemsAAgregar.Visible = false;
+            listBoxItems.Visible = false;
+            labelDatosFactura.Visible = false;
+            labelDatosItem.Visible = false;
+            labelItemsAAgregar.Visible = false;
+            buttonLimpiarItems.Visible = false;
+            labelFiltro.Visible = false;
+            comboBoxFiltro.Visible = false;
+            buttonBuscar.Visible = false;
+            labelFacturasEncontradas.Visible = false;
+            comboBoxFacturasEncontradas.Visible = false;
         }
 
         private void llenarComboBoxEmpresa()
@@ -85,33 +105,48 @@ namespace PagoAgilFrba.AbmFactura
 
         private void limpiarCampos()
         {
-            textBoxNroFac.Text = "";
+            maskedTextBoxNroFact.Text = "";
             comboBoxEmpresa.Text = "";
             comboBoxCliente.Text = "";
             dtFechaVen.Text = "";
+            textBoxTotal.Text = "0";
+            totalItems = 0;
         }
 
         private void mostrarAlta()
         {
             labelNroFac.Visible = true;
-            textBoxNroFac.Visible = true;
+            maskedTextBoxNroFact.Visible = true;
             labelEmpresa.Visible = true;
             comboBoxEmpresa.Visible = true;
             labelCliente.Visible = true;
             comboBoxCliente.Visible = true;
             labelFechaDeVenc.Visible = true;
             dtFechaVen.Visible = true;
-            buttonAceptar.Visible = true;
+            buttonCrearFactura.Visible = true;
             buttonLimpiar.Visible = true;
             labelTitulo.Visible = true;
             labelFechaAlta.Visible = true;
             textBoxFechaAlta.Visible = true;
             textBoxTotal.Visible = true;
             labelTotal.Visible = true;
-            labelItemMonto.Visible = true;
-            textBoxItemMonto.Visible = true;
-            labelItemCantidad.Visible = true;
-            textBoxItemCantidad.Visible = true;
+            labelDatosFactura.Visible = true;
+        }
+
+        private void mostrarModificacion()
+        {
+            labelEmpresa.Visible = true;
+            comboBoxEmpresa.Visible = true;
+            labelFechaDeVenc.Visible = true;
+            dtFechaVen.Visible = true;
+            buttonCrearFactura.Visible = true;
+            buttonLimpiar.Visible = true;
+            labelTitulo.Visible = true;
+            textBoxTotal.Visible = true;
+            labelTotal.Visible = true;
+            labelDatosFactura.Visible = true;
+            labelCliente.Visible = true;
+            comboBoxCliente.Visible = true;
         }
 
         private void altaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -120,11 +155,14 @@ namespace PagoAgilFrba.AbmFactura
             limpiarCampos();
             labelTitulo.Text = "ALTA";
             mostrarAlta();
+            mostrarItems();
+            textBoxTotal.Text = totalItems.ToString();
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
             limpiarCampos();
+            limpiarCamposItems();
         }
 
        
@@ -146,122 +184,228 @@ namespace PagoAgilFrba.AbmFactura
             }
         }
 
-        private void darAltaFactura(long NroFac, string empresa_desc, string cliente_nom_ape, string fechaVenc, string fechaAlta, string Total, string ItemMonto, string ItemCantidad)
+        private void darAltaFactura()
         {
-           int filasRetornadas;
-           int empresa_id = 0;
-           int cliente_id = 0;
-
-           SqlDataReader reader = null;
-           SqlCommand cmd = new SqlCommand("SELECT ID_empresa FROM GOQ.Empresa WHERE empresa_nombre = @EMPRESA ",
-           PagoAgilFrba.ModuloGlobal.getConexion());
-           cmd.Parameters.Add("EMPRESA", SqlDbType.NVarChar).Value = empresa_desc;
-           reader = cmd.ExecuteReader();
-           if (reader.HasRows)
+           if (listBoxItems.Items.Count > 0)
            {
-               reader.Read();
-               empresa_id = Convert.ToInt32(reader.GetValue(0));
-           }
+               int filasRetornadas;
+               int itemsRetornados;
+               string empresa = Convert.ToString(comboBoxEmpresa.Text);
+               string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+               string nombre = Convert.ToString(camposABuscar[0]);
+               string apellido = Convert.ToString(camposABuscar[1]);
+               long total = Convert.ToInt64(textBoxTotal.Text);
 
-           string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
-           string nombre = Convert.ToString(camposABuscar[0]);
-           string apellido = Convert.ToString(camposABuscar[1]);
-           
-           SqlDataReader reader1 = null;
-           SqlCommand cmd1 = new SqlCommand("SELECT cli_id FROM GOQ.Cliente WHERE cli_nombre = @NOMBRE AND cli_apellido= @APELLIDO",
-           PagoAgilFrba.ModuloGlobal.getConexion());
-           cmd1.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = nombre;
-           cmd1.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = apellido;
-           reader1 = cmd1.ExecuteReader();
-           if (reader.HasRows)
-           {
-               reader1.Read();
-               cliente_id = Convert.ToInt32(reader1.GetValue(0));
-           }
+               SqlParameter[] sqls = new SqlParameter[7];
+               sqls[0] = new SqlParameter("nroFact", Convert.ToInt64(maskedTextBoxNroFact.Text));
+               sqls[1] = new SqlParameter("empresa", empresa);
+               sqls[2] = new SqlParameter("nombre", nombre);
+               sqls[3] = new SqlParameter("apellido", apellido);
+               sqls[4] = new SqlParameter("fechaVen", dtFechaVen.Text);
+               sqls[5] = new SqlParameter("fechaAlta", textBoxFechaAlta.Text);
+               sqls[6] = new SqlParameter("total", total);
 
-           SqlCommand cmd2 = new SqlCommand(string.Format("INSERT INTO GOQ.Factura (fac_id, fac_empresa_id, fac_cli_id, fac_fecha_vec, fac_fecha_alta, fac_total) VALUES ('{0}', '{1}','{2}', '{3}', '{4}','{5}')",
-           NroFac, empresa_id, cliente_id, fechaVenc, fechaAlta, Total), PagoAgilFrba.ModuloGlobal.getConexion());
-           filasRetornadas = cmd2.ExecuteNonQuery();
+               SqlCommand cmd1 = new SqlCommand("GOQ.SP_Insertar_Factura", PagoAgilFrba.ModuloGlobal.getConexion());
+               cmd1.CommandType = CommandType.StoredProcedure;
+               cmd1.Parameters.AddRange(sqls);
+               filasRetornadas = cmd1.ExecuteNonQuery();
 
-                if (filasRetornadas > 0)
-                {
-                    SqlParameter[] sqls = new SqlParameter[2];
-                    sqls[0] = new SqlParameter("MONTO", ItemMonto);
-                    sqls[1] = new SqlParameter("CANTIDAD", ItemCantidad);
-                    SqlCommand cmd3 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
-                    cmd3.CommandType = CommandType.StoredProcedure;
-                    cmd3.Parameters.AddRange(sqls);
+               if (filasRetornadas > 0)
+               {
+                   foreach (string Item in listBoxItems.Items)
+                   {
+                       
+                        string[] monto_cant = Item.Split(new Char[] { '/'});
+                       
+                        SqlParameter[] sqls1 = new SqlParameter[3];
+                        sqls1[0] = new SqlParameter("monto", monto_cant[0]);
+                        sqls1[1] = new SqlParameter("cantidad", monto_cant[1]);
+                        sqls1[2] = new SqlParameter("factura", Convert.ToInt64(maskedTextBoxNroFact.Text));
+                        SqlCommand cmd2 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
+                        cmd2.CommandType = CommandType.StoredProcedure;
+                        cmd2.Parameters.AddRange(sqls1);
+                        itemsRetornados = cmd2.ExecuteNonQuery();
 
-                    MessageBox.Show("La factura se ha registrado con éxito!", "Información");
-
-                }
-                else
-                {
-                    MessageBox.Show("Ocurrió un error al intentar registrar la factura", "Error");
-                }
-            
+                        if (itemsRetornados > 0)
+                        {
+                            MessageBox.Show("La factura se ha registrado con éxito!", "Información");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error al insertar los items", "Información");
+                        }
+                    }
+               }
+               else
+               {
+                   MessageBox.Show("Ocurrió un error al intentar registrar la factura", "Error");
+               }
+            }
         }
 
-        private void accionBotonAlta()
+        private void validarListaDeItems()
         {
-            
-            if (textBoxNroFac.Text.Length == 0)
+            string message = "";
+            if (listBoxItems.Items.Count < 1)
             {
-                MessageBox.Show("Por favor, complete el campo Nro Factura e inténtelo nuevamente");
+                message = message + "La factura debe tener al menos un item ";
+            }
+
+            if (message != "")
+            {
+                MessageBox.Show("Por favor, complete: \n" + message);
                 return;
+            }
+        }
+
+        private void validarCamposFactura()
+        {
+            string message = "";
+            
+            if (maskedTextBoxNroFact.Text.Length == 0)
+            {
+                message = message + "Nro Factura \n";
             }
 
             if (comboBoxEmpresa.Text.Length == 0)
             {
-                MessageBox.Show("Por favor, complete el campo Empresa e inténtelo nuevamente");
-                return;
+                message = message + "Empresa \n";
             }
 
             if (comboBoxCliente.Text.Length == 0)
             {
-                MessageBox.Show("Por favor, complete el campo Cliente e inténtelo nuevamente");
-                return;
+                message = message + "Cliente \n";
             }
 
             if (dtFechaVen.Value == null)
             {
-                MessageBox.Show("Por favor, complete el campo Fecha de vencimiento e inténtelo nuevamente");
-                return;
+                message = message + "Fecha de vencimiento \n";
             }
 
-            if (textBoxFechaAlta.Text.Length == 0)
+            if (message != "")
             {
-                MessageBox.Show("Por favor, complete el campo Fecha de Alta e inténtelo nuevamente");
+                MessageBox.Show("Por favor, complete: \n" + message);
                 return;
             }
+        }
 
-            if (textBoxTotal.Text.Length == 0)
+        private void accionBotonAlta()
+        {
+            validarCamposFactura();
+            validarListaDeItems();
+            if (facturaNoEstaRepetido(Convert.ToInt64(maskedTextBoxNroFact.Text)))
             {
-                MessageBox.Show("Por favor, complete el campo Total e inténtelo nuevamente");
-                return;
-            }
-
-            if (textBoxItemMonto.Text.Length == 0)
-            {
-                MessageBox.Show("Por favor, complete el campo Item Monto e inténtelo nuevamente");
-                return;
-            }
-
-            if (textBoxItemCantidad.Text.Length == 0)
-            {
-                MessageBox.Show("Por favor, complete el campo Item Cantidad e inténtelo nuevamente");
-                return;
-            }
-            
-            if (facturaNoEstaRepetido(Convert.ToInt64(textBoxNroFac.Text)))
-            {
-                darAltaFactura(Convert.ToInt64(textBoxNroFac.Text), comboBoxEmpresa.Text, comboBoxCliente.Text, dtFechaVen.Text, textBoxFechaAlta.Text, textBoxTotal.Text, textBoxItemMonto.Text, textBoxItemCantidad.Text);
+                darAltaFactura();
             }
             else
             {
                 MessageBox.Show("La factura ingresada ya se encuentra registrada, intente con otra.", "Error");
             }
             
+        }
+
+        private void modificarFactura()
+        {
+            string empresa= Convert.ToString(comboBoxEmpresa.Text);
+            string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+            string nombre = Convert.ToString(camposABuscar[0]);
+            string apellido = Convert.ToString(camposABuscar[1]);
+            int filasRetornadas;
+            int itemsRetornados;
+            int itemsBorrados;
+            int filasRetornadas_fac;
+
+            if(seModificanItems)
+            {
+                SqlParameter[] sqls = new SqlParameter[6];
+                sqls[0] = new SqlParameter("empresa", empresa);
+                sqls[1] = new SqlParameter("nombre", nombre);
+                sqls[2] = new SqlParameter("apellido", apellido);
+                sqls[3] = new SqlParameter("fechaVen", dtFechaVen.Text);
+                sqls[4] = new SqlParameter("total", Convert.ToDecimal(textBoxTotal.Text));
+                sqls[5] = new SqlParameter("nroFact", idFacturaSinModificar);
+                
+                SqlCommand cmd1 = new SqlCommand("GOQ.SP_Modificar_Factura", PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd1.CommandType = CommandType.StoredProcedure;
+                cmd1.Parameters.AddRange(sqls);
+                filasRetornadas = cmd1.ExecuteNonQuery();
+
+               if (filasRetornadas > 0)
+               {
+                   SqlParameter[] sqls2 = new SqlParameter[1];
+                   sqls2[0] = new SqlParameter("nroFact", idFacturaSinModificar);
+
+                   SqlCommand cmd3 = new SqlCommand("GOQ.SP_Borrar_Items", PagoAgilFrba.ModuloGlobal.getConexion());
+                   cmd3.CommandType = CommandType.StoredProcedure;
+                   cmd3.Parameters.AddRange(sqls2);
+                   itemsBorrados = cmd3.ExecuteNonQuery();
+
+                   if (itemsBorrados > 0)
+                   {
+                       foreach (string Item in listBoxItems.Items)
+                       {
+                           string[] monto_cant = Item.Split(new Char[] { '/' });
+
+                           SqlParameter[] sqls1 = new SqlParameter[3];
+                           sqls1[0] = new SqlParameter("monto", monto_cant[0]);
+                           sqls1[1] = new SqlParameter("cantidad", monto_cant[1]);
+                           sqls1[2] = new SqlParameter("factura", idFacturaSinModificar);
+                           SqlCommand cmd2 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
+                           cmd2.CommandType = CommandType.StoredProcedure;
+                           cmd2.Parameters.AddRange(sqls1);
+                           itemsRetornados = cmd2.ExecuteNonQuery();
+
+                           if (itemsRetornados > 0)
+                           {
+                               MessageBox.Show("La factura se ha modificado con éxito!", "Información");
+                           }
+                           else
+                           {
+                               MessageBox.Show("Error al insertar los items", "Información");
+                           }
+                       }
+                   }
+                   
+               }
+               else
+               {
+                   MessageBox.Show("La factura no se ha modificado con éxito!", "Información");
+               }
+            }
+            else
+            {
+                SqlParameter[] sqls = new SqlParameter[5];
+                sqls[0] = new SqlParameter("empresa", empresa);
+                sqls[1] = new SqlParameter("nombre", nombre);
+                sqls[2] = new SqlParameter("apellido", apellido);
+                sqls[3] = new SqlParameter("fechaVen", dtFechaVen.Text);
+                sqls[4] = new SqlParameter("nroFact", idFacturaSinModificar);
+
+                SqlCommand cmd1 = new SqlCommand("GOQ.SP_Modificar_Factura_PeroNoItems", PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd1.CommandType = CommandType.StoredProcedure;
+                cmd1.Parameters.AddRange(sqls);
+                filasRetornadas_fac = cmd1.ExecuteNonQuery();
+
+                if (filasRetornadas_fac > 0)
+                {
+                    MessageBox.Show("La factura se ha modificado con éxito!", "Información");
+                }
+                else
+                {
+                    MessageBox.Show("Error al modificar la factura", "Información");
+                }
+            }
+        }
+
+        private void accionBotonModificacion()
+        {
+           validarCamposFactura();
+
+            if (seModificanItems)
+            {
+                validarListaDeItems();
+            }
+            modificarFactura();
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
@@ -272,7 +416,7 @@ namespace PagoAgilFrba.AbmFactura
             }
             else if (labelTitulo.Text == "MODIFICACION")
             {
-                //accionBotonModificacion();
+                accionBotonModificacion();
             }
         }
 
@@ -284,6 +428,443 @@ namespace PagoAgilFrba.AbmFactura
         private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void buttonAgregarItem_Click(object sender, EventArgs e)
+        {
+            string message_items = "";
+
+            if (textBoxItemMonto.Text.Length == 0)
+            {
+                message_items = message_items + "Monto \n";
+            }
+
+            if (textBoxItemCantidad.Text.Length == 0)
+            {
+                message_items = message_items + "Cantidad \n";
+            }
+            
+            if (message_items != "")
+            {
+                MessageBox.Show("Por favor, complete: \n" + message_items);
+                return;
+            }
+            listBoxItems.Items.Add(textBoxItemMonto.Text + "/" + textBoxItemCantidad.Text);
+
+            int cantidad = Convert.ToInt32(textBoxItemCantidad.Text);
+            decimal monto = Convert.ToDecimal(textBoxItemMonto.Text);
+            decimal montoxcant = cantidad * monto;
+            totalItems = totalItems + montoxcant;
+            textBoxTotal.Text = Convert.ToString(totalItems);
+
+            decimal totalFactura = Convert.ToDecimal(textBoxTotal.Text);
+
+            textBoxItemMonto.Text = "";
+            textBoxItemCantidad.Text = "";
+        }
+
+        private void buttonLimpiarItems_Click(object sender, EventArgs e)
+        {
+            listBoxItems.Items.Clear();
+            textBoxItemMonto.Text = "";
+            textBoxItemCantidad.Text = "";
+            totalItems = 0;
+            textBoxTotal.Text = "0";
+        }
+
+        private void labelItemMonto_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void textBoxTotal_(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mostrarBusqueda()
+        {
+            labelTitulo.Visible = true;
+            labelFiltro.Visible = true;
+            comboBoxFiltro.Visible = true;
+        }
+
+        private void modificaciónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ocultarTodosLosItems();
+            limpiarCampos();
+            labelTitulo.Text = "MODIFICACION";
+            mostrarBusqueda();
+        }
+
+        private void comboBoxFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ocultarTodosLosItems();
+            labelTitulo.Visible = true;
+            labelFiltro.Visible = true;
+            comboBoxFiltro.Visible = true;
+
+            if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
+            {
+                labelNroFac.Visible = true;
+                maskedTextBoxNroFact.Visible = true;
+                labelEmpresa.Visible = true;
+                comboBoxEmpresa.Visible = true;
+                labelCliente.Visible = true;
+                comboBoxCliente.Visible = true;
+                buttonBuscar.Visible = true;
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
+            {
+                labelNroFac.Visible = true;
+                maskedTextBoxNroFact.Visible = true;
+                buttonBuscar.Visible = true;
+                buttonLimpiar.Visible = true;
+
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "Empresa")
+            {
+                labelEmpresa.Visible = true;
+                comboBoxEmpresa.Visible = true;
+                buttonBuscar.Visible = true;
+                buttonLimpiar.Visible = true;
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "Cliente")
+            {
+                labelCliente.Visible = true;
+                comboBoxCliente.Visible = true;
+                buttonBuscar.Visible = true;
+                buttonLimpiar.Visible = true;
+            }
+        }
+
+        private bool realizarBusquedayDevolverResultado()
+        {
+            comboBoxFacturasEncontradas.Items.Clear();
+            
+            if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
+            {
+                string empresa = Convert.ToString(comboBoxEmpresa.Text);
+                string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+                string nombre = Convert.ToString(camposABuscar[0]);
+                string apellido = Convert.ToString(camposABuscar[1]);
+                int fac_id = Convert.ToInt32(maskedTextBoxNroFact.Text);
+                
+                SqlDataReader reader = null;
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where e.empresa_nombre = @empresa  and c.cli_nombre = @nombre and c.cli_apellido = @apellido and f.fac_id = @nroFactura and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd.Parameters.Add("empresa", SqlDbType.NVarChar).Value = empresa;
+                cmd.Parameters.Add("nombre", SqlDbType.NVarChar).Value = nombre;
+                cmd.Parameters.Add("apellido", SqlDbType.NVarChar).Value = apellido;
+                cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    comboBoxFacturasEncontradas.Items.Add(reader.GetString(0));
+                }
+                if (reader.HasRows)
+                {
+                    reader.Close();
+                    return true;
+                }
+                else
+                {
+                    reader.Close();
+                    return false;
+                }
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
+            {
+                int fac_id = Convert.ToInt32(maskedTextBoxNroFact.Text);
+
+                SqlDataReader reader = null;
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where f.fac_id = @nroFactura and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    comboBoxFacturasEncontradas.Items.Add(reader.GetString(0));
+                }
+                if (reader.HasRows)
+                {
+                    reader.Close();
+                    return true;
+                }
+                else
+                {
+                    reader.Close();
+                    return false;
+                }
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "Empresa")
+            {
+                string empresa = Convert.ToString(comboBoxEmpresa.Text);
+                SqlDataReader reader = null;
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where e.empresa_nombre = @empresa and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd.Parameters.Add("empresa", SqlDbType.NVarChar).Value = empresa;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    comboBoxFacturasEncontradas.Items.Add(reader.GetString(0));
+                }
+                if (reader.HasRows)
+                {
+                    reader.Close();
+                    return true;
+                }
+                else
+                {
+                    reader.Close();
+                    return false;
+                }
+            }
+            else
+            {
+                string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+                string nombre = Convert.ToString(camposABuscar[0]);
+                string apellido = Convert.ToString(camposABuscar[1]);
+                SqlDataReader reader = null;
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where c.cli_nombre = @nombre and c.cli_apellido = @apellido and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd.Parameters.Add("nombre", SqlDbType.NVarChar).Value = nombre;
+                cmd.Parameters.Add("apellido", SqlDbType.NVarChar).Value = apellido;
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    comboBoxFacturasEncontradas.Items.Add(reader.GetString(0));
+                }
+                if (reader.HasRows)
+                {
+                    reader.Close();
+                    return true;
+                }
+                else
+                {
+                    reader.Close();
+                    return false;
+                }
+            }
+
+        }
+
+        private void mostrarResultadosBusqueda()
+        {
+            labelFacturasEncontradas.Visible = true;
+            comboBoxFacturasEncontradas.Visible = true;
+        }
+       
+        private void buttonBuscar_Click(object sender, EventArgs e)
+        {
+            if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
+            {
+                validarCamposFactura();
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
+            {
+                string message = "";
+
+                if (maskedTextBoxNroFact.Text.Length == 0)
+                {
+                    message = message + "Nro Factura \n";
+                }
+
+                if (message != "")
+                {
+                    MessageBox.Show("Por favor, complete: \n" + message);
+                    return;
+                }
+            }
+            else if (comboBoxFiltro.SelectedItem.ToString() == "Empresa")
+            {
+                string message = "";
+
+                if (comboBoxEmpresa.Text.Length == 0)
+                {
+                    message = message + "Empresa \n";
+                }
+
+                if (message != "")
+                {
+                    MessageBox.Show("Por favor, complete: \n" + message);
+                    return;
+                }
+            }
+            else
+            {
+                string message = "";
+                if (comboBoxCliente.Text.Length == 0)
+                {
+                    message = message + "Cliente \n";
+                }
+
+                if (message != "")
+                {
+                    MessageBox.Show("Por favor, complete: \n" + message);
+                    return;
+                }
+            }
+
+            if (realizarBusquedayDevolverResultado())
+            {
+                MessageBox.Show("La factura fue encontrada.", "Información");
+                mostrarResultadosBusqueda();
+            }
+            else
+            {
+                MessageBox.Show("La factura no ha sido encontrada, puede que su factura ya se haya pagado o rendido.", "Error");
+            }
+        }
+
+        private void llenarCamposParaModificar(int fac_id)
+        {
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("select f.fac_id, e.empresa_nombre, c.cli_nombre + '/' + c.cli_apellido, f.fac_fecha_vec, f.fac_total from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id where f.fac_id = @nroFactura; ",
+            PagoAgilFrba.ModuloGlobal.getConexion());
+            cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                maskedTextBoxNroFact.Text = Convert.ToString(reader.GetValue(0));
+                comboBoxEmpresa.Text = reader.GetString(1);
+                comboBoxCliente.Text = reader.GetString(2);
+                dtFechaVen.Value = Convert.ToDateTime(reader.GetValue(3));
+                textBoxTotal.Text = Convert.ToString(reader.GetValue(4));
+                idFacturaSinModificar = Convert.ToInt32(reader.GetValue(0));
+            }
+            else
+            {
+                MessageBox.Show("Ocurrió un error al obtener los datos de la factura.", "Error");
+            }
+            reader.Close();
+        }
+
+        private void ocultarItems()
+        {
+            labelDatosItem.Visible = false;
+            labelItemsAAgregar.Visible = false;
+            buttonLimpiarItems.Visible = false;
+        }
+
+        private void mostrarItems()
+        {
+            labelDatosItem.Visible = true;
+            labelItemsAAgregar.Visible = true;
+            buttonLimpiarItems.Visible = true;
+            labelItemMonto.Visible = true;
+            textBoxItemMonto.Visible = true;
+            labelItemCantidad.Visible = true;
+            textBoxItemCantidad.Visible = true;
+            listBoxItems.Visible = true;
+            buttonAgregarItem.Visible = true;
+        }
+
+        private void limpiarCamposItems()
+        {
+            listBoxItems.Items.Clear();
+            textBoxItemMonto.Text = "";
+            textBoxItemCantidad.Text = "";
+        }
+        private void comboBoxFacturasEncontradas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (labelTitulo.Text == "MODIFICACION")
+            {
+                if (MessageBox.Show("¿Desea modificar la factura seleccionada?", "Información",
+                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    ocultarTodosLosItems();
+                    string[] camposABuscar = comboBoxFacturasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+                    limpiarCampos();
+                    //IDFACTURA
+                    llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]));
+                    mostrarModificacion();
+
+                    if (MessageBox.Show("¿Desea modificar los items?", "Información",
+                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        limpiarCamposItems();
+                        int fac_id = Convert.ToInt32(camposABuscar[0]);
+                        totalItems = 0;
+
+                        SqlDataReader reader = null;
+                        SqlCommand cmd = new SqlCommand("select Monto,Cantidad from GOQ.Item where fac_id = @nroFactura;",
+                        PagoAgilFrba.ModuloGlobal.getConexion());
+                        cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
+                        reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            decimal monto = Convert.ToDecimal(reader.GetValue(0));
+                            int cantidad = Convert.ToInt32(reader.GetValue(1));
+                            decimal montoxcant = cantidad * monto;
+                            totalItems = totalItems + montoxcant;
+                            listBoxItems.Items.Add(Convert.ToString(reader.GetValue(0)) + "/" + Convert.ToString(reader.GetValue(1)));
+                        }
+                        textBoxTotal.Text = Convert.ToString(totalItems);
+                        mostrarItems();
+                        seModificanItems = true;
+                    }
+                }
+            }
+            else
+            {
+                if (MessageBox.Show("¿Desea eliminar la factura seleccionada?", "Información",
+                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    int itemsBorrados;
+                    int facturaBorrada;
+
+                    string[] camposABuscar = comboBoxFacturasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+                    //nrofactura
+                    SqlParameter[] sqls2 = new SqlParameter[1];
+                    sqls2[0] = new SqlParameter("nroFact", Convert.ToInt32(camposABuscar[0]));
+
+                    SqlCommand cmd3 = new SqlCommand("GOQ.SP_Borrar_Items", PagoAgilFrba.ModuloGlobal.getConexion());
+                    cmd3.CommandType = CommandType.StoredProcedure;
+                    cmd3.Parameters.AddRange(sqls2);
+                    itemsBorrados = cmd3.ExecuteNonQuery();
+
+                    if (itemsBorrados > 0)
+                    {
+                        SqlParameter[] sqls3 = new SqlParameter[1];
+                        sqls3[0] = new SqlParameter("nroFact", Convert.ToInt32(camposABuscar[0]));
+
+                        SqlCommand cmd4 = new SqlCommand("GOQ.SP_Borrar_Factura", PagoAgilFrba.ModuloGlobal.getConexion());
+                        cmd4.CommandType = CommandType.StoredProcedure;
+                        cmd4.Parameters.AddRange(sqls3);
+                        facturaBorrada = cmd4.ExecuteNonQuery();
+
+                        if (facturaBorrada > 0)
+                         {
+                             MessageBox.Show("La factura y sus items se han borrado con exito", "Información");
+                         }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al borrar los items", "Información");
+                    }
+                }
+            }
+        }
+
+        private void labelTotal_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bajaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ocultarTodosLosItems();
+            limpiarCampos();
+            labelTitulo.Text = "BAJA";
+            mostrarBusqueda();
         }
     }
 }
