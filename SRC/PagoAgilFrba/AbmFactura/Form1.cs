@@ -147,6 +147,9 @@ namespace PagoAgilFrba.AbmFactura
             labelDatosFactura.Visible = true;
             labelCliente.Visible = true;
             comboBoxCliente.Visible = true;
+            labelNroFac.Visible = true;
+            maskedTextBoxNroFact.Visible = true;
+            maskedTextBoxNroFact.ReadOnly = true;
         }
 
         private void altaToolStripMenuItem_Click(object sender, EventArgs e)
