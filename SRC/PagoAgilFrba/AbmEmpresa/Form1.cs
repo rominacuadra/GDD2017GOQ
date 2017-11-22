@@ -71,6 +71,7 @@ namespace PagoAgilFrba.AbmEmpresa
             textBoxDireccion.Text = "";
             comboBoxServicio.Text = "";
             comboBoxEmpresasEncontradas.Items.Clear();
+            checkBoxEmpresa.Checked = false;
         }
 
         private void mostrarAlta()
@@ -277,7 +278,7 @@ namespace PagoAgilFrba.AbmEmpresa
         private void modificarEmpresa(string Nombre, Int64 Cuit, string Servicio, string Direccion)
         {
             int filasRetornadasEmpresa, filasRetornadasServicioEmpresa, habilitado;
-            string message = "";
+            
             int serv_id = 0;
 
             if (checkBoxEmpresa.Visible && checkBoxEmpresa.Checked)
@@ -381,15 +382,16 @@ namespace PagoAgilFrba.AbmEmpresa
             }
         }
 
-        private void inhabilitarSucursal(Int64 Cuit)
+        private void inhabilitarEmpresa(String Cuit)
         {
-            SqlCommand cmd = new SqlCommand("UPDATE GOQ.Empresa SET empresa_habilitado = 0 WHERE empresa_cuit = @CUIT",
-            PagoAgilFrba.ModuloGlobal.getConexion());
-            cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Cuit;
-            int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
-            if (cantidadFilasAfectadas > 0)
+            int update = 0;
+            SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Empresa SET  empresa_habilitado = 0 WHERE empresa_cuit = '{0}'",
+            Cuit), PagoAgilFrba.ModuloGlobal.getConexion());
+            update = cmd.ExecuteNonQuery();
+
+            if (update > 0)
             {
-                MessageBox.Show("Empresa  eliminada con éxito.", "Información");
+                MessageBox.Show("Empresa  inhabilitada con éxito.", "Información");
             }
             else
             {
@@ -443,14 +445,14 @@ namespace PagoAgilFrba.AbmEmpresa
             }
             else
             {
-                if (MessageBox.Show("¿Desea eliminar la empresa seleccionada?", "Información",
+                if (MessageBox.Show("¿Desea inhabilitar la empresa seleccionada?", "Información",
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     string[] camposABuscar = comboBoxEmpresasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
                     //NOMBRE,CUIT,DIRECCION,SERVICIO
                     if (empresaNoEstaInhabilitada(Convert.ToInt64(camposABuscar[1])))
                     {
-                        inhabilitarSucursal(Convert.ToInt64(camposABuscar[1]));
+                        inhabilitarEmpresa(Convert.ToString(camposABuscar[1]));
                     }
                     else
                     {
