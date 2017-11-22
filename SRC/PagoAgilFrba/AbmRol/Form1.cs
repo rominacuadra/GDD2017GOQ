@@ -208,7 +208,7 @@ namespace PagoAgilFrba.AbmRol
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (lbRoles.SelectedItem.ToString() != "") 
+            if (lbRoles.SelectedItems.Count > 0) 
             {
                 
                 SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 0 WHERE rol_nombre = @NOMBREROL",
@@ -387,8 +387,9 @@ namespace PagoAgilFrba.AbmRol
         }
 
         private bool noHayFuncionalidadHabilitadas() {
-            
-            if (cbRol_1.Checked==false & cbCliente_2.Checked==false & cbEmpresa_3.Checked==false & cbSucursal_4.Checked==false & cbFactura_5.Checked==false & cbPagoRegistro_6.Checked==false & cbPagoRendicion_7.Checked==false & cbDevolucion_8.Checked==false & cbEstadistico_9.Checked==false) {
+
+            if ((cbRol_1.Checked == false & cbCliente_2.Checked == false & cbEmpresa_3.Checked == false & cbSucursal_4.Checked == false & cbFactura_5.Checked == false & cbPagoRegistro_6.Checked == false & cbPagoRendicion_7.Checked == false & cbDevolucion_8.Checked == false & cbEstadistico_9.Checked == false) || lbRoles.SelectedItems.Count == 0)
+            {
                 return true;
             }
 
@@ -522,7 +523,7 @@ namespace PagoAgilFrba.AbmRol
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (lbRoles.SelectedItem.ToString() != "")
+            if (lbRoles.SelectedItems.Count > 0)
             {
 
                 SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 1 WHERE rol_nombre = @NOMBREROL",

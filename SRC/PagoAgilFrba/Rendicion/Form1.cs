@@ -134,13 +134,11 @@ namespace PagoAgilFrba.Rendicion
                             cmdInsertRendicion.Parameters.Add("COMISION", SqlDbType.Int).Value = Convert.ToInt32(cbPorcComision.SelectedItem.ToString().Trim());
                             cmdInsertRendicion.Parameters.Add("IDCOMISION", SqlDbType.Int).Value = dameElIdDeComision(Convert.ToInt32(cbPorcComision.SelectedItem.ToString().Trim()));
 
-                            //maxRenId = Convert.ToInt32(dameUltRenId());
-                            maxRenId = Convert.ToInt32(cmdInsertRendicion.ExecuteScalar());
+                            object respuestaInsert = cmdInsertRendicion.ExecuteScalar();
 
-                            int cantidadFilasAfectadas = cmdInsertRendicion.ExecuteNonQuery();
-
-                            if (cantidadFilasAfectadas > 0)
+                            if (respuestaInsert.GetType() != typeof(DBNull))
                             {
+                                maxRenId = Convert.ToInt32(respuestaInsert);
                                 SqlCommand cmdUpdateEmpresaRen_Id = new SqlCommand(queryUpdateEmpresaRen_Id, PagoAgilFrba.ModuloGlobal.getConexion());
                                 cmdUpdateEmpresaRen_Id.Parameters.Add("FECHARENDICION", SqlDbType.Date).Value = dtRendicion.Value;
                                 cmdUpdateEmpresaRen_Id.Parameters.Add("EMPRESAID", SqlDbType.Int).Value = idEmpresa(cbEmpresa.SelectedItem.ToString().Trim());
@@ -159,9 +157,6 @@ namespace PagoAgilFrba.Rendicion
                             }
 
             }
-
-            
-
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
