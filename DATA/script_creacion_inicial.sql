@@ -7,6 +7,13 @@ IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
 		DROP FUNCTION GOQ.F_Hash256
 		DROP PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
 		DROP PROCEDURE GOQ.SP_Insertar_Item
+		DROP PROCEDURE GOQ.SP_Borrar_Factura
+		DROP PROCEDURE GOQ.SP_Borrar_Items
+		DROP PROCEDURE GOQ.SP_Insertar_Factura
+		DROP PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
+		DROP PROCEDURE GOQ.SP_Modificar_Factura
+		DROP PROCEDURE GOQ.SP_Modificar_Factura_PeroNoItems
+		
 		DROP TABLE GOQ.CobradorSucursal
 		DROP TABLE GOQ.Devolucion
 		DROP TABLE GOQ.Funcionalidad_Rol
@@ -19,7 +26,6 @@ IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
 		DROP TABLE GOQ.Pago_Factura
 		DROP TABLE GOQ.Sucursal
 		DROP TABLE GOQ.Pago
-	
 		DROP TABLE GOQ.Factura
 		DROP TABLE GOQ.Cliente
 		DROP TABLE GOQ.Rendicion
@@ -283,19 +289,148 @@ BEGIN TRAN
 COMMIT TRAN;
 
 GO
+
 CREATE PROCEDURE GOQ.SP_Insertar_Item	
 	@monto numeric(18,2),	
-	@cantidad numeric(18,0)
+	@cantidad numeric(18,0),
+	@factura int
 AS
-BEGIN TRAN	declare @idFacturaInsertado int
+BEGIN TRAN	
 
-	SET @idFacturaInsertado = @@IDENTITY
-	INSERT INTO [GOQ].Item(fac_id,Monto,Cantidad) VALUES (@idFacturaInsertado,@monto,@cantidad);
+	INSERT INTO [GOQ].Item(fac_id,Monto,Cantidad) VALUES (@factura,@monto,@cantidad);
 	
 	if @@ERROR <> 0 		
 		BEGIN 			
 			rollback tran		
 		END
+COMMIT TRAN;
+
+GO
+
+CREATE PROCEDURE GOQ.SP_Insertar_Factura					
+				@nroFact int,					
+				@empresa varchar(255),					
+				@nombre varchar(255),					
+				@apellido varchar(255),					
+				@fechaVen datetime,					
+				@fechaAlta datetime,					
+				@total numeric(18,0)
+AS
+BEGIN TRAN	
+	declare @idEmpresa int	
+	declare @idCliente int	
+	
+	set @idEmpresa = (select ID_empresa from Empresa where empresa_nombre = @empresa)
+	set @idCliente = (select cli_id from Cliente where cli_nombre = @nombre and cli_apellido = @apellido)
+		
+	INSERT INTO GOQ.Factura(fac_id,							
+							fac_empresa_id,							
+							fac_cli_id,							
+							fac_fecha_alta,							
+							fac_fecha_vec,							
+							fac_total)		
+					VALUES (@nroFact,				
+							@idEmpresa,				
+							@idCliente,				
+							@fechaAlta,				
+							@fechaVen,				
+							@total)		
+	
+	if @@ERROR <> 0 		
+	BEGIN 			
+		rollback tran		
+	END
+	
+COMMIT TRAN;
+
+GO
+
+CREATE PROCEDURE GOQ.SP_Modificar_Factura					
+				@empresa varchar(255),					
+				@nombre varchar(255),					
+				@apellido varchar(255),					
+				@fechaVen datetime,					
+				@total numeric(18,0),
+				@nroFact int
+AS
+BEGIN TRAN	
+	declare @idEmpresa int	
+	declare @idCliente int	
+	
+	set @idEmpresa = (select ID_empresa from Empresa where empresa_nombre = @empresa)
+	set @idCliente = (select cli_id from Cliente where cli_nombre = @nombre and cli_apellido = @apellido)
+		
+	UPDATE GOQ.Factura set fac_empresa_id = @idEmpresa, 
+						   fac_cli_id = @idCliente, 
+						   fac_fecha_vec = @fechaVen,
+						   fac_total = @total
+					where fac_id = @nroFact
+	
+	if @@ERROR <> 0 		
+	BEGIN 			
+		rollback tran		
+	END
+	
+COMMIT TRAN;
+
+GO
+
+CREATE PROCEDURE GOQ.SP_Borrar_Items					
+				@nroFact int
+AS
+BEGIN TRAN	
+		
+	DELETE FROM GOQ.Item where fac_id = @nroFact
+	
+	if @@ERROR <> 0 		
+	BEGIN 			
+		rollback tran		
+	END
+	
+COMMIT TRAN;
+
+GO
+
+CREATE PROCEDURE GOQ.SP_Modificar_Factura_PeroNoItems					
+				@empresa varchar(255),					
+				@nombre varchar(255),					
+				@apellido varchar(255),					
+				@fechaVen datetime,					
+				@nroFact int
+AS
+BEGIN TRAN	
+	declare @idEmpresa int	
+	declare @idCliente int	
+	
+	set @idEmpresa = (select ID_empresa from Empresa where empresa_nombre = @empresa)
+	set @idCliente = (select cli_id from Cliente where cli_nombre = @nombre and cli_apellido = @apellido)
+		
+	UPDATE GOQ.Factura set fac_empresa_id = @idEmpresa, 
+						   fac_cli_id = @idCliente, 
+						   fac_fecha_vec = @fechaVen
+					where fac_id = @nroFact
+	
+	if @@ERROR <> 0 		
+	BEGIN 			
+		rollback tran		
+	END
+	
+COMMIT TRAN;
+
+GO
+
+CREATE PROCEDURE GOQ.SP_Borrar_Factura					
+				@nroFact int
+AS
+BEGIN TRAN	
+		
+	DELETE FROM GOQ.Item where fac_id = @nroFact
+	
+	if @@ERROR <> 0 		
+	BEGIN 			
+		rollback tran		
+	END
+	
 COMMIT TRAN;
 
 GO
