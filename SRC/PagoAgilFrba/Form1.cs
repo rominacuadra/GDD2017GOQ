@@ -166,31 +166,20 @@ namespace PagoAgilFrba
 
                             if (cbRol.SelectedItem.ToString().Length > 0)
                             {
-                                
-                                if (cbRol.SelectedItem.ToString()!= "Cobrador")
-                                {
 
+
+                                if (cbSuc.SelectedIndex != -1)
+                                {
                                     PagoAgilFrba.ModuloGlobal.nombre_rol = cbRol.SelectedItem.ToString();
                                     PagoAgilFrba.ModuloGlobal.usuarioLogueado = txtUsuario.Text.ToUpper();
                                     abrirPantallaPrincipal();
-
                                 }
                                 else
                                 {
-                                    
-                                    if (cbSuc.SelectedIndex!=-1)
-                                    {
-                                        PagoAgilFrba.ModuloGlobal.nombre_rol = cbRol.SelectedItem.ToString();
-                                        PagoAgilFrba.ModuloGlobal.usuarioLogueado = txtUsuario.Text.ToUpper();
-                                        abrirPantallaPrincipal();
-                                    }
-                                    else 
-                                    {
-                                        MessageBox.Show("Debe seleccionar una sucursal.", "Información");
-                                        cbSuc.Focus();
-                                    }
+                                    MessageBox.Show("Debe seleccionar una sucursal.", "Información");
+                                    cbSuc.Focus();
                                 }
-
+                                                                                                                                
                             }
                             else 
                             {
