@@ -10,7 +10,6 @@ IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
 		DROP PROCEDURE GOQ.SP_Borrar_Factura
 		DROP PROCEDURE GOQ.SP_Borrar_Items
 		DROP PROCEDURE GOQ.SP_Insertar_Factura
-		DROP PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
 		DROP PROCEDURE GOQ.SP_Modificar_Factura
 		DROP PROCEDURE GOQ.SP_Modificar_Factura_PeroNoItems
 		
@@ -275,12 +274,12 @@ GO
 /***************************** INICIO / CREACION DE STORED PROCEDURES Y VISTAS *****************************/
 
 CREATE PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
-	@idServicio int
+	@idServicio int,
+	@idEmpresa int
 AS
 BEGIN TRAN
-	declare @idEmpresaInsertado int
-	SET @idEmpresaInsertado = @@IDENTITY
-	INSERT INTO [GOQ].Servicio_Empresa (ID_servicio,ID_empresa) VALUES (@idServicio,@idEmpresaInsertado);
+	
+	INSERT INTO [GOQ].Servicio_Empresa (ID_servicio,ID_empresa) VALUES (@idServicio,@idEmpresa);
 	
 	if @@ERROR <> 0 
 		BEGIN 

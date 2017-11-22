@@ -203,9 +203,12 @@ namespace PagoAgilFrba.AbmEmpresa
             }
         }
 
-        private void darAltaSucursal(string Nombre, long Cuit, string Servicio, string Direccion)
+        private void darAltaSucursal(string Nombre, string Cuit, string Servicio, string Direccion)
         {
             int serv_id = 0;
+            int insert = 0;
+            int IDEmpresa = -1;
+
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion = @SERVICIO ",
             PagoAgilFrba.ModuloGlobal.getConexion());
@@ -219,30 +222,35 @@ namespace PagoAgilFrba.AbmEmpresa
 
             if (serv_id != 0)
             {
-                int filasRetornadas;
-                SqlCommand cmd1 = new SqlCommand(string.Format("INSERT INTO GOQ.Empresa (empresa_nombre, empresa_cuit, empresa_dir, empresa_habilitado) VALUES ('{0}', '{1}','{2}', 1)",
-                Nombre, Cuit, Direccion), PagoAgilFrba.ModuloGlobal.getConexion());
-                filasRetornadas = cmd1.ExecuteNonQuery();
+                SqlCommand cmd2 = new SqlCommand("INSERT INTO GOQ.Empresa (empresa_nombre, empresa_cuit, empresa_dir) VALUES (@NOMBRE, @CUIT,@DIRECCION); SELECT SCOPE_IDENTITY();",
+                    PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd2.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = Nombre;
+                cmd2.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = Cuit;
+                cmd2.Parameters.Add("DIRECCION", SqlDbType.NVarChar).Value = Direccion;
+                IDEmpresa = Convert.ToInt32(cmd2.ExecuteScalar());
 
-                if (filasRetornadas > 0)
+                reader.Close();
+                
+                SqlParameter[] sqls = new SqlParameter[2];
+                sqls[0] = new SqlParameter("idServicio", serv_id);
+                sqls[1] = new SqlParameter("idEmpresa", IDEmpresa);
+                SqlCommand cmd3 = new SqlCommand("GOQ.SP_Insertar_Servicio_Empresa", PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd3.CommandType = CommandType.StoredProcedure;
+                cmd3.Parameters.AddRange(sqls);
+                insert = cmd3.ExecuteNonQuery();
+
+                if (insert > 0)
                 {
-                    SqlParameter[] sqls = new SqlParameter[1];
-                    sqls[0] = new SqlParameter("SERVICIO", serv_id);
-                    SqlCommand cmd2 = new SqlCommand("GOQ.SP_Insertar_Servicio_Empresa", PagoAgilFrba.ModuloGlobal.getConexion());
-                    cmd2.CommandType = CommandType.StoredProcedure;
-                    cmd2.Parameters.AddRange(sqls);
-                    
                     MessageBox.Show("La empresa se ha registrado con éxito!", "Información");
-                   
                 }
                 else
                 {
-                    MessageBox.Show("Ocurrió un error al intentar registrar la empresa", "Error");
+                    MessageBox.Show("Error al insertar la factura", "Información");
                 }
             }
             else
             {
-                MessageBox.Show("Ocurrió un error al intentar registrar la empresa", "Error");
+                MessageBox.Show("No se encuentra el servicio", "Error");
             }
             
         }
@@ -253,7 +261,7 @@ namespace PagoAgilFrba.AbmEmpresa
             {
                 if (cuitNoEstaRepetido(Convert.ToInt64(maskedTextBoxCuit.Text)))
                 {
-                    darAltaSucursal(textBoxNombre.Text, Convert.ToInt64(maskedTextBoxCuit.Text), comboBoxServicio.Text, textBoxDireccion.Text);
+                    darAltaSucursal(textBoxNombre.Text, Convert.ToString(maskedTextBoxCuit.Text), comboBoxServicio.Text, textBoxDireccion.Text);
                 }
                 else
                 {
@@ -268,8 +276,10 @@ namespace PagoAgilFrba.AbmEmpresa
 
         private void modificarEmpresa(string Nombre, Int64 Cuit, string Servicio, string Direccion)
         {
-            int filasRetornadasEmpresa, filasRetornadasServicioEmpresa, habilitado, idServicio = 0;
-            
+            int filasRetornadasEmpresa, filasRetornadasServicioEmpresa, habilitado;
+            string message = "";
+            int serv_id = 0;
+
             if (checkBoxEmpresa.Visible && checkBoxEmpresa.Checked)
             {
                 habilitado = 1;
@@ -291,30 +301,38 @@ namespace PagoAgilFrba.AbmEmpresa
             SqlCommand cmd1 = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion = @SERVICIO ",
             PagoAgilFrba.ModuloGlobal.getConexion());
             cmd1.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = Servicio;
-            reader = cmd.ExecuteReader();
+            reader = cmd1.ExecuteReader();
+            
             if (reader.HasRows)
             {
                 reader.Read();
-                idServicio = Convert.ToInt32(reader.GetValue(0));
+                serv_id = Convert.ToInt32(reader.GetValue(0));
             }
-
-            if (filasRetornadasEmpresa > 0 && idServicio != 0)
+            if (filasRetornadasEmpresa > 0)
             {
-                SqlCommand cmd2 = new SqlCommand(string.Format("UPDATE GOQ.Servicio_Empresa SET  ID_servicio = '{0}' WHERE ID_empresa = '{1}'",
-                idServicio, idEmpresaSinModificar), PagoAgilFrba.ModuloGlobal.getConexion());
-                filasRetornadasServicioEmpresa = cmd2.ExecuteNonQuery();
-
-                if (filasRetornadasServicioEmpresa > 0)
+                if (serv_id == idServicioSinModificar)
                 {
                     MessageBox.Show("La empresa se ha modificado con éxito!", "Información");
                 }
                 else
                 {
-                    MessageBox.Show("Ocurrió un error al intentar modificar la empresa", "Error");
+                    if (filasRetornadasEmpresa > 0 && serv_id != 0)
+                    {
+                        SqlCommand cmd2 = new SqlCommand(string.Format("UPDATE GOQ.Servicio_Empresa SET  ID_servicio = '{0}' WHERE ID_empresa = '{1}'",
+                        serv_id, idEmpresaSinModificar), PagoAgilFrba.ModuloGlobal.getConexion());
+                        filasRetornadasServicioEmpresa = cmd2.ExecuteNonQuery();
+
+                        if (filasRetornadasServicioEmpresa > 0)
+                        {
+                            MessageBox.Show("La empresa se ha modificado con éxito!", "Información");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ocurrió un error al intentar modificar la empresa", "Error");
+                        }
+                    }
                 }
-                
             }
-            
         }
 
         private void accionBotonModificacion()
@@ -469,11 +487,11 @@ namespace PagoAgilFrba.AbmEmpresa
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit like @CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion like @SERVICIO;",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit=@CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion=@SERVICIO;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Convert.ToInt64(maskedTextBoxCuit.Text);
                 cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = comboBoxServicio.Text;
-                cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
+                cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = "%" + textBoxNombre.Text + "%";
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -493,9 +511,9 @@ namespace PagoAgilFrba.AbmEmpresa
             else if (comboBoxFiltro.SelectedItem.ToString() == "Nombre")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_nombre like @NOMBRE",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_nombre like @NOMBRE;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
+                cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = "%" + textBoxNombre.Text + "%";
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -515,9 +533,9 @@ namespace PagoAgilFrba.AbmEmpresa
             else if (comboBoxFiltro.SelectedItem.ToString() == "Cuit")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit like @CUIT",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit=@CUIT",
                 PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Convert.ToInt64(maskedTextBoxCuit.Text);
+                cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -537,7 +555,7 @@ namespace PagoAgilFrba.AbmEmpresa
             else
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where s.serv_descripcion like @SERVICIO",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where s.serv_descripcion=@SERVICIO",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = comboBoxServicio.Text;
                 reader = cmd.ExecuteReader();
