@@ -43,7 +43,6 @@
             this.labelNombre = new System.Windows.Forms.Label();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.labelCuit = new System.Windows.Forms.Label();
-            this.textBoxCuit = new System.Windows.Forms.TextBox();
             this.labelDireccion = new System.Windows.Forms.Label();
             this.textBoxDireccion = new System.Windows.Forms.TextBox();
             this.labelServicio = new System.Windows.Forms.Label();
@@ -53,6 +52,7 @@
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.labelTitulo = new System.Windows.Forms.Label();
             this.comboBoxServicio = new System.Windows.Forms.ComboBox();
+            this.maskedTextBoxCuit = new System.Windows.Forms.MaskedTextBox();
             this.menuABMCli.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -177,14 +177,6 @@
             this.labelCuit.TabIndex = 108;
             this.labelCuit.Text = "Cuit:";
             // 
-            // textBoxCuit
-            // 
-            this.textBoxCuit.Location = new System.Drawing.Point(139, 201);
-            this.textBoxCuit.Name = "textBoxCuit";
-            this.textBoxCuit.Size = new System.Drawing.Size(114, 20);
-            this.textBoxCuit.TabIndex = 109;
-            this.textBoxCuit.TextChanged += new System.EventHandler(this.textBoxCuit_TextChanged);
-            // 
             // labelDireccion
             // 
             this.labelDireccion.AutoSize = true;
@@ -269,11 +261,20 @@
             this.comboBoxServicio.Size = new System.Drawing.Size(114, 21);
             this.comboBoxServicio.TabIndex = 119;
             // 
+            // maskedTextBoxCuit
+            // 
+            this.maskedTextBoxCuit.Location = new System.Drawing.Point(139, 201);
+            this.maskedTextBoxCuit.Mask = "99999999999";
+            this.maskedTextBoxCuit.Name = "maskedTextBoxCuit";
+            this.maskedTextBoxCuit.Size = new System.Drawing.Size(114, 20);
+            this.maskedTextBoxCuit.TabIndex = 120;
+            // 
             // AbmEmpresa
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(565, 370);
+            this.Controls.Add(this.maskedTextBoxCuit);
             this.Controls.Add(this.comboBoxServicio);
             this.Controls.Add(this.labelTitulo);
             this.Controls.Add(this.buttonBuscar);
@@ -283,7 +284,6 @@
             this.Controls.Add(this.labelServicio);
             this.Controls.Add(this.textBoxDireccion);
             this.Controls.Add(this.labelDireccion);
-            this.Controls.Add(this.textBoxCuit);
             this.Controls.Add(this.labelCuit);
             this.Controls.Add(this.textBoxNombre);
             this.Controls.Add(this.labelNombre);
@@ -319,7 +319,6 @@
         private System.Windows.Forms.Label labelNombre;
         private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.Label labelCuit;
-        private System.Windows.Forms.TextBox textBoxCuit;
         private System.Windows.Forms.Label labelDireccion;
         private System.Windows.Forms.TextBox textBoxDireccion;
         private System.Windows.Forms.Label labelServicio;
@@ -329,5 +328,6 @@
         private System.Windows.Forms.Button buttonBuscar;
         private System.Windows.Forms.Label labelTitulo;
         private System.Windows.Forms.ComboBox comboBoxServicio;
+        private System.Windows.Forms.MaskedTextBox maskedTextBoxCuit;
     }
 }

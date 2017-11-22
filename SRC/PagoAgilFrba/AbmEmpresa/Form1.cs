@@ -52,7 +52,7 @@ namespace PagoAgilFrba.AbmEmpresa
             labelNombre.Visible = false;
             textBoxNombre.Visible = false;
             labelCuit.Visible = false;
-            textBoxCuit.Visible = false;
+            maskedTextBoxCuit.Visible = false;
             labelDireccion.Visible = false;
             textBoxDireccion.Visible = false;
             labelServicio.Visible = false;
@@ -67,7 +67,7 @@ namespace PagoAgilFrba.AbmEmpresa
         private void limpiarCampos()
         {
             textBoxNombre.Text = "";
-            textBoxCuit.Text = "";
+            maskedTextBoxCuit.Text = "";
             textBoxDireccion.Text = "";
             comboBoxServicio.Text = "";
             comboBoxEmpresasEncontradas.Items.Clear();
@@ -80,7 +80,7 @@ namespace PagoAgilFrba.AbmEmpresa
             labelDireccion.Visible = true;
             labelServicio.Visible = true;
             textBoxNombre.Visible = true;
-            textBoxCuit.Visible = true;
+            maskedTextBoxCuit.Visible = true;
             textBoxDireccion.Visible = true;
             comboBoxServicio.Visible = true;
             labelTitulo.Visible = true;
@@ -113,7 +113,7 @@ namespace PagoAgilFrba.AbmEmpresa
                 labelCuit.Visible = true;
                 labelServicio.Visible = true;
                 textBoxNombre.Visible = true;
-                textBoxCuit.Visible = true;
+                maskedTextBoxCuit.Visible = true;
                 comboBoxServicio.Visible = true;
                 buttonBuscar.Visible = true;
                 buttonLimpiar.Visible = true;
@@ -121,7 +121,7 @@ namespace PagoAgilFrba.AbmEmpresa
             else if (comboBoxFiltro.SelectedItem.ToString() == "Cuit")
             {
                 labelCuit.Visible = true;
-                textBoxCuit.Visible = true;
+                maskedTextBoxCuit.Visible = true;
                 buttonBuscar.Visible = true;
                 buttonLimpiar.Visible = true;
 
@@ -174,10 +174,10 @@ namespace PagoAgilFrba.AbmEmpresa
 
         private bool todosLosCamposCompletos()
         {
-            bool result = Information.IsNumeric(Convert.ToInt64(textBoxCuit.Text));
+            bool result = Information.IsNumeric(Convert.ToInt64(maskedTextBoxCuit.Text));
             if(result)
             {
-                return textBoxNombre.Text.Length > 0 && textBoxCuit.Text.Length == 11 && comboBoxServicio.Text.Length > 0 && textBoxDireccion.Text.Length > 0 ? true : false;
+                return textBoxNombre.Text.Length > 0 && maskedTextBoxCuit.Text.Length == 11 && comboBoxServicio.Text.Length > 0 && textBoxDireccion.Text.Length > 0 ? true : false;
             }else
             {
                 MessageBox.Show("El cuit debe ser numerico y contener 11 numeros sin guiones", "Información");
@@ -251,9 +251,9 @@ namespace PagoAgilFrba.AbmEmpresa
         {
             if (todosLosCamposCompletos())
             {
-                if (cuitNoEstaRepetido(Convert.ToInt64(textBoxCuit.Text)))
+                if (cuitNoEstaRepetido(Convert.ToInt64(maskedTextBoxCuit.Text)))
                 {
-                    darAltaSucursal(textBoxNombre.Text, Convert.ToInt64(textBoxCuit.Text), comboBoxServicio.Text, textBoxDireccion.Text);
+                    darAltaSucursal(textBoxNombre.Text, Convert.ToInt64(maskedTextBoxCuit.Text), comboBoxServicio.Text, textBoxDireccion.Text);
                 }
                 else
                 {
@@ -321,7 +321,7 @@ namespace PagoAgilFrba.AbmEmpresa
         {
             if (todosLosCamposCompletos())
             {
-                modificarEmpresa(textBoxNombre.Text, Convert.ToInt64(textBoxCuit.Text), comboBoxServicio.Text, textBoxDireccion.Text);
+                modificarEmpresa(textBoxNombre.Text, Convert.ToInt64(maskedTextBoxCuit.Text), comboBoxServicio.Text, textBoxDireccion.Text);
             }
             else
             {
@@ -390,7 +390,7 @@ namespace PagoAgilFrba.AbmEmpresa
             {
                 reader.Read();
                 textBoxNombre.Text = reader.GetString(0);
-                textBoxCuit.Text = reader.GetString(1);
+                maskedTextBoxCuit.Text = reader.GetString(1);
                 textBoxDireccion.Text = reader.GetString(2);
                 comboBoxServicio.Text = reader.GetString(3);
                 idEmpresaSinModificar = Convert.ToInt32(reader.GetValue(5));
@@ -447,7 +447,7 @@ namespace PagoAgilFrba.AbmEmpresa
         {
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
-                return textBoxCuit.TextLength > 0 && textBoxNombre.TextLength > 0 && comboBoxServicio.SelectedItem.ToString() != "";
+                return maskedTextBoxCuit.TextLength > 0 && textBoxNombre.TextLength > 0 && comboBoxServicio.SelectedItem.ToString() != "";
             }
             else if (comboBoxFiltro.SelectedItem.ToString() == "Nombre")
             {
@@ -455,7 +455,7 @@ namespace PagoAgilFrba.AbmEmpresa
             }
             else if (comboBoxFiltro.SelectedItem.ToString() == "Cuit")
             {
-                return textBoxCuit.TextLength > 0;
+                return maskedTextBoxCuit.TextLength > 0;
             }
             else
             {
@@ -471,7 +471,7 @@ namespace PagoAgilFrba.AbmEmpresa
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit like @CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion like @SERVICIO;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Convert.ToInt64(textBoxCuit.Text);
+                cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Convert.ToInt64(maskedTextBoxCuit.Text);
                 cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = comboBoxServicio.Text;
                 cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
                 reader = cmd.ExecuteReader();
@@ -517,7 +517,7 @@ namespace PagoAgilFrba.AbmEmpresa
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit like @CUIT",
                 PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Convert.ToInt64(textBoxCuit.Text);
+                cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Convert.ToInt64(maskedTextBoxCuit.Text);
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
