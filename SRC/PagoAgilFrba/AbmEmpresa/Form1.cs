@@ -466,9 +466,11 @@ namespace PagoAgilFrba.AbmEmpresa
                     
                     if (empresaNoEstaInhabilitada(Convert.ToInt64(camposABuscar[1].Replace("-", ""))))
                     {
-                        if (yaRindioTodasLasFacturas(camposABuscar[0])) 
+                        if (yaRindioTodasLasFacturas(camposABuscar[1]))
                         {
-                                inhabilitarEmpresa(Convert.ToString(camposABuscar[1]));
+                            MessageBox.Show("PorSI");
+                                //inhabilitarEmpresa(Convert.ToString(camposABuscar[1]));
+
                         } else {
                             MessageBox.Show("La empresa no puede ser inhabilitada, hay facturas sin rendir.", "Información");
                         }
@@ -484,16 +486,16 @@ namespace PagoAgilFrba.AbmEmpresa
             }
         }
 
-        private bool yaRindioTodasLasFacturas(string empresa) {
+        private bool yaRindioTodasLasFacturas(string cuit) {
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select * from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) where e.empresa_nombre=@NOMBRE and f.fac_ren_id is null;", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select count(*) from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT and f.fac_ren_id is null;", PagoAgilFrba.ModuloGlobal.getConexion());
 
-            cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = empresa;
-
+            cmd.Parameters.Add("CUIT", SqlDbType.VarChar).Value = cuit.Replace("-","");
             reader = cmd.ExecuteReader();
+            reader.Read();
 
-            if (reader.HasRows)
+            if (reader.GetInt32(0)>0)
             {
                 return false;
             }else{
