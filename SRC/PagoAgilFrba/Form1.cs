@@ -259,7 +259,7 @@ namespace PagoAgilFrba
              if((cbRol.SelectedItem.ToString())=="Cobrador") {
                  cargarSucursales();                 
              }
-             if ((cbRol.SelectedItem.ToString()) == "Administrador")
+             else
              {
                  cargarTodasLasSucursales();
              }
