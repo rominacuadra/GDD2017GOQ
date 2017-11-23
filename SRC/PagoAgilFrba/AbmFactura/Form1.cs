@@ -159,6 +159,7 @@ namespace PagoAgilFrba.AbmFactura
             mostrarAlta();
             mostrarItems();
             textBoxTotal.Text = totalItems.ToString();
+            maskedTextBoxNroFact.ReadOnly = false;
         }
 
         private void buttonLimpiar_Click(object sender, EventArgs e)
@@ -795,6 +796,7 @@ namespace PagoAgilFrba.AbmFactura
             limpiarCampos();
             labelTitulo.Text = "BAJA";
             mostrarBusqueda();
+            maskedTextBoxNroFact.ReadOnly = false;
         }
     }
 }
