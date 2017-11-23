@@ -18,7 +18,6 @@ namespace PagoAgilFrba.AbmFactura
         public AbmFactura()
         {
             InitializeComponent();
-            comboBoxFiltro.Items.Add("Todos");
             comboBoxFiltro.Items.Add("NroFactura");
             comboBoxFiltro.Items.Add("Empresa");
             comboBoxFiltro.Items.Add("Cliente");
@@ -465,8 +464,6 @@ namespace PagoAgilFrba.AbmFactura
                 {
                     listBoxItems.Items.Add(textBoxItemMonto.Text + "/" + textBoxItemCantidad.Text);
 
-                    
-
                     int cantidad = Convert.ToInt32(textBoxItemCantidad.Text);
                     decimal monto = Convert.ToDecimal(textBoxItemMonto.Text);
                     decimal montoxcant = cantidad * monto;
@@ -531,17 +528,8 @@ namespace PagoAgilFrba.AbmFactura
             labelFiltro.Visible = true;
             comboBoxFiltro.Visible = true;
 
-            if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
-            {
-                labelNroFac.Visible = true;
-                maskedTextBoxNroFact.Visible = true;
-                labelEmpresa.Visible = true;
-                comboBoxEmpresa.Visible = true;
-                labelCliente.Visible = true;
-                comboBoxCliente.Visible = true;
-                buttonBuscar.Visible = true;
-            }
-            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
+            
+            if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
             {
                 labelNroFac.Visible = true;
                 maskedTextBoxNroFact.Visible = true;
@@ -569,43 +557,12 @@ namespace PagoAgilFrba.AbmFactura
         {
             comboBoxFacturasEncontradas.Items.Clear();
             
-            if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
-            {
-                string empresa = Convert.ToString(comboBoxEmpresa.Text);
-                string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
-                string nombre = Convert.ToString(camposABuscar[0]);
-                string apellido = Convert.ToString(camposABuscar[1]);
-                int fac_id = Convert.ToInt32(maskedTextBoxNroFact.Text);
-                
-                SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where e.empresa_nombre = @empresa  and c.cli_nombre = @nombre and c.cli_apellido = @apellido and f.fac_id = @nroFactura and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
-                PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("empresa", SqlDbType.NVarChar).Value = empresa;
-                cmd.Parameters.Add("nombre", SqlDbType.NVarChar).Value = nombre;
-                cmd.Parameters.Add("apellido", SqlDbType.NVarChar).Value = apellido;
-                cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
-                reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    comboBoxFacturasEncontradas.Items.Add(reader.GetString(0));
-                }
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    return true;
-                }
-                else
-                {
-                    reader.Close();
-                    return false;
-                }
-            }
-            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
+            if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
             {
                 int fac_id = Convert.ToInt32(maskedTextBoxNroFact.Text);
 
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where f.fac_id = @nroFactura and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where f.fac_id = @nroFactura and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
                 reader = cmd.ExecuteReader();
@@ -628,7 +585,7 @@ namespace PagoAgilFrba.AbmFactura
             {
                 string empresa = Convert.ToString(comboBoxEmpresa.Text);
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where e.empresa_nombre = @empresa and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where e.empresa_nombre = @empresa and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("empresa", SqlDbType.NVarChar).Value = empresa;
                 reader = cmd.ExecuteReader();
@@ -654,7 +611,7 @@ namespace PagoAgilFrba.AbmFactura
                 string nombre = Convert.ToString(camposABuscar[0]);
                 string apellido = Convert.ToString(camposABuscar[1]);
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where c.cli_nombre = @nombre and c.cli_apellido = @apellido and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where c.cli_nombre = @nombre and c.cli_apellido = @apellido and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("nombre", SqlDbType.NVarChar).Value = nombre;
                 cmd.Parameters.Add("apellido", SqlDbType.NVarChar).Value = apellido;
@@ -686,11 +643,7 @@ namespace PagoAgilFrba.AbmFactura
         private void buttonBuscar_Click(object sender, EventArgs e)
         {
 
-            if (comboBoxFiltro.SelectedItem.ToString() == "Todos" && !validarCamposFactura())
-            {
-
-            }
-            else if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura" && maskedTextBoxNroFact.Text.Length == 0)
+            if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura" && maskedTextBoxNroFact.Text.Length == 0)
             {
                 MessageBox.Show("Por favor, complete el número de factura.");
             }
@@ -811,37 +764,21 @@ namespace PagoAgilFrba.AbmFactura
                 if (MessageBox.Show("¿Desea eliminar la factura seleccionada?", "Información",
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    int itemsBorrados;
-                    int facturaBorrada;
-
+                    int itemsBorrados = 0;
+                    
                     string[] camposABuscar = comboBoxFacturasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
                     //nrofactura
                     SqlParameter[] sqls2 = new SqlParameter[1];
                     sqls2[0] = new SqlParameter("nroFact", Convert.ToInt32(camposABuscar[0]));
 
-                    SqlCommand cmd3 = new SqlCommand("GOQ.SP_Borrar_Items", PagoAgilFrba.ModuloGlobal.getConexion());
+                    SqlCommand cmd3 = new SqlCommand("GOQ.SP_Borrar_Factura_Items", PagoAgilFrba.ModuloGlobal.getConexion());
                     cmd3.CommandType = CommandType.StoredProcedure;
                     cmd3.Parameters.AddRange(sqls2);
-                    itemsBorrados = cmd3.ExecuteNonQuery();
-
+                    itemsBorrados = Convert.ToInt32(cmd3.ExecuteNonQuery());
+                    
                     if (itemsBorrados > 0)
                     {
-                        SqlParameter[] sqls3 = new SqlParameter[1];
-                        sqls3[0] = new SqlParameter("nroFact", Convert.ToInt32(camposABuscar[0]));
-
-                        SqlCommand cmd4 = new SqlCommand("GOQ.SP_Borrar_Factura", PagoAgilFrba.ModuloGlobal.getConexion());
-                        cmd4.CommandType = CommandType.StoredProcedure;
-                        cmd4.Parameters.AddRange(sqls3);
-                        facturaBorrada = cmd4.ExecuteNonQuery();
-
-                        if (facturaBorrada > 0)
-                         {
-                             MessageBox.Show("La factura y sus items se han borrado con exito", "Información");
-                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Los items no pudieron ser borrados.", "Información");
+                        MessageBox.Show("La factura y sus items se han borrado con exito", "Información");
                     }
                 }
             }

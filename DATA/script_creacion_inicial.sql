@@ -7,7 +7,7 @@ IF EXISTS (SELECT name FROM sys.schemas where name = 'GOQ')
 		DROP FUNCTION GOQ.F_Hash256
 		DROP PROCEDURE GOQ.SP_Insertar_Servicio_Empresa
 		DROP PROCEDURE GOQ.SP_Insertar_Item
-		DROP PROCEDURE GOQ.SP_Borrar_Factura
+		DROP PROCEDURE GOQ.SP_Borrar_Factura_Items
 		DROP PROCEDURE GOQ.SP_Borrar_Items
 		DROP PROCEDURE GOQ.SP_Insertar_Factura
 		DROP PROCEDURE GOQ.SP_Modificar_Factura
@@ -418,13 +418,14 @@ COMMIT TRAN;
 
 GO
 
-CREATE PROCEDURE GOQ.SP_Borrar_Factura					
+CREATE PROCEDURE GOQ.SP_Borrar_Factura_Items					
 				@nroFact int
 AS
 BEGIN TRAN	
 		
 	DELETE FROM GOQ.Item where fac_id = @nroFact
-	
+	DELETE FROM GOQ.Factura where fac_id = @nroFact
+
 	if @@ERROR <> 0 		
 	BEGIN 			
 		rollback tran		

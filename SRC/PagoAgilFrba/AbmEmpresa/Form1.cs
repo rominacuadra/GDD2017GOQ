@@ -456,7 +456,7 @@ namespace PagoAgilFrba.AbmEmpresa
                     }
                     else
                     {
-                       MessageBox.Show("La sucursal ya se encuentra eliminada, intente con otra.", "Información");
+                        MessageBox.Show("La empresa ya se encuentra inhabilitar, intente con otra.", "Información");
                     }
 
                 }
