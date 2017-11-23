@@ -414,7 +414,7 @@ namespace PagoAgilFrba.AbmEmpresa
         private void llenarCamposParaModificar(Int64 Cuit)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select e.empresa_nombre, e.empresa_cuit, e.empresa_dir, s.serv_descripcion, e.empresa_habilitado,e.ID_empresa,s.serv_id from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit like @CUIT",
+            SqlCommand cmd = new SqlCommand("select e.empresa_nombre, e.empresa_cuit, e.empresa_dir, s.serv_descripcion, e.empresa_habilitado,e.ID_empresa,s.serv_id from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' ) like @CUIT",
             PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Cuit;
             reader = cmd.ExecuteReader();
@@ -529,7 +529,7 @@ namespace PagoAgilFrba.AbmEmpresa
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit=@CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion=@SERVICIO;",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where ( e.empresa_cuit , '-' , '' )=@CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion=@SERVICIO;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Convert.ToInt64(maskedTextBoxCuit.Text);
                 cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = comboBoxServicio.Text;
@@ -575,7 +575,7 @@ namespace PagoAgilFrba.AbmEmpresa
             else if (comboBoxFiltro.SelectedItem.ToString() == "Cuit")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_cuit=@CUIT",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text;
                 reader = cmd.ExecuteReader();
