@@ -487,7 +487,7 @@ namespace PagoAgilFrba.AbmEmpresa
         private bool yaRindioTodasLasFacturas(string empresa) {
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select * from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) where e.empresa_nombre=@NOMBRE and f.fac_ren_id is null;)", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select * from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) where e.empresa_nombre=@NOMBRE and f.fac_ren_id is null;", PagoAgilFrba.ModuloGlobal.getConexion());
 
             cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = empresa;
 
