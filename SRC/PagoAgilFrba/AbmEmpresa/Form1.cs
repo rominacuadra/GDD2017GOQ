@@ -175,15 +175,27 @@ namespace PagoAgilFrba.AbmEmpresa
 
         private bool todosLosCamposCompletos()
         {
-            bool result = Information.IsNumeric(Convert.ToInt64(maskedTextBoxCuit.Text));
-            if(result)
+            if (maskedTextBoxCuit.Text.Length>0)
             {
-                return textBoxNombre.Text.Length > 0 && maskedTextBoxCuit.Text.Length == 11 && comboBoxServicio.Text.Length > 0 && textBoxDireccion.Text.Length > 0 ? true : false;
-            }else
+
+                bool result = Information.IsNumeric(Convert.ToInt64(maskedTextBoxCuit.Text));
+                if (result)
+                {
+                    return textBoxNombre.Text.Length > 0 && maskedTextBoxCuit.Text.Length == 11 && comboBoxServicio.Text.Length > 0 && textBoxDireccion.Text.Length > 0 ? true : false;
+                }
+                else
+                {
+                    MessageBox.Show("El cuit debe ser numerico y contener 11 numeros sin guiones", "Información");
+                    return false;
+                }
+            
+            }
+            else
             {
-                MessageBox.Show("El cuit debe ser numerico y contener 11 numeros sin guiones", "Información");
+               MessageBox.Show("Debe Ingresar un CUIT.", "Información Falta de Datos.");
                 return false;
             }
+            
         }
 
         private bool cuitNoEstaRepetido(long Cuit)
@@ -456,7 +468,7 @@ namespace PagoAgilFrba.AbmEmpresa
                     }
                     else
                     {
-                        MessageBox.Show("La empresa ya se encuentra inhabilitar, intente con otra.", "Información");
+                       MessageBox.Show("La sucursal ya se encuentra eliminada, intente con otra.", "Información");
                     }
 
                 }
