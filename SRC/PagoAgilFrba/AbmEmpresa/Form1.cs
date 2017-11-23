@@ -192,7 +192,7 @@ namespace PagoAgilFrba.AbmEmpresa
             }
             else
             {
-               MessageBox.Show("Debe Ingresar un CUIT.", "Información Falta de Datos.");
+               
                 return false;
             }
             
@@ -479,7 +479,8 @@ namespace PagoAgilFrba.AbmEmpresa
         {
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
-                return maskedTextBoxCuit.TextLength > 0 && textBoxNombre.TextLength > 0 && comboBoxServicio.SelectedItem.ToString() != "";
+                
+                return maskedTextBoxCuit.Text != "" && textBoxNombre.Text.ToString().Length > 0 && comboBoxServicio.SelectedIndex > 0;
             }
             else if (comboBoxFiltro.SelectedItem.ToString() == "Nombre")
             {
