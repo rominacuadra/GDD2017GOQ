@@ -380,7 +380,7 @@ namespace PagoAgilFrba.AbmEmpresa
         private bool empresaNoEstaInhabilitada(Int64 Cuit)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT ID_empresa FROM GOQ.Empresa WHERE empresa_cuit = @CUIT AND empresa_habilitado = 0",
+            SqlCommand cmd = new SqlCommand("SELECT ID_empresa FROM GOQ.Empresa WHERE REPLACE( empresa_cuit , '-' , '' ) = @CUIT AND empresa_habilitado = 0",
             PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("CUIT", SqlDbType.BigInt).Value = Cuit;
             reader = cmd.ExecuteReader();
@@ -451,7 +451,7 @@ namespace PagoAgilFrba.AbmEmpresa
                     string[] camposABuscar = comboBoxEmpresasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
                     limpiarCampos();
                     //NOMBRE,CUIT,DIRECCION,SERVICIO
-                    llenarCamposParaModificar(Convert.ToInt64(camposABuscar[1]));
+                    llenarCamposParaModificar(Convert.ToInt64(camposABuscar[1].Replace("-", "")));
                     mostrarAlta();
                 }
             }
@@ -462,9 +462,18 @@ namespace PagoAgilFrba.AbmEmpresa
                 {
                     string[] camposABuscar = comboBoxEmpresasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
                     //NOMBRE,CUIT,DIRECCION,SERVICIO
-                    if (empresaNoEstaInhabilitada(Convert.ToInt64(camposABuscar[1])))
+
+                    
+                    if (empresaNoEstaInhabilitada(Convert.ToInt64(camposABuscar[1].Replace("-", ""))))
                     {
-                        inhabilitarEmpresa(Convert.ToString(camposABuscar[1]));
+                        if (yaRindioTodasLasFacturas(camposABuscar[0])) 
+                        {
+                                inhabilitarEmpresa(Convert.ToString(camposABuscar[1]));
+                        } else {
+                            MessageBox.Show("La empresa no puede ser inhabilitada, hay facturas sin rendir.", "Información");
+                        }
+
+                        
                     }
                     else
                     {
@@ -473,6 +482,24 @@ namespace PagoAgilFrba.AbmEmpresa
 
                 }
             }
+        }
+
+        private bool yaRindioTodasLasFacturas(string empresa) {
+
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("select * from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) where e.empresa_nombre=@NOMBRE and f.fac_ren_id is null;)", PagoAgilFrba.ModuloGlobal.getConexion());
+
+            cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = empresa;
+
+            reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                return false;
+            }else{
+                return true;
+            }
+            
         }
 
         private bool camposDeBusquedaCompletos()
