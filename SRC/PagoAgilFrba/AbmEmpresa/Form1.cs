@@ -201,7 +201,7 @@ namespace PagoAgilFrba.AbmEmpresa
         private bool cuitNoEstaRepetido(long Cuit)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT ID_empresa FROM GOQ.Empresa WHERE empresa_cuit = @Cuit", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT ID_empresa FROM GOQ.Empresa WHERE REPLACE( empresa_cuit , '-' , '' ) = @Cuit", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("Cuit", SqlDbType.Decimal).Value = Cuit;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
