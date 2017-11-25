@@ -727,36 +727,46 @@ namespace PagoAgilFrba.AbmFactura
                 if (MessageBox.Show("¿Desea modificar la factura seleccionada?", "Información",
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    ocultarTodosLosItems();
                     string[] camposABuscar = comboBoxFacturasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
-                    limpiarCampos();
-                    //IDFACTURA
-                    llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]));
-                    mostrarModificacion();
-
-                    if (MessageBox.Show("¿Desea modificar los items?", "Información",
-                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    int fac_id = Convert.ToInt32(camposABuscar[0]);
+                    if (puedeSerModificadaEliminada(fac_id))
                     {
-                        limpiarCamposItems();
-                        int fac_id = Convert.ToInt32(camposABuscar[0]);
-                        totalItems = 0;
+                        ocultarTodosLosItems();
+                        
+                        limpiarCampos();
+                        //IDFACTURA
+                        llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]));
+                        mostrarModificacion();
 
-                        SqlDataReader reader = null;
-                        SqlCommand cmd = new SqlCommand("select Monto,Cantidad from GOQ.Item where fac_id = @nroFactura;",
-                        PagoAgilFrba.ModuloGlobal.getConexion());
-                        cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
-                        reader = cmd.ExecuteReader();
-                        while (reader.Read())
+                        if (MessageBox.Show("¿Desea modificar los items?", "Información",
+                          MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            decimal monto = Convert.ToDecimal(reader.GetValue(0));
-                            int cantidad = Convert.ToInt32(reader.GetValue(1));
-                            decimal montoxcant = cantidad * monto;
-                            totalItems = totalItems + montoxcant;
-                            listBoxItems.Items.Add(Convert.ToString(reader.GetValue(0)) + "/" + Convert.ToString(reader.GetValue(1)));
+                            limpiarCamposItems();
+                           
+                            totalItems = 0;
+
+                            SqlDataReader reader = null;
+                            SqlCommand cmd = new SqlCommand("select Monto,Cantidad from GOQ.Item where fac_id = @nroFactura;",
+                            PagoAgilFrba.ModuloGlobal.getConexion());
+                            cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
+                            reader = cmd.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                decimal monto = Convert.ToDecimal(reader.GetValue(0));
+                                int cantidad = Convert.ToInt32(reader.GetValue(1));
+                                decimal montoxcant = cantidad * monto;
+                                totalItems = totalItems + montoxcant;
+                                listBoxItems.Items.Add(Convert.ToString(reader.GetValue(0)) + "/" + Convert.ToString(reader.GetValue(1)));
+                            }
+                            textBoxTotal.Text = Convert.ToString(totalItems);
+                            mostrarItems();
+                            seModificanItems = true;
                         }
-                        textBoxTotal.Text = Convert.ToString(totalItems);
-                        mostrarItems();
-                        seModificanItems = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("La factura no puede modificarse, ya que ha sido rendida y/o pagada");
+
                     }
                 }
             }
@@ -765,10 +775,13 @@ namespace PagoAgilFrba.AbmFactura
                 if (MessageBox.Show("¿Desea eliminar la factura seleccionada?", "Información",
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
+                    string[] camposABuscar = comboBoxFacturasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
+                  
+                    if (puedeSerModificadaEliminada(Convert.ToInt32(camposABuscar[0])))
+                    {
                     int itemsBorrados = 0;
                     
-                    string[] camposABuscar = comboBoxFacturasEncontradas.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
-                    //nrofactura
+                    
                     SqlParameter[] sqls2 = new SqlParameter[1];
                     sqls2[0] = new SqlParameter("nroFact", Convert.ToInt32(camposABuscar[0]));
 
@@ -777,9 +790,10 @@ namespace PagoAgilFrba.AbmFactura
                     cmd3.Parameters.AddRange(sqls2);
                     itemsBorrados = Convert.ToInt32(cmd3.ExecuteNonQuery());
                     
-                    if (itemsBorrados > 0)
-                    {
-                        MessageBox.Show("La factura y sus items se han borrado con exito", "Información");
+                        if (itemsBorrados > 0)
+                        {
+                            MessageBox.Show("La factura y sus items se han borrado con exito", "Información");
+                        }
                     }
                 }
             }
@@ -797,6 +811,24 @@ namespace PagoAgilFrba.AbmFactura
             labelTitulo.Text = "BAJA";
             mostrarBusqueda();
             maskedTextBoxNroFact.ReadOnly = false;
+        }
+
+        private bool puedeSerModificadaEliminada(int facturaID)
+        {
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) where fac_id = @FACTURA group by fac_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) or COUNT(r.ren_id)>0", PagoAgilFrba.ModuloGlobal.getConexion());
+            cmd.Parameters.Add("FACTURA", SqlDbType.Date).Value = facturaID;
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Close();
+                return false;
+            }
+            else
+            {
+                reader.Close();
+                return true;
+            }
         }
     }
 }

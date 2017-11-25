@@ -305,46 +305,53 @@ namespace PagoAgilFrba.AbmEmpresa
             {
                 habilitado = 1;
             }
-
-            SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Empresa SET  empresa_nombre = '{0}', empresa_cuit = '{1}', empresa_dir = '{2}', empresa_habilitado = '{3}' WHERE ID_empresa = '{4}'",
-            Nombre, Cuit, Direccion, habilitado, idEmpresaSinModificar), PagoAgilFrba.ModuloGlobal.getConexion());
-            filasRetornadasEmpresa = cmd.ExecuteNonQuery();
-
-            SqlDataReader reader = null;
-            SqlCommand cmd1 = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion = @SERVICIO ",
-            PagoAgilFrba.ModuloGlobal.getConexion());
-            cmd1.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = Servicio;
-            reader = cmd1.ExecuteReader();
-            
-            if (reader.HasRows)
+            if (cuitNoEstaRepetido(Cuit))
             {
-                reader.Read();
-                serv_id = Convert.ToInt32(reader.GetValue(0));
-            }
-            if (filasRetornadasEmpresa > 0)
-            {
-                if (serv_id == idServicioSinModificar)
+
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Empresa SET  empresa_nombre = '{0}', empresa_cuit = '{1}', empresa_dir = '{2}', empresa_habilitado = '{3}' WHERE ID_empresa = '{4}'",
+                Nombre, Cuit, Direccion, habilitado, idEmpresaSinModificar), PagoAgilFrba.ModuloGlobal.getConexion());
+                filasRetornadasEmpresa = cmd.ExecuteNonQuery();
+
+                SqlDataReader reader = null;
+                SqlCommand cmd1 = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion = @SERVICIO ",
+                PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd1.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = Servicio;
+                reader = cmd1.ExecuteReader();
+
+                if (reader.HasRows)
                 {
-                    MessageBox.Show("La empresa se ha modificado con éxito!", "Información");
+                    reader.Read();
+                    serv_id = Convert.ToInt32(reader.GetValue(0));
                 }
-                else
+                if (filasRetornadasEmpresa > 0)
                 {
-                    if (filasRetornadasEmpresa > 0 && serv_id != 0)
+                    if (serv_id == idServicioSinModificar)
                     {
-                        SqlCommand cmd2 = new SqlCommand(string.Format("UPDATE GOQ.Servicio_Empresa SET  ID_servicio = '{0}' WHERE ID_empresa = '{1}'",
-                        serv_id, idEmpresaSinModificar), PagoAgilFrba.ModuloGlobal.getConexion());
-                        filasRetornadasServicioEmpresa = cmd2.ExecuteNonQuery();
+                        MessageBox.Show("La empresa se ha modificado con éxito!", "Información");
+                    }
+                    else
+                    {
+                        if (filasRetornadasEmpresa > 0 && serv_id != 0)
+                        {
+                            SqlCommand cmd2 = new SqlCommand(string.Format("UPDATE GOQ.Servicio_Empresa SET  ID_servicio = '{0}' WHERE ID_empresa = '{1}'",
+                            serv_id, idEmpresaSinModificar), PagoAgilFrba.ModuloGlobal.getConexion());
+                            filasRetornadasServicioEmpresa = cmd2.ExecuteNonQuery();
 
-                        if (filasRetornadasServicioEmpresa > 0)
-                        {
-                            MessageBox.Show("La empresa se ha modificado con éxito!", "Información");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Ocurrió un error al intentar modificar la empresa", "Error");
+                            if (filasRetornadasServicioEmpresa > 0)
+                            {
+                                MessageBox.Show("La empresa se ha modificado con éxito!", "Información");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Ocurrió un error al intentar modificar la empresa", "Error");
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("El cuit ingresado ya se encuentra en el sistema", "Error");
             }
         }
 
@@ -469,7 +476,7 @@ namespace PagoAgilFrba.AbmEmpresa
                         if (yaRindioTodasLasFacturas(camposABuscar[1]))
                         {
                             MessageBox.Show("PorSI");
-                                //inhabilitarEmpresa(Convert.ToString(camposABuscar[1]));
+                                inhabilitarEmpresa(Convert.ToString(camposABuscar[1]));
 
                         } else {
                             MessageBox.Show("La empresa no puede ser inhabilitada, hay facturas sin rendir.", "Información");
@@ -489,7 +496,7 @@ namespace PagoAgilFrba.AbmEmpresa
         private bool yaRindioTodasLasFacturas(string cuit) {
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select count(*) from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT and f.fac_ren_id is null;", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select count(*) from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) join GOQ.Pago_Factura pf on(pf.pago_fac_fac_id = f.fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT and f.fac_ren_id is null having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id);", PagoAgilFrba.ModuloGlobal.getConexion());
 
             cmd.Parameters.Add("CUIT", SqlDbType.VarChar).Value = cuit.Replace("-","");
             reader = cmd.ExecuteReader();

@@ -181,10 +181,18 @@ namespace PagoAgilFrba.AbmSucursal
             }
             if (CPSinModificar != CodigoPostal)
             {
-                //modifica el codigo postal
-                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Sucursal SET sucu_nombre = '{0}', sucu_dir = '{1}', sucu_cp = '{2}', sucu_habilitado = '{3}' WHERE sucu_cp = '{4}'",
-                Nombre, Direccion, CodigoPostal, habilitado, CPSinModificar), PagoAgilFrba.ModuloGlobal.getConexion()); 
-                filasRetornadas = cmd.ExecuteNonQuery();
+                if (codigoPostalNoEstaRepetido(Convert.ToInt32(textBoxCodigoPostal.Text)))
+                {
+                    //modifica el codigo postal
+                    SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Sucursal SET sucu_nombre = '{0}', sucu_dir = '{1}', sucu_cp = '{2}', sucu_habilitado = '{3}' WHERE sucu_cp = '{4}'",
+                    Nombre, Direccion, CodigoPostal, habilitado, CPSinModificar), PagoAgilFrba.ModuloGlobal.getConexion());
+                    filasRetornadas = cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                   
+                    filasRetornadas = -1; //significa que no hice ningun cambio y se trata de este error.
+                }
             }
             else
             {
@@ -197,6 +205,11 @@ namespace PagoAgilFrba.AbmSucursal
             if (filasRetornadas > 0)
             {
                 MessageBox.Show("La sucursal se ha modificado con éxito!", "Información");
+            }
+            else if (filasRetornadas == -1)
+            {
+                 MessageBox.Show("El codigo postal ingresado ya existe en el sistema", "Error");
+            
             }
             else
             {

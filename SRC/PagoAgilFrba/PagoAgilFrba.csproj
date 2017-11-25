@@ -53,17 +53,17 @@
     <Compile Include="AbmCliente\ABMCliente.Designer.cs">
       <DependentUpon>ABMCliente.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmEmpresa\Form1.cs">
+    <Compile Include="AbmEmpresa\Empresa.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmEmpresa\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmEmpresa\Empresa.Designer.cs">
+      <DependentUpon>Empresa.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmFactura\Form1.cs">
+    <Compile Include="AbmFactura\Factura.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmFactura\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmFactura\Factura.Designer.cs">
+      <DependentUpon>Factura.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\Form1.cs">
       <SubType>Form</SubType>
@@ -110,20 +110,20 @@
     <Compile Include="RegistroPago\RegistroPago.Designer.cs">
       <DependentUpon>RegistroPago.cs</DependentUpon>
     </Compile>
-    <Compile Include="Rendicion\Form1.cs">
+    <Compile Include="Rendicion\Rendicion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Rendicion\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Rendicion\Rendicion.Designer.cs">
+      <DependentUpon>Rendicion.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="AbmCliente\ABMCliente.resx">
       <DependentUpon>ABMCliente.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmEmpresa\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="AbmEmpresa\Empresa.resx">
+      <DependentUpon>Empresa.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmFactura\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="AbmFactura\Factura.resx">
+      <DependentUpon>Factura.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -151,8 +151,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="RegistroPago\RegistroPago.resx" />
-    <EmbeddedResource Include="Rendicion\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Rendicion\Rendicion.resx">
+      <DependentUpon>Rendicion.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

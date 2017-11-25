@@ -140,3 +140,5 @@ C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\SRC\PagoAgilFrba\obj\Debug\PagoAgi
 C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.RegistroPago.RegistroPago.resources
 C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.Rendicion.ABMRendicion.resources
 C:\Users\Leandro\Desktop\TPGestion\GDD2017GOQ\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.csproj.GenerateResource.Cache
+C:\Users\sho_m\Desktop\GDD\GDD2017GOQ\SRC\PagoAgilFrba\bin\Debug\PagoAgilFrba.exe.config
+C:\Users\sho_m\Desktop\GDD\GDD2017GOQ\SRC\PagoAgilFrba\obj\Debug\PagoAgilFrba.pdb
