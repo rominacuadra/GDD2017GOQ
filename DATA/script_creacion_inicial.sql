@@ -143,7 +143,7 @@ create table GOQ.Pago(
 
 GO
 create table GOQ.Rendicion(
-	ren_id numeric(18,0) CONSTRAINT PK_ren_id PRIMARY KEY IDENTITY(34620,1),
+	ren_id numeric(18,0) CONSTRAINT PK_ren_id PRIMARY KEY IDENTITY(1,2),
 	ren_fecha_ren datetime not null,
 	ren_cant_fac int not null,
 	ren_imp_comision numeric(18,0) not null,
@@ -597,7 +597,7 @@ select		distinct f.Nro_Factura,
 			em.ID_empresa ,
 			f.Factura_Fecha ,
 			f.Factura_Fecha_Vencimiento ,
-			f.Factura_Total 
+			f.Factura_Total
 from [gd_esquema].[Maestra] f
 inner join [GOQ].[Cliente] c
 on(c.cli_dni =f.[Cliente-Dni] )
@@ -718,9 +718,18 @@ SELECT m.Rendicion_Fecha,
 	   SUM(m.Total)
 FROM [gd_esquema].[Maestra] m
 inner join [GOQ].[Empresa] e on (e.empresa_cuit = m.Empresa_Cuit)
-inner join [GOQ].[Porcentaje_Comision] pc on ( pc.porc_periodo  = ((m.ItemRendicion_Importe * 100) / m.Total) ) 
+inner join [GOQ].[Porcentaje_Comision] pc on ( pc.porc_periodo  = CONVERT( int, ROUND((m.ItemRendicion_Importe * 100) / m.Total, 0) ) ) 
 WHERE Rendicion_Nro is not null
 group by m.Rendicion_Nro, m.Rendicion_Fecha,e.ID_empresa,pc.porc_comi_id;
+
+/********************* ACTUALIZACION FACTURAS RENDIDAS *********************/
+GO
+update f
+set fac_ren_id = m.Rendicion_Nro
+from GOQ.Factura f
+inner join gd_esquema.Maestra m
+on (f.fac_id = m.Nro_Factura)
+where m.Rendicion_Nro is not null;
 
 /*******************DEVOLUCION*******--NO HAY NADA PARA MIGRAR*************************/	
 
