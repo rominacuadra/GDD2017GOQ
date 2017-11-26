@@ -64,7 +64,7 @@ namespace PagoAgilFrba.RegistroPago
         private void llenarComboBoxCliente()
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 cli_dni FROM GOQ.Cliente WHERE cli_habilitado = 1",
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 cli_dni FROM GOQ.Cliente WHERE cli_habilitado = 1 order by cli_dni ASC",
                 PagoAgilFrba.ModuloGlobal.getConexion());
             reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -139,7 +139,7 @@ namespace PagoAgilFrba.RegistroPago
         private bool esFacturaValidaParaElPago(int NroFac)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) inner join GOQ.Cliente c on (f.fac_cli_id = c.cli_id) inner join GOQ.Empresa e on(e.ID_empresa = f.fac_empresa_id) where fac_id = @nroFac and c.cli_habilitado = 1 and e.empresa_habilitado = 1 and f.fac_fecha_vec < GETDATE() and f.fac_total > 0 group by fac_id having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0;", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) inner join GOQ.Cliente c on (f.fac_cli_id = c.cli_id) inner join GOQ.Empresa e on(e.ID_empresa = f.fac_empresa_id) where fac_id = @nroFac and c.cli_habilitado = 1 and e.empresa_habilitado = 1 and f.fac_fecha_vec <= GETDATE() and f.fac_total > 0 group by fac_id having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0;", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("nroFac", SqlDbType.Int).Value = NroFac;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -182,7 +182,7 @@ namespace PagoAgilFrba.RegistroPago
         private void llenarFacturasEncontradasPorCliente(int DNICli)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT TOP 50 fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Cliente c ON (f.fac_cli_id = c.cli_id) WHERE cli_dni = @DNICLI",
+            SqlCommand cmd = new SqlCommand("SELECT TOP 50 fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (f.fac_cli_id = c.cli_id) left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) WHERE cli_dni = @DNICLI AND empresa_habilitado = 1 AND cli_habilitado = 1 AND f.fac_fecha_vec <= GETDATE() and f.fac_total > 0 group by fac_id, fac_fecha_vec, fac_total having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0 order by fac_id ASC;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNICLI", SqlDbType.Decimal).Value = DNICli;
             reader = cmd.ExecuteReader();
@@ -190,10 +190,8 @@ namespace PagoAgilFrba.RegistroPago
             {
                 while (reader.Read())
                 {
-                    if (esFacturaValidaParaElPago(Convert.ToInt32(reader.GetValue(0))))
-                    {
-                        comboBoxFacEnc.Items.Add("Factura: " + Convert.ToString(reader.GetValue(0)) + " Fecha Vencimiento: " + Convert.ToString(reader.GetValue(1)) + " Importe: " + Convert.ToString(reader.GetValue(2)));
-                    }
+                    comboBoxFacEnc.Items.Add("Factura: " + Convert.ToString(reader.GetValue(0)) + " Fecha Vencimiento: " + Convert.ToString(reader.GetValue(1)) + " Importe: " + Convert.ToString(reader.GetValue(2)));
+                    
                 }
                 reader.Close();
             }
@@ -206,7 +204,7 @@ namespace PagoAgilFrba.RegistroPago
         private void llenarFacturasEncontradasPorEmpresa(string EmpresaNom, string EmpresaCUIT)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT TOP 50 fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) WHERE empresa_nombre = @EMPRESANOM AND empresa_cuit = @EMPRESACUIT",
+            SqlCommand cmd = new SqlCommand("SELECT TOP 50 fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (f.fac_cli_id = c.cli_id) left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) WHERE empresa_nombre = 'Empresa N°2000' AND empresa_cuit = '16188833769' AND empresa_habilitado = 1 AND cli_habilitado = 1 AND f.fac_fecha_vec <= GETDATE() and f.fac_total > 0 group by fac_id, fac_fecha_vec, fac_total having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0 order by fac_id ASC;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("EMPRESANOM", SqlDbType.NVarChar).Value = EmpresaNom;
             cmd.Parameters.Add("EMPRESACUIT", SqlDbType.NVarChar).Value = EmpresaCUIT;
@@ -215,10 +213,8 @@ namespace PagoAgilFrba.RegistroPago
             {
                 while (reader.Read())
                 {
-                    if (esFacturaValidaParaElPago(Convert.ToInt32(reader.GetValue(0))))
-                    {
-                        comboBoxFacEnc.Items.Add("Factura: " + Convert.ToString(reader.GetValue(0)) + " Fecha Vencimiento: " + Convert.ToString(reader.GetValue(1)) + " Importe: " + Convert.ToString(reader.GetValue(2)));
-                    }
+                    comboBoxFacEnc.Items.Add("Factura: " + Convert.ToString(reader.GetValue(0)) + " Fecha Vencimiento: " + Convert.ToString(reader.GetValue(1)) + " Importe: " + Convert.ToString(reader.GetValue(2)));
+                   
                 }
                 reader.Close();
             }
@@ -243,7 +239,6 @@ namespace PagoAgilFrba.RegistroPago
             }
             else
             {
-                //antes iba 0, como es un FK el sucuID, no esta encontrando la sucursal 0 y no se puede registrar el pago
                 return 1;
             }
         }

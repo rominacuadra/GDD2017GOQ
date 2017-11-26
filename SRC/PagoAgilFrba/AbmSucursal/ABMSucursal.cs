@@ -85,7 +85,7 @@ namespace PagoAgilFrba.AbmSucursal
                 int esNumero;
                 if (Int32.TryParse(textBoxCodigoPostal.Text.ToString(), out esNumero))
                 {
-                    if (codigoPostalNoEstaRepetido(Convert.ToInt32(textBoxCodigoPostal.Text)))
+                    if (!codigoPostalEstaRepetido(Convert.ToInt32(textBoxCodigoPostal.Text)))
                     {
                         darAltaSucursal(textBoxNombre.Text, textBoxDirec.Text, Convert.ToInt32(textBoxCodigoPostal.Text));
                     }
@@ -130,7 +130,7 @@ namespace PagoAgilFrba.AbmSucursal
             return textBoxNombre.Text.Length > 0 && textBoxDirec.Text.Length > 0 && textBoxCodigoPostal.Text.Length > 0 ? true : false;
         }
 
-        private bool codigoPostalNoEstaRepetido(int CP)
+        private bool codigoPostalEstaRepetido(int CP)
         {
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("SELECT sucu_id FROM GOQ.Sucursal WHERE sucu_cp = @CP", PagoAgilFrba.ModuloGlobal.getConexion()); 
@@ -139,12 +139,12 @@ namespace PagoAgilFrba.AbmSucursal
             if (reader.HasRows)
             {
                 reader.Close();
-                return false;
+                return true;
             }
             else
             {
                 reader.Close();
-                return true;
+                return false;
             }
         }
 
@@ -181,7 +181,7 @@ namespace PagoAgilFrba.AbmSucursal
             }
             if (CPSinModificar != CodigoPostal)
             {
-                if (codigoPostalNoEstaRepetido(Convert.ToInt32(textBoxCodigoPostal.Text)))
+                if (!codigoPostalEstaRepetido(Convert.ToInt32(textBoxCodigoPostal.Text)))
                 {
                     //modifica el codigo postal
                     SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Sucursal SET sucu_nombre = '{0}', sucu_dir = '{1}', sucu_cp = '{2}', sucu_habilitado = '{3}' WHERE sucu_cp = '{4}'",
@@ -197,8 +197,8 @@ namespace PagoAgilFrba.AbmSucursal
             else
             {
                 ////no modifica el CP
-                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Sucursal SET sucu_nombre = '{0}', sucu_dir = '{1}', sucu_cp = '{2}', sucu_habilitado = '{3}' WHERE sucu_cp = '{4}'",
-                Nombre, Direccion, CodigoPostal, habilitado, CPSinModificar), PagoAgilFrba.ModuloGlobal.getConexion()); 
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Sucursal SET sucu_nombre = '{0}', sucu_dir = '{1}', sucu_habilitado = '{2}' WHERE sucu_cp = '{3}'",
+                Nombre, Direccion, habilitado, CPSinModificar), PagoAgilFrba.ModuloGlobal.getConexion()); 
                 filasRetornadas = cmd.ExecuteNonQuery();
             }
 

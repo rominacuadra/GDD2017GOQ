@@ -125,10 +125,10 @@ namespace PagoAgilFrba.Rendicion
                 if (!SeRindioParaLaEmpresa(cbEmpresa.SelectedItem.ToString(), dtRendicion.Value) && !seRindioEseDia(dtRendicion.Value))
                 {
                     string queryInsertRendicion = "";
-                    queryInsertRendicion = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total]) select @FECHARENDICION as ren_fecha_ren, COUNT(f.fac_id) as ren_cant_fac, cast((SUM(f.fac_total*@COMISION)/100) as decimal(18,2)) as ren_imp_comision, f.fac_empresa_id as ren_empresa_id, @IDCOMISION as ren_porc_comision_id, SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) left join [GOQ].[Devolucion] d on(d.dev_fac_id = f.fac_id) where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and format (p.pago_fecha_cobro,'yyyyMM') = format (@FECHARENDICION,'yyyyMM') group by f.fac_empresa_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) SELECT SCOPE_IDENTITY();";
+                    queryInsertRendicion = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total]) select @FECHARENDICION as ren_fecha_ren, COUNT(f.fac_id) as ren_cant_fac, cast((SUM(f.fac_total*@COMISION)/100) as decimal(18,2)) as ren_imp_comision, f.fac_empresa_id as ren_empresa_id, @IDCOMISION as ren_porc_comision_id, SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) left join [GOQ].[Devolucion] d on(d.dev_fac_id = f.fac_id) where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and month(p.pago_fecha_cobro) = month(@FECHARENDICION) and year(p.pago_fecha_cobro) = year(@FECHARENDICION) group by f.fac_empresa_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) SELECT SCOPE_IDENTITY();";
 
                     string queryUpdateEmpresaRen_Id = "";
-                    queryUpdateEmpresaRen_Id = "UPDATE [GOQ].[Factura] SET [fac_ren_id] = @MAXRENID WHERE [fac_id] in (select distinct f.fac_id from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id)  where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and format (p.pago_fecha_cobro,'yyyyMM') = format (@FECHARENDICION,'yyyyMM') group by f.fac_id);";
+                    queryUpdateEmpresaRen_Id = "UPDATE [GOQ].[Factura] SET [fac_ren_id] = @MAXRENID WHERE [fac_id] in (select distinct f.fac_id from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id)  where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and month(p.pago_fecha_cobro) = month(@FECHARENDICION) and year(p.pago_fecha_cobro) = year(@FECHARENDICION) group by f.fac_id);";
 
                     SqlCommand cmdInsertRendicion = new SqlCommand(queryInsertRendicion, PagoAgilFrba.ModuloGlobal.getConexion());
 
@@ -170,7 +170,7 @@ namespace PagoAgilFrba.Rendicion
         private bool SeRindioParaLaEmpresa(string empresa, DateTime fecha)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select ren_id from GOQ.Rendicion where ren_empr_id = @EMPRESAID and month(ren_fecha_ren) = month(@fecha)", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select ren_id from GOQ.Rendicion where ren_empresa_id = @EMPRESAID and month(ren_fecha_ren) = month(@fecha)", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("EMPRESAID", SqlDbType.Int).Value = idEmpresa(empresa);
             cmd.Parameters.Add("FECHA", SqlDbType.Date).Value = fecha;
             reader = cmd.ExecuteReader();

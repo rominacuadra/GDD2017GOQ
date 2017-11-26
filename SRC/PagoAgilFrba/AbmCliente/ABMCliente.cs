@@ -534,12 +534,12 @@ namespace PagoAgilFrba.AbmCliente
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     ocultarTodosLosItems();
-                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '-' });
+                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Split(new Char[] { '-' });
                     limpiarCampos();
-                    llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]);
+                    llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]), camposABuscar[1].TrimStart().TrimEnd(), camposABuscar[2].TrimStart());
                     DNIAModificar = Convert.ToInt32(camposABuscar[0]);
-                    ApellidoAModificar = camposABuscar[1];
-                    NombreAModificar = camposABuscar[2];
+                    ApellidoAModificar = camposABuscar[1].TrimStart().TrimEnd();
+                    NombreAModificar = camposABuscar[2].TrimStart();
                     mostrarAlta();
                     if (textBoxMail.Text.Contains("pedirActualizarMail") && textBoxMail.Text.Contains("@mail.com"))
                     {
@@ -552,10 +552,10 @@ namespace PagoAgilFrba.AbmCliente
                 if (MessageBox.Show("¿Desea eliminar al usuario seleccionado?", "Información",
                       MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '-' });
-                    if (clienteNoEstaInhabilitado(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]))
+                    string[] camposABuscar = comboBoxResultadoBusqueda.SelectedItem.ToString().Split(new Char[] { '-' });
+                    if (clienteNoEstaInhabilitado(Convert.ToInt32(camposABuscar[0]), camposABuscar[1].TrimStart().TrimEnd(), camposABuscar[2].TrimStart()))
                     {
-                        inhabilitarCliente(Convert.ToInt32(camposABuscar[0]), camposABuscar[1], camposABuscar[2]);
+                        inhabilitarCliente(Convert.ToInt32(camposABuscar[0]), camposABuscar[1].TrimStart().TrimEnd(), camposABuscar[2].TrimStart());
                     }
                     else
                     {
