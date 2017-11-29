@@ -103,7 +103,7 @@ namespace PagoAgilFrba.AbmFactura
            
             var appSettings = ConfigurationManager.AppSettings;
             string fechaActual = appSettings["fechaActual"];
-
+            
             textBoxFechaAlta.Text = fechaActual;
         }
 
