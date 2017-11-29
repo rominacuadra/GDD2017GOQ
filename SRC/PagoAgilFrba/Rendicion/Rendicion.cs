@@ -118,7 +118,7 @@ namespace PagoAgilFrba.Rendicion
         {
             int maxRenId;
 
-            if (cbPorcComision.SelectedItem.ToString().Length==0 || cbEmpresa.SelectedItem.ToString().Length==0) {
+            if (cbPorcComision.SelectedIndex==-1 || cbEmpresa.SelectedIndex==-1) {
                 MessageBox.Show("Debe seleccionar los datos necesarios.");
             }else{
 
