@@ -88,7 +88,7 @@ namespace PagoAgilFrba.AbmFactura
         {
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 cli_nombre + '/' + cli_apellido FROM GOQ.Cliente",
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT cli_nombre + '/' + cli_apellido FROM GOQ.Cliente",
             PagoAgilFrba.ModuloGlobal.getConexion());
             reader = cmd.ExecuteReader();
             while (reader.Read())

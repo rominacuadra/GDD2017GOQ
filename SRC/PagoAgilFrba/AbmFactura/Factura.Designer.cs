@@ -174,6 +174,8 @@
             // 
             // comboBoxCliente
             // 
+            this.comboBoxCliente.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxCliente.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxCliente.FormattingEnabled = true;
             this.comboBoxCliente.Location = new System.Drawing.Point(180, 241);
             this.comboBoxCliente.Name = "comboBoxCliente";
