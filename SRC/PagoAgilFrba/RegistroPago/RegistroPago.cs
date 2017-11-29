@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace PagoAgilFrba.RegistroPago
 {
@@ -156,6 +157,8 @@ namespace PagoAgilFrba.RegistroPago
 
         private void buscarPorNroFactSeleccionado(int NroFac)
         {
+            var appSettings = ConfigurationManager.AppSettings;
+            string fechaActual = appSettings["fechaActual"];
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("SELECT fac_id, empresa_nombre, cli_dni, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (c.cli_id = f.fac_cli_id) WHERE fac_id = @NROFACT AND empresa_habilitado = 1 AND cli_habilitado = 1",
                 PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
@@ -169,7 +172,7 @@ namespace PagoAgilFrba.RegistroPago
                 labelRCli.Text = Convert.ToString(reader.GetValue(2));
                 labelRFechaVenc.Text = Convert.ToString(reader.GetValue(3));
                 labelRImp.Text = Convert.ToString(reader.GetValue(4));
-                labelRFechaCob.Text = DateTime.Today.ToString();
+                labelRFechaCob.Text = fechaActual;
                 labelRSuc.Text = PagoAgilFrba.ModuloGlobal.suc_cob_id;
             }
             else
@@ -248,7 +251,8 @@ namespace PagoAgilFrba.RegistroPago
 
 
             //----------
-
+            var appSettings = ConfigurationManager.AppSettings;
+            DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
             int IDSucursal = 0;
             int insert = 0;
             int IDPago = -1;
@@ -269,7 +273,7 @@ namespace PagoAgilFrba.RegistroPago
 
                 SqlCommand cmd2 = new SqlCommand("INSERT INTO GOQ.Pago (pago_fecha_cobro , pago_cliente_id, pago_importe, pago_tipo_id, pago_sucursal_id) VALUES (@FECHACOBRO, @CLI_ID, @IMP, @TIPO, @SUCU); SELECT SCOPE_IDENTITY();",
                     PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd2.Parameters.Add("FECHACOBRO", SqlDbType.DateTime).Value = DateTime.Today;
+                cmd2.Parameters.Add("FECHACOBRO", SqlDbType.DateTime).Value = fechaActual;
                 cmd2.Parameters.Add("CLI_ID", SqlDbType.Int).Value = Convert.ToInt32(reader.GetValue(0));
                 cmd2.Parameters.Add("IMP", SqlDbType.Decimal).Value = Convert.ToDecimal(direccion[5]);
                 cmd2.Parameters.Add("TIPO", SqlDbType.Int).Value = Convert.ToInt32(reader.GetValue(1));

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using Microsoft.VisualBasic;
+using System.Configuration;
 
 namespace PagoAgilFrba.AbmFactura
 {
@@ -30,6 +31,7 @@ namespace PagoAgilFrba.AbmFactura
         private Decimal totalItems = 0;
         private bool seModificanItems = false;
         private int idFacturaSinModificar = 0;
+        public DateTime fecha_actual;
         
         private void ocultarTodosLosItems()
         {
@@ -98,8 +100,11 @@ namespace PagoAgilFrba.AbmFactura
 
         private void llenarFechaAlta()
         {
-            DateTime now = DateTime.Now;
-            textBoxFechaAlta.Text = now.ToString();
+           
+            var appSettings = ConfigurationManager.AppSettings;
+            string fechaActual = appSettings["fechaActual"];
+
+            textBoxFechaAlta.Text = fechaActual;
         }
 
         private void limpiarCampos()
