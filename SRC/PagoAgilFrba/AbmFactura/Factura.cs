@@ -72,7 +72,7 @@ namespace PagoAgilFrba.AbmFactura
         {
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT TOP 50 empresa_nombre FROM GOQ.Empresa",
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT empresa_nombre FROM GOQ.Empresa where empresa_habilitado=1",
                 PagoAgilFrba.ModuloGlobal.getConexion());
             reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -283,6 +283,11 @@ namespace PagoAgilFrba.AbmFactura
                 message = message + "Cliente, ";
             }
 
+            if (Convert.ToDecimal(textBoxTotal.Text) <= 0)
+            {
+                message = message + "El total de la factura no puede tener un importe cero, ";
+            }
+
             if (dtFechaVen.Value == null)
             {
                 message = message + "Fecha de vencimiento, ";
@@ -298,6 +303,7 @@ namespace PagoAgilFrba.AbmFactura
                     message = message + "La fecha de vencimiento debe ser mayor que la fecha de alta, ";
             }
 
+            
             if (message != "")
             {
                 MessageBox.Show("Por favor, complete: " + message, "Error");
