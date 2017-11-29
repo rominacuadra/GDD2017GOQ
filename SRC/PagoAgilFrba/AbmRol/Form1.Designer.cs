@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Roles));
             this.gbAdmRol = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.btnModificar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbDevolucion_8 = new System.Windows.Forms.CheckBox();
@@ -50,14 +51,14 @@
             this.rolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gbRolUsuario = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lbUsuario = new System.Windows.Forms.ListBox();
+            this.btnAsgRol = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.lbRolHab = new System.Windows.Forms.ListBox();
-            this.btnAsgRol = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lbUsuario = new System.Windows.Forms.ListBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.gbAdmRol.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.gbRolUsuario.SuspendLayout();
@@ -65,6 +66,7 @@
             // 
             // gbAdmRol
             // 
+            this.gbAdmRol.Controls.Add(this.button4);
             this.gbAdmRol.Controls.Add(this.button2);
             this.gbAdmRol.Controls.Add(this.btnModificar);
             this.gbAdmRol.Controls.Add(this.label2);
@@ -90,6 +92,17 @@
             this.gbAdmRol.TabStop = false;
             this.gbAdmRol.Text = "Administración de Roles";
             this.gbAdmRol.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(108, 315);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(84, 23);
+            this.button2.TabIndex = 17;
+            this.button2.Text = "Habilitar";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // btnModificar
             // 
@@ -159,9 +172,9 @@
             // btnInhabilitar
             // 
             this.btnInhabilitar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnInhabilitar.Location = new System.Drawing.Point(67, 315);
+            this.btnInhabilitar.Location = new System.Drawing.Point(24, 315);
             this.btnInhabilitar.Name = "btnInhabilitar";
-            this.btnInhabilitar.Size = new System.Drawing.Size(72, 23);
+            this.btnInhabilitar.Size = new System.Drawing.Size(78, 23);
             this.btnInhabilitar.TabIndex = 11;
             this.btnInhabilitar.Text = "Inhabilitar";
             this.btnInhabilitar.UseVisualStyleBackColor = true;
@@ -170,11 +183,11 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(1, 315);
+            this.button3.Location = new System.Drawing.Point(24, 283);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(60, 23);
+            this.button3.Size = new System.Drawing.Size(78, 23);
             this.button3.TabIndex = 10;
-            this.button3.Text = "Crear";
+            this.button3.Text = "Nuevo";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -250,7 +263,7 @@
             this.lbRoles.ItemHeight = 16;
             this.lbRoles.Location = new System.Drawing.Point(16, 81);
             this.lbRoles.Name = "lbRoles";
-            this.lbRoles.Size = new System.Drawing.Size(182, 228);
+            this.lbRoles.Size = new System.Drawing.Size(182, 196);
             this.lbRoles.TabIndex = 0;
             this.lbRoles.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -285,7 +298,7 @@
             // cerrarToolStripMenuItem
             // 
             this.cerrarToolStripMenuItem.Name = "cerrarToolStripMenuItem";
-            this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.cerrarToolStripMenuItem.Text = "Cerrar";
             this.cerrarToolStripMenuItem.Click += new System.EventHandler(this.cerrarToolStripMenuItem_Click);
             // 
@@ -305,25 +318,16 @@
             this.gbRolUsuario.TabStop = false;
             this.gbRolUsuario.Text = "Asignar Rol a Usuario";
             // 
-            // label4
+            // btnAsgRol
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(21, 49);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(91, 24);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Usuarios";
-            // 
-            // lbUsuario
-            // 
-            this.lbUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbUsuario.FormattingEnabled = true;
-            this.lbUsuario.ItemHeight = 16;
-            this.lbUsuario.Location = new System.Drawing.Point(25, 81);
-            this.lbUsuario.Name = "lbUsuario";
-            this.lbUsuario.Size = new System.Drawing.Size(173, 228);
-            this.lbUsuario.TabIndex = 0;
+            this.btnAsgRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAsgRol.Location = new System.Drawing.Point(192, 315);
+            this.btnAsgRol.Name = "btnAsgRol";
+            this.btnAsgRol.Size = new System.Drawing.Size(87, 23);
+            this.btnAsgRol.TabIndex = 10;
+            this.btnAsgRol.Text = "Asignar Rol";
+            this.btnAsgRol.UseVisualStyleBackColor = true;
+            this.btnAsgRol.Click += new System.EventHandler(this.btnAsgRol_Click);
             // 
             // label3
             // 
@@ -345,16 +349,25 @@
             this.lbRolHab.Size = new System.Drawing.Size(173, 228);
             this.lbRolHab.TabIndex = 2;
             // 
-            // btnAsgRol
+            // label4
             // 
-            this.btnAsgRol.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAsgRol.Location = new System.Drawing.Point(192, 315);
-            this.btnAsgRol.Name = "btnAsgRol";
-            this.btnAsgRol.Size = new System.Drawing.Size(87, 23);
-            this.btnAsgRol.TabIndex = 10;
-            this.btnAsgRol.Text = "Asignar Rol";
-            this.btnAsgRol.UseVisualStyleBackColor = true;
-            this.btnAsgRol.Click += new System.EventHandler(this.btnAsgRol_Click);
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(21, 49);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(91, 24);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Usuarios";
+            // 
+            // lbUsuario
+            // 
+            this.lbUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbUsuario.FormattingEnabled = true;
+            this.lbUsuario.ItemHeight = 16;
+            this.lbUsuario.Location = new System.Drawing.Point(25, 81);
+            this.lbUsuario.Name = "lbUsuario";
+            this.lbUsuario.Size = new System.Drawing.Size(173, 228);
+            this.lbUsuario.TabIndex = 0;
             // 
             // checkBox1
             // 
@@ -380,16 +393,16 @@
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // button2
+            // button4
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(145, 315);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(72, 23);
-            this.button2.TabIndex = 17;
-            this.button2.Text = "Habilitar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(108, 283);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(84, 23);
+            this.button4.TabIndex = 18;
+            this.button4.Text = "Renombrar";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click_1);
             // 
             // Roles
             // 
@@ -450,5 +463,6 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button4;
     }
 }
