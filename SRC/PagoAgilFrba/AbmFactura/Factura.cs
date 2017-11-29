@@ -287,10 +287,20 @@ namespace PagoAgilFrba.AbmFactura
             {
                 message = message + "Fecha de vencimiento, ";
             }
+            else
+            {
+                DateTime alta = Convert.ToDateTime(textBoxFechaAlta.Text);
+                DateTime venci = dtFechaVen.Value;
+               
+                int result = DateTime.Compare(venci, alta);
+
+                if (result <= 0)
+                    message = message + "La fecha de vencimiento debe ser mayor que la fecha de alta, ";
+            }
 
             if (message != "")
             {
-                MessageBox.Show("Por favor, complete: " + message + "requeridos correctamente.", "Error");
+                MessageBox.Show("Por favor, complete: " + message, "Error");
                 return false;
             }
             else
