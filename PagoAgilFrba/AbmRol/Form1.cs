@@ -14,10 +14,15 @@ using Microsoft.VisualBasic;
 using System.Globalization;
 
 
+
 namespace PagoAgilFrba.AbmRol
 {
     public partial class Roles : Form
     {
+        int indexUsuario = -1;
+        int indexRol= -1;
+
+
         public Roles()
         {
             InitializeComponent();
@@ -35,14 +40,70 @@ namespace PagoAgilFrba.AbmRol
 
         private void Roles_Load(object sender, EventArgs e)
         {
-            cargarRoles();
+            
+            
+        }
+
+        private void cargarUsuario() {
+
+            int cant = 0;
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT usu_id,usu_username,usu_habilitado FROM GOQ.Usuario WHERE usu_habilitado =1", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+
+            reader = cmd.ExecuteReader();
+            reader.Read();
+            
+            if (reader.HasRows)
+            {
+                
+                do
+                {
+                    cant += 1;
+                    lbUsuario.Items.Add(reader.GetString(1));
+                }
+                while (reader.Read());
+            }
+
+            if (!reader.HasRows)
+            {
+                MessageBox.Show("No hay roles habilitados.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            reader.Close();
+
+        }
+
+        private void cargarRolesHabilitados()
+        {
+            int cant = 0;
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT ROL_NOMBRE, ROL_ID FROM GOQ.ROL WHERE ROL_HABILITADO=1", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+
+            reader = cmd.ExecuteReader();
+            reader.Read();
+
+            if (reader.HasRows)
+            {
+                
+                do
+                {
+                    cant += 1;
+                    lbRolHab.Items.Add(reader.GetString(0));
+                }
+                while (reader.Read());
+            }
+
+            if (!reader.HasRows)
+            {
+                MessageBox.Show("No hay roles habilitados.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            reader.Close();
         }
 
         private void cargarRoles() {
 
             int cant = 0;
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT ROL_NOMBRE, ROL_ID FROM GOQ.ROL WHERE ROL_HABILITADO='1'", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT ROL_NOMBRE, ROL_ID FROM GOQ.ROL R INNER JOIN GOQ.Funcionalidad_Rol F ON (R.rol_id=F.fun_rol_rol_id)", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
 
             
             reader = cmd.ExecuteReader();
@@ -147,7 +208,7 @@ namespace PagoAgilFrba.AbmRol
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (lbRoles.SelectedItem.ToString() != "") 
+            if (lbRoles.SelectedItems.Count > 0) 
             {
                 
                 SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 0 WHERE rol_nombre = @NOMBREROL",
@@ -160,6 +221,7 @@ namespace PagoAgilFrba.AbmRol
                     MessageBox.Show("Rol inhabilitado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     lbRoles.Items.Clear();
                     cargarRoles();
+                    cargarRolesHabilitados();
                 }
                 else
                 {
@@ -173,35 +235,63 @@ namespace PagoAgilFrba.AbmRol
             }
         }
 
+        private bool funcionalidadesEnFalse(){
+
+            if (cbRol_1.Checked==false && cbCliente_2.Checked==false && cbEmpresa_3.Checked==false && cbSucursal_4.Checked==false  && cbFactura_5.Checked==false && cbPagoRegistro_6.Checked==false && cbPagoRendicion_7.Checked==false && cbDevolucion_8.Checked==false && cbEstadistico_9.Checked==false ){
+                return true;
+            }else{
+                return true;
+            }
+            
+        }
+
+        private void quienesNoTenganFuncionalidadNoFueronCargadosCorrectamente() {
+
+            SqlCommand cmdDelete = new SqlCommand("DELETE GOQ.ROL WHERE rol_id NOT IN (SELECT F.fun_rol_rol_id FROM GOQ.Funcionalidad_Rol F )",
+            PagoAgilFrba.ModuloGlobal.getConexion());
+
+            cmdDelete.ExecuteNonQuery();
+        
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
                 string nombre_rol = "";
-                
+
+                quienesNoTenganFuncionalidadNoFueronCargadosCorrectamente();
+
                 nombre_rol=  Interaction.InputBox("Nombre de Rol","Ingrese Nombre de Rol");
 
                 TextInfo miTituloCase= new CultureInfo("en-US", false).TextInfo;
 
                 if (nombre_rol.ToString().Length > 0) {
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO [GOQ].[Rol] ([rol_nombre],[rol_habilitado]) VALUES (@NOMBREROL ,1)",
-                    PagoAgilFrba.ModuloGlobal.getConexion());
 
-                    cmd.Parameters.Add("NOMBREROL", SqlDbType.Text).Value = miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();
+                                            SqlCommand cmd = new SqlCommand("INSERT INTO [GOQ].[Rol] ([rol_nombre],[rol_habilitado]) VALUES (@NOMBREROL ,1)",
+                        PagoAgilFrba.ModuloGlobal.getConexion());
 
-                    int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+                        cmd.Parameters.Add("NOMBREROL", SqlDbType.Text).Value = nombre_rol.ToUpper().Trim();//miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();
 
-                    if (cantidadFilasAfectadas > 0)
-                    {
-                        MessageBox.Show("Rol agregado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        lbRoles.Items.Clear();
-                        limpiarCheckBox();
-                        cargarRoles();
-                        MessageBox.Show("Seleccione el rol agregado y sus funcionalidades.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Ocurrió un error al intentar agregar un rol.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                        int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+
+                        if (cantidadFilasAfectadas > 0)
+                        {
+                            //MessageBox.Show("Rol agregado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            lbRoles.Items.Clear();
+                            limpiarCheckBox();
+                            cargarRoles();
+                            lbRoles.Items.Add(nombre_rol.ToUpper().Trim());
+                            MessageBox.Show("Seleccione el rol y elija sus funcionalidades para que se registre correctamente, de lo contrario no se cargará.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ocurrió un error al intentar agregar un rol.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                    
+
+
+                    
                 }
                 else
                 {
@@ -215,9 +305,10 @@ namespace PagoAgilFrba.AbmRol
         private int dameElIDdelRol(string nombreRol) {
         
                         SqlDataReader reader = null;
-                        SqlCommand cmdInsert = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE rol_nombre=@NOMBREROL;",PagoAgilFrba.ModuloGlobal.getConexion());
+                        SqlCommand cmdInsert = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE ltrim(rtrim(upper(rol_nombre)))=@NOMBREROL;", PagoAgilFrba.ModuloGlobal.getConexion());
 
-                        cmdInsert.Parameters.Add("NOMBREROL", SqlDbType.NVarChar).Value = nombreRol;
+                        MessageBox.Show(nombreRol.ToUpper().Trim());
+                        cmdInsert.Parameters.Add("NOMBREROL", SqlDbType.NVarChar).Value = nombreRol.ToUpper().Trim();
                         
                         
                         reader = cmdInsert.ExecuteReader();
@@ -260,7 +351,7 @@ namespace PagoAgilFrba.AbmRol
                 string nombre_rol = "";
                 int rol_id;
                 nombre_rol = lbRoles.SelectedItem.ToString();
-                rol_id = dameElIDdelRol(nombre_rol.ToString());
+                rol_id = dameElIDdelRol(nombre_rol.ToString().ToUpper());
 
                 if (nombre_rol.Length>0) {
 
@@ -311,7 +402,9 @@ namespace PagoAgilFrba.AbmRol
                     {
                         insertarFuncionalidad(rol_id, 9);
                     }
-                     MessageBox.Show("Aplicado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                     MessageBox.Show("Aplicado. Los cambios se verán reflejados cuando vuelva a loguearse.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                     
+                    
                 }
                 else
                 {
@@ -324,8 +417,9 @@ namespace PagoAgilFrba.AbmRol
         }
 
         private bool noHayFuncionalidadHabilitadas() {
-            
-            if (cbRol_1.Checked==false & cbCliente_2.Checked==false & cbEmpresa_3.Checked==false & cbSucursal_4.Checked==false & cbFactura_5.Checked==false & cbPagoRegistro_6.Checked==false & cbPagoRendicion_7.Checked==false & cbDevolucion_8.Checked==false & cbEstadistico_9.Checked==false) {
+
+            if ((cbRol_1.Checked == false & cbCliente_2.Checked == false & cbEmpresa_3.Checked == false & cbSucursal_4.Checked == false & cbFactura_5.Checked == false & cbPagoRegistro_6.Checked == false & cbPagoRendicion_7.Checked == false & cbDevolucion_8.Checked == false & cbEstadistico_9.Checked == false) || lbRoles.SelectedItems.Count == 0)
+            {
                 return true;
             }
 
@@ -335,6 +429,238 @@ namespace PagoAgilFrba.AbmRol
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            quienesNoTenganFuncionalidadNoFueronCargadosCorrectamente();
+            if (checkBox1.Checked==false) {
+                gbAdmRol.Enabled = false;
+                lbRoles.Items.Clear();
+            }else {
+                gbAdmRol.Enabled = true;
+                cargarRoles();
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked == false)
+            {
+                gbRolUsuario.Enabled = false;
+                lbUsuario.Items.Clear();
+                lbRolHab.Items.Clear();
+            } else {
+                gbRolUsuario.Enabled = true;
+                cargarUsuario();
+                cargarRolesHabilitados();
+            }
+        }
+
+        private int controlDeUsuarioRolExistente(int usu_id, int rol_id)
+        {
+                SqlDataReader readerRol = null;
+                SqlCommand cmdSelect = new SqlCommand("SELECT DISTINCT rol_usu_rol_id,rol_usu_usu_id FROM GOQ.Rol_Usuario WHERE rol_usu_rol_id=@ROL_ID AND rol_usu_usu_id=@USU_ID;", PagoAgilFrba.ModuloGlobal.getConexion());
+
+                cmdSelect.Parameters.Add("ROL_ID", SqlDbType.NVarChar).Value = usu_id;
+                cmdSelect.Parameters.Add("USU_ID", SqlDbType.NVarChar).Value = rol_id;
+
+                readerRol = cmdSelect.ExecuteReader();
+                readerRol.Read();
+
+                if (readerRol.HasRows)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+                     
+
+    }
+
+        private void btnAsgRol_Click(object sender, EventArgs e)
+        {
+            
+            if (lbUsuario.SelectedIndex >= 0) {
+
+                
+                SqlDataReader reader = null;
+                SqlCommand cmd = new SqlCommand("SELECT distinct usu_id FROM GOQ.Usuario WHERE usu_username=@USUARIO", PagoAgilFrba.ModuloGlobal.getConexion());
+                cmd.Parameters.Add("USUARIO", SqlDbType.VarChar).Value = lbUsuario.SelectedItem.ToString();
+
+                reader = cmd.ExecuteReader();
+                reader.Read();
+
+                if (reader.HasRows)
+                {
+                    indexUsuario = reader.GetInt32(0);
+                }else{
+                    MessageBox.Show("Error al recuperar el Id del Usuario.", "Información");
+                }
+                                
+                reader.Close();
+            
+                if (lbRolHab.SelectedIndex>=0){
+
+
+                            SqlDataReader readerRol = null;
+                            SqlCommand cmdSelect = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE rol_nombre=@NOMBREROL;", PagoAgilFrba.ModuloGlobal.getConexion());
+
+                            cmdSelect.Parameters.Add("NOMBREROL", SqlDbType.NVarChar).Value = lbRolHab.SelectedItem.ToString();
+
+                            readerRol = cmdSelect.ExecuteReader();
+                            readerRol.Read();
+
+                            if (readerRol.HasRows)
+                            {
+                                
+                                indexRol = readerRol.GetInt32(0);
+
+                                if (controlDeUsuarioRolExistente(indexRol,indexUsuario) == 1) {
+
+                                    MessageBox.Show("El Rol ya existe para el usuario seleccionado.", "Información");
+
+                                }else{
+                                    int cant = 0;
+                                    SqlCommand cmdInsert = new SqlCommand("INSERT INTO GOQ.Rol_Usuario (rol_usu_rol_id,rol_usu_usu_id) VALUES (@ROL_ID,@USU_ID)",
+                                    PagoAgilFrba.ModuloGlobal.getConexion());
+                                    cmdInsert.Parameters.Add("ROL_ID", SqlDbType.Int).Value = indexRol;
+                                    cmdInsert.Parameters.Add("USU_ID", SqlDbType.Int).Value = indexUsuario;
+                                    cant=cmdInsert.ExecuteNonQuery();
+                                    if (cant > 0) { MessageBox.Show("Rol asignado correctamente.", "Información");
+                                    }
+                                    else { MessageBox.Show("Error en la asignación.", "Información"); }
+                                    
+                                }
+
+                                
+                            }
+                            else
+                            {
+                                MessageBox.Show("Error al recuperar el Id del Rol.", "Información");
+                            }
+
+
+                }else{
+                    MessageBox.Show("Debe seleccionar un rol.", "Information");
+                }
+
+            }else{
+                MessageBox.Show("Debe seleccionar un usuario.", "Information");
+            }
+        }
+        private bool tieneHabilitadaFuncionalidades(string nombreRol)
+        {
+            int cant = 0;
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM GOQ.Funcionalidad_Rol F INNER JOIN GOQ.Rol R ON (F.fun_rol_rol_id=R.rol_id) WHERE R.rol_nombre=@USUARIO", PagoAgilFrba.ModuloGlobal.getConexion());
+            cmd.Parameters.Add("USUARIO", SqlDbType.VarChar).Value = nombreRol;
+
+            reader = cmd.ExecuteReader();
+            reader.Read();
+
+            if (reader.HasRows)
+            {
+                cant = reader.GetInt32(0);
+                if (cant > 0)
+                {
+                    reader.Close();
+                    return true;
+                }else{
+                    reader.Close();
+                    return false;
+                }
+            }
+            else
+            {
+                reader.Close();
+                return false;
+            }
+         
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (lbRoles.SelectedItems.Count > 0)
+            {
+
+                if (tieneHabilitadaFuncionalidades(lbRoles.SelectedItem.ToString())) {
+
+
+                    SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 1 WHERE rol_nombre = @NOMBREROL",
+                    PagoAgilFrba.ModuloGlobal.getConexion());
+                    cmd.Parameters.Add("NOMBREROL", SqlDbType.VarChar).Value = lbRoles.SelectedItem.ToString();
+
+                    int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+                    if (cantidadFilasAfectadas > 0)
+                    {
+                        MessageBox.Show("Rol habilitado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        lbRoles.Items.Clear();
+                        cargarRoles();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ocurrió un error al intentar habilitar al rol.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else{
+
+                    MessageBox.Show("El rol seleccionado no tiene funcionalidades habilitadas.", "Información.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+
+
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar un rol a habilitar.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            if (lbRoles.SelectedIndex==-1) {
+                MessageBox.Show("Debe seleccionar el Rol a renombrar", "Información", MessageBoxButtons.OK);
+            }else{
+
+
+                string nombre_rol = "";
+
+                quienesNoTenganFuncionalidadNoFueronCargadosCorrectamente();
+
+                nombre_rol = Interaction.InputBox("Renombrar a: ", "Ingrese Nuevo Nombre del Rol");
+
+                TextInfo miTituloCase = new CultureInfo("en-US", false).TextInfo;
+
+                if (nombre_rol.ToString().Length > 0)
+                {
+
+                    SqlCommand cmd = new SqlCommand("UPDATE [GOQ].[Rol] SET [rol_nombre]=@RENOMBRAR WHERE ltrim(rtrim(upper([rol_nombre])))=@ORIGINAL",
+                    PagoAgilFrba.ModuloGlobal.getConexion());
+
+                    cmd.Parameters.Add("RENOMBRAR", SqlDbType.VarChar).Value = nombre_rol.ToUpper().Trim();//miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();
+                    cmd.Parameters.Add("ORIGINAL", SqlDbType.VarChar).Value = lbRoles.SelectedItem.ToString();
+
+                    int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+
+                    if (cantidadFilasAfectadas > 0)
+                    {
+                        //MessageBox.Show("Rol agregado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        lbRoles.Items.Clear();
+                        limpiarCheckBox();
+                        cargarRoles();
+                        MessageBox.Show("Se modificó el nombre correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se ha modificado el nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                }
+
+            }
         }
     }
 }
