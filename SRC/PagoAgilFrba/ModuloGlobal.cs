@@ -34,10 +34,12 @@ namespace PagoAgilFrba
                 try
                 {
 
-                    String str = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True"; ;
-                    //String str = ConfigurationManager.ConnectionStrings["GD1C2017"].ConnectionString; //VER SI FUNCIONA OK
-                    conex = new SqlConnection(str);
-                    conex.ConnectionString = str;
+                    var connectionString = ConfigurationManager.ConnectionStrings;
+                    
+                    var str = connectionString["PagoAgil.Properties.Settings.GD2C2017ConnectionString"];
+                    //String str = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2017;Integrated Security=True"; ;
+                    conex = new SqlConnection(str.ConnectionString);
+                    conex.ConnectionString = str.ConnectionString;
                     conex.Open();
 
                 }
