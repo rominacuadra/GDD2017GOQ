@@ -23,6 +23,7 @@ namespace PagoAgilFrba.RegistroPago
             llenarComboBoxEmpresa();
             llenarComboBoxCliente();
             llenarComboBoxTipoPago();
+            ReadAllSettings();
         }
 
         private void llenarComboBoxFiltro()
@@ -30,6 +31,30 @@ namespace PagoAgilFrba.RegistroPago
             comboBoxFiltro.Items.Add("Nro de Factura");
             comboBoxFiltro.Items.Add("Empresa");
             comboBoxFiltro.Items.Add("Cliente");
+        }
+
+        static void ReadAllSettings()
+        {
+            try
+            {
+                var appSettings = ConfigurationManager.AppSettings;
+
+                if (appSettings.Count == 0)
+                {
+                    Console.WriteLine("AppSettings is empty.");
+                }
+                else
+                {
+                    foreach (var key in appSettings.AllKeys)
+                    {
+                        Console.WriteLine("Key: {0} Value: {1}", key, appSettings[key]);
+                    }
+                }
+            }
+            catch (ConfigurationErrorsException)
+            {
+                Console.WriteLine("Error reading app settings");
+            }
         }
 
         private void mostrarResultadosFacturas()
@@ -180,7 +205,7 @@ namespace PagoAgilFrba.RegistroPago
             }
             else
             {
-                MessageBox.Show("La factura no fue encontrada o no se encuentra disponible para el pago.", "Error");
+                MessageBox.Show("La factura no esta disponible para el pago.", "Error");
             }
             reader.Close();
         }
@@ -206,7 +231,7 @@ namespace PagoAgilFrba.RegistroPago
             }
             else
             {
-                MessageBox.Show("Ocurrio un error en la consulta, intente nuevamente.", "Error");
+                MessageBox.Show("La factura no esta disponible para el pago.", "Error");
             }
         }
 
@@ -231,7 +256,7 @@ namespace PagoAgilFrba.RegistroPago
             }
             else
             {
-                MessageBox.Show("Ocurrio un error en la consulta, intente nuevamente.", "Error");
+                MessageBox.Show("La factura no esta disponible para el pago.", "Error");
             }
         }
 
