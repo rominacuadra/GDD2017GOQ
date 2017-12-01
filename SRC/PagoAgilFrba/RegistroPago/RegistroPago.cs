@@ -142,7 +142,7 @@ namespace PagoAgilFrba.RegistroPago
             var appSettings = ConfigurationManager.AppSettings;
             DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) inner join GOQ.Cliente c on (f.fac_cli_id = c.cli_id) inner join GOQ.Empresa e on(e.ID_empresa = f.fac_empresa_id) where fac_id = @nroFac and c.cli_habilitado = 1 and e.empresa_habilitado = 1 and f.fac_fecha_vec <= @fechaActual and f.fac_total > 0 group by fac_id having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0;", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) inner join GOQ.Cliente c on (f.fac_cli_id = c.cli_id) inner join GOQ.Empresa e on(e.ID_empresa = f.fac_empresa_id) where fac_id = @nroFac and c.cli_habilitado = 1 and e.empresa_habilitado = 1 and @fechaActual < f.fac_fecha_vec and f.fac_total > 0 group by fac_id having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0;", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("nroFac", SqlDbType.Int).Value = NroFac;
             cmd.Parameters.Add("fechaActual", SqlDbType.DateTime).Value = fechaActual;
             reader = cmd.ExecuteReader();
@@ -164,7 +164,7 @@ namespace PagoAgilFrba.RegistroPago
             string fechaActual = appSettings["fechaActual"];
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("SELECT fac_id, empresa_nombre, cli_dni, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (c.cli_id = f.fac_cli_id) WHERE fac_id = @NROFACT AND empresa_habilitado = 1 AND cli_habilitado = 1",
-                PagoAgilFrba.ModuloGlobal.getConexion()); //Probar este getConexion
+                PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("NROFACT", SqlDbType.Decimal).Value = NroFac;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -190,7 +190,7 @@ namespace PagoAgilFrba.RegistroPago
             var appSettings = ConfigurationManager.AppSettings;
             DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (f.fac_cli_id = c.cli_id) left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) WHERE cli_dni = @DNICLI AND empresa_habilitado = 1 AND cli_habilitado = 1 AND f.fac_fecha_vec <= @FECHAACTUAL and f.fac_total > 0 group by fac_id, fac_fecha_vec, fac_total having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0 order by fac_id ASC;",
+            SqlCommand cmd = new SqlCommand("SELECT fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (f.fac_cli_id = c.cli_id) left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) WHERE cli_dni = @DNICLI AND empresa_habilitado = 1 AND cli_habilitado = 1 AND @FECHAACTUAL < f.fac_fecha_vec and f.fac_total > 0 group by fac_id, fac_fecha_vec, fac_total having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0 order by fac_id ASC;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNICLI", SqlDbType.Decimal).Value = DNICli;
             cmd.Parameters.Add("FECHAACTUAL", SqlDbType.DateTime).Value = fechaActual;
@@ -215,7 +215,7 @@ namespace PagoAgilFrba.RegistroPago
             var appSettings = ConfigurationManager.AppSettings;
             DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (f.fac_cli_id = c.cli_id) left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) WHERE empresa_cuit = @EMPRESACUIT AND empresa_habilitado = 1 AND cli_habilitado = 1 AND f.fac_fecha_vec <= @FECHAACTUAL  and f.fac_total > 0 group by fac_id, fac_fecha_vec, fac_total having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0 order by fac_id ASC;",
+            SqlCommand cmd = new SqlCommand("SELECT fac_id, fac_fecha_vec, fac_total FROM GOQ.Factura f INNER JOIN GOQ.Empresa e ON (f.fac_empresa_id = e.ID_empresa) INNER JOIN GOQ.Cliente c ON (f.fac_cli_id = c.cli_id) left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) WHERE empresa_cuit = @EMPRESACUIT AND empresa_habilitado = 1 AND cli_habilitado = 1 AND @FECHAACTUAL < f.fac_fecha_vec  and f.fac_total > 0 group by fac_id, fac_fecha_vec, fac_total having (COUNT(pf.pago_fac_fac_id) = COUNT(d.dev_fac_id)) and COUNT(r.ren_id)=0 order by fac_id ASC;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("FECHAACTUAL", SqlDbType.DateTime).Value = fechaActual;
             cmd.Parameters.Add("EMPRESACUIT", SqlDbType.NVarChar).Value = EmpresaCUIT;

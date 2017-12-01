@@ -37,7 +37,6 @@
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.buttonLimpiar = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
-            this.textBoxFechaDeNacimiento = new System.Windows.Forms.TextBox();
             this.textBoxCodigoPostal = new System.Windows.Forms.TextBox();
             this.textBoxNroPiso = new System.Windows.Forms.TextBox();
             this.textBoxCalle = new System.Windows.Forms.TextBox();
@@ -64,6 +63,7 @@
             this.bajaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelTitulo = new System.Windows.Forms.Label();
+            this.maskedTextBoxFechaDeNac = new System.Windows.Forms.MaskedTextBox();
             this.menuABMCli.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,13 +143,6 @@
             this.buttonAceptar.Text = "Aceptar";
             this.buttonAceptar.UseVisualStyleBackColor = true;
             this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
-            // 
-            // textBoxFechaDeNacimiento
-            // 
-            this.textBoxFechaDeNacimiento.Location = new System.Drawing.Point(220, 520);
-            this.textBoxFechaDeNacimiento.Name = "textBoxFechaDeNacimiento";
-            this.textBoxFechaDeNacimiento.Size = new System.Drawing.Size(100, 20);
-            this.textBoxFechaDeNacimiento.TabIndex = 55;
             // 
             // textBoxCodigoPostal
             // 
@@ -367,11 +360,21 @@
             this.labelTitulo.TabIndex = 67;
             this.labelTitulo.Text = "TITULO";
             // 
+            // maskedTextBoxFechaDeNac
+            // 
+            this.maskedTextBoxFechaDeNac.Location = new System.Drawing.Point(220, 520);
+            this.maskedTextBoxFechaDeNac.Mask = "00/00/0000";
+            this.maskedTextBoxFechaDeNac.Name = "maskedTextBoxFechaDeNac";
+            this.maskedTextBoxFechaDeNac.Size = new System.Drawing.Size(100, 20);
+            this.maskedTextBoxFechaDeNac.TabIndex = 68;
+            this.maskedTextBoxFechaDeNac.ValidatingType = typeof(System.DateTime);
+            // 
             // ABMCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(705, 605);
+            this.Controls.Add(this.maskedTextBoxFechaDeNac);
             this.Controls.Add(this.labelTitulo);
             this.Controls.Add(this.menuABMCli);
             this.Controls.Add(this.groupBox1);
@@ -383,7 +386,6 @@
             this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.buttonLimpiar);
             this.Controls.Add(this.buttonAceptar);
-            this.Controls.Add(this.textBoxFechaDeNacimiento);
             this.Controls.Add(this.textBoxCodigoPostal);
             this.Controls.Add(this.textBoxNroPiso);
             this.Controls.Add(this.textBoxCalle);
@@ -423,7 +425,6 @@
         private System.Windows.Forms.Button buttonBuscar;
         private System.Windows.Forms.Button buttonLimpiar;
         private System.Windows.Forms.Button buttonAceptar;
-        private System.Windows.Forms.TextBox textBoxFechaDeNacimiento;
         private System.Windows.Forms.TextBox textBoxCodigoPostal;
         private System.Windows.Forms.TextBox textBoxNroPiso;
         private System.Windows.Forms.TextBox textBoxCalle;
@@ -450,5 +451,6 @@
         private System.Windows.Forms.ToolStripMenuItem bajaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarToolStripMenuItem;
         private System.Windows.Forms.Label labelTitulo;
+        private System.Windows.Forms.MaskedTextBox maskedTextBoxFechaDeNac;
     }
 }

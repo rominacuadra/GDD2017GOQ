@@ -48,7 +48,7 @@ namespace PagoAgilFrba.AbmCliente
             textBoxCalle.Visible = true;
             textBoxNroPiso.Visible = true;
             textBoxCodigoPostal.Visible = true;
-            textBoxFechaDeNacimiento.Visible = true;
+            maskedTextBoxFechaDeNac.Visible = true;
             labelTitulo.Visible = true;
             buttonAceptar.Visible = true;
             buttonLimpiar.Visible = true;
@@ -93,7 +93,7 @@ namespace PagoAgilFrba.AbmCliente
             textBoxCalle.Visible = false;
             textBoxNroPiso.Visible = false;
             textBoxCodigoPostal.Visible = false;
-            textBoxFechaDeNacimiento.Visible = false;
+            maskedTextBoxFechaDeNac.Visible = false;
             labelTitulo.Visible = false;
             buttonAceptar.Visible = false;
             buttonLimpiar.Visible = false;
@@ -124,7 +124,8 @@ namespace PagoAgilFrba.AbmCliente
                 mensaje = mensaje + "Teléfono, ";
                 respuesta = false;
             }
-            if(!DateTime.TryParse(textBoxFechaDeNacimiento.Text.ToString(), out esFecha)){
+            if (!DateTime.TryParse(maskedTextBoxFechaDeNac.Text.ToString(), out esFecha))
+            {
                 mensaje = mensaje + "Fecha de Nacimiento, ";
                 respuesta = false;
             }
@@ -143,7 +144,7 @@ namespace PagoAgilFrba.AbmCliente
                 {
                     if (camposIngresadosSonValidos())
                     {
-                        darAltaCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
+                        darAltaCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(maskedTextBoxFechaDeNac.Text));
                     }
                 }
                 else
@@ -163,7 +164,7 @@ namespace PagoAgilFrba.AbmCliente
             {
                 if (camposIngresadosSonValidos())
                 {
-                    modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(textBoxFechaDeNacimiento.Text));
+                    modificarCliente(textBoxNombre.Text, textBoxApellido.Text, Convert.ToInt32(textBoxDNI.Text), textBoxMail.Text, Convert.ToInt32(textBoxTelefono.Text), textBoxCalle.Text + " " + textBoxNroPiso.Text, textBoxCodigoPostal.Text, Convert.ToDateTime(maskedTextBoxFechaDeNac.Text));
                 }
             }
             else
@@ -176,7 +177,7 @@ namespace PagoAgilFrba.AbmCliente
         {   
             return textBoxNombre.Text.Length > 0 && textBoxApellido.Text.Length > 0 && textBoxDNI.Text.Length > 0 && textBoxMail.Text.Length > 0 &&
                 textBoxTelefono.Text.Length > 0 && textBoxCalle.Text.Length > 0 && textBoxNroPiso.Text.Length > 0 &&
-                textBoxCodigoPostal.Text.Length > 0 && textBoxFechaDeNacimiento.Text.Length > 0;
+                textBoxCodigoPostal.Text.Length > 0 && maskedTextBoxFechaDeNac.Text.Length > 0;
         }
 
         private bool mailNoEstaRepetido(string Mail)
@@ -415,7 +416,7 @@ namespace PagoAgilFrba.AbmCliente
             textBoxCalle.Text = "";
             textBoxNroPiso.Text = "";
             textBoxCodigoPostal.Text = "";
-            textBoxFechaDeNacimiento.Text = "";
+            maskedTextBoxFechaDeNac.Text = "";
             checkBoxCliente.Checked = false;
             comboBoxResultadoBusqueda.Items.Clear();
         }
@@ -443,7 +444,7 @@ namespace PagoAgilFrba.AbmCliente
                 textBoxNroPiso.Text = Convert.ToString(direccion[direccion.Length - 1]);
                 textBoxCalle.Text = Convert.ToString(reader.GetValue(5)).Remove((reader.GetString(5).Length - direccion[direccion.Length - 1].Length), direccion[direccion.Length - 1].Length);
                 textBoxCodigoPostal.Text = Convert.ToString(reader.GetValue(6));
-                textBoxFechaDeNacimiento.Text = Convert.ToString(reader.GetValue(7));
+                maskedTextBoxFechaDeNac.Text = Convert.ToString(reader.GetValue(7));
                 if (Convert.ToInt32(reader.GetValue(8)) == 0)
                 {
                     checkBoxCliente.Visible = true;
