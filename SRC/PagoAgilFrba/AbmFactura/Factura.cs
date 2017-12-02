@@ -842,7 +842,7 @@ namespace PagoAgilFrba.AbmFactura
         {
             SqlDataReader reader = null;
             SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) where fac_id = @FACTURA group by fac_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) or COUNT(r.ren_id)>0", PagoAgilFrba.ModuloGlobal.getConexion());
-            cmd.Parameters.Add("FACTURA", SqlDbType.Date).Value = facturaID;
+            cmd.Parameters.Add("FACTURA", SqlDbType.Decimal).Value = facturaID;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
