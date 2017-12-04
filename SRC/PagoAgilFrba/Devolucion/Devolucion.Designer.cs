@@ -53,6 +53,8 @@
             // 
             // comboFacturas
             // 
+            this.comboFacturas.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboFacturas.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboFacturas.FormattingEnabled = true;
             this.comboFacturas.Location = new System.Drawing.Point(32, 23);
             this.comboFacturas.Name = "comboFacturas";

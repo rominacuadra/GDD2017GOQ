@@ -237,22 +237,62 @@ namespace PagoAgilFrba.AbmCliente
                 Nombre, Apellido, DNI, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
+                if (filasRetornadas > 0)
+                {
+                    MessageBox.Show("El cliente se ha modificado con éxito!", "Información");
+                }
+                else
+                {
+                    MessageBox.Show("Ocurrió un error al intentar modificar el cliente", "Error");
+                }
             }
             else if (MailSinModificar != Mail && DNISinModificar == DNI)
             {
                 ////modifica Mail, DNI no
-                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_mail = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
-                Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
-                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
-                filasRetornadas = cmd.ExecuteNonQuery();
+                if (mailNoEstaRepetido(textBoxMail.Text))
+                {
+
+                    SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_mail = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
+                    Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
+                    DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
+                    filasRetornadas = cmd.ExecuteNonQuery();
+                    if (filasRetornadas > 0)
+                    {
+                        MessageBox.Show("El cliente se ha modificado con éxito!", "Información");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ocurrió un error al intentar modificar el cliente", "Error");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("El mail ya se encuentra registrado, intente con otro.", "ERROR");
+                }
             }
             else if (MailSinModificar != Mail && DNISinModificar != DNI)
             {
+
                 ////modifica Mail y DNI
-                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido = '{10}' AND cli_nombre = '{11}'",
-                Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
-                DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
-                filasRetornadas = cmd.ExecuteNonQuery();
+                if (mailNoEstaRepetido(textBoxMail.Text))
+                {
+                    SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido = '{10}' AND cli_nombre = '{11}'",
+                    Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
+                    DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
+                    filasRetornadas = cmd.ExecuteNonQuery();
+                    if (filasRetornadas > 0)
+                    {
+                        MessageBox.Show("El cliente se ha modificado con éxito!", "Información");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ocurrió un error al intentar modificar el cliente", "Error");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("El mail ya se encuentra registrado, intente con otro.", "ERROR");
+                }
             }
             else
             {
@@ -261,16 +301,16 @@ namespace PagoAgilFrba.AbmCliente
                 Nombre, Apellido, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
+                if (filasRetornadas > 0)
+                {
+                    MessageBox.Show("El cliente se ha modificado con éxito!", "Información");
+                }
+                else
+                {
+                    MessageBox.Show("Ocurrió un error al intentar modificar el cliente", "Error");
+                }
             }
-
-            if (filasRetornadas > 0)
-            {
-                MessageBox.Show("El cliente se ha modificado con éxito!", "Información");
-            }
-            else
-            {
-                MessageBox.Show("Ocurrió un error al intentar modificar el cliente", "Error");
-            }
+           
         }
 
         private bool camposDeBusquedaCompletos()

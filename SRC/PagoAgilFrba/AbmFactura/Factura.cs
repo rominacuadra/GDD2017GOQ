@@ -205,7 +205,7 @@ namespace PagoAgilFrba.AbmFactura
                decimal total = Convert.ToDecimal(textBoxTotal.Text);
 
                SqlParameter[] sqls = new SqlParameter[7];
-               sqls[0] = new SqlParameter("nroFact", Convert.ToDecimal(maskedTextBoxNroFact.Text));
+               sqls[0] = new SqlParameter("nroFact", Convert.ToDecimal(maskedTextBoxNroFact.Text.Replace(" ", "")));
                sqls[1] = new SqlParameter("empresa", empresa);
                sqls[2] = new SqlParameter("nombre", nombre);
                sqls[3] = new SqlParameter("apellido", apellido);
@@ -228,7 +228,7 @@ namespace PagoAgilFrba.AbmFactura
                         SqlParameter[] sqls1 = new SqlParameter[3];
                         sqls1[0] = new SqlParameter("monto", Convert.ToDecimal(monto_cant[0]));
                         sqls1[1] = new SqlParameter("cantidad", monto_cant[1]);
-                        sqls1[2] = new SqlParameter("factura", Convert.ToDecimal(maskedTextBoxNroFact.Text));
+                        sqls1[2] = new SqlParameter("factura", Convert.ToDecimal(maskedTextBoxNroFact.Text.Replace(" ", "")));
                         SqlCommand cmd2 = new SqlCommand("GOQ.SP_Insertar_Item", PagoAgilFrba.ModuloGlobal.getConexion());
                         cmd2.CommandType = CommandType.StoredProcedure;
                         cmd2.Parameters.AddRange(sqls1);
@@ -319,7 +319,7 @@ namespace PagoAgilFrba.AbmFactura
         {
             if (validarCamposFactura() && validarListaDeItems())
             {
-                if (facturaNoEstaRepetido(Convert.ToDecimal(maskedTextBoxNroFact.Text)))
+                if (facturaNoEstaRepetido(Convert.ToDecimal(maskedTextBoxNroFact.Text.Replace(" ", ""))))
                 {
                     darAltaFactura();
                 }
@@ -581,7 +581,7 @@ namespace PagoAgilFrba.AbmFactura
             
             if (comboBoxFiltro.SelectedItem.ToString() == "NroFactura")
             {
-                int fac_id = Convert.ToInt32(maskedTextBoxNroFact.Text);
+                int fac_id = Convert.ToInt32(maskedTextBoxNroFact.Text.Replace(" ", ""));
 
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where f.fac_id = @nroFactura and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",

@@ -28,7 +28,7 @@ namespace PagoAgilFrba.Devolucion
         private void llenarFacturasEnElCombo()
         {
              SqlDataReader reader = null;
-             SqlCommand cmd = new SqlCommand("select TOP 50 fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) group by fac_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) and COUNT(r.ren_id)=0 ORDER BY 1 ASC", PagoAgilFrba.ModuloGlobal.getConexion());
+             SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id)  where f.fac_ren_id is NULL group by fac_id having COUNT(pf.pago_fac_fac_id) > (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f.fac_id) ORDER BY 1 ASC", PagoAgilFrba.ModuloGlobal.getConexion());
              reader = cmd.ExecuteReader();
              while (reader.Read())
              {
@@ -40,7 +40,7 @@ namespace PagoAgilFrba.Devolucion
         private bool Factura_valida(string factura){
             numerofactura = factura;
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) where fac_id = @nroFac group by fac_id having (COUNT(pf.pago_fac_fac_id) > (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f.fac_id )) and COUNT(r.ren_id)=0", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) where fac_id = @nroFac and f.fac_ren_id is NULL group by fac_id having (COUNT(pf.pago_fac_fac_id) > (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f.fac_id ))", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("nroFac", SqlDbType.Int).Value = factura;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)

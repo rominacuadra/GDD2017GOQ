@@ -268,6 +268,7 @@
             this.maskedTextBoxCuit.Name = "maskedTextBoxCuit";
             this.maskedTextBoxCuit.Size = new System.Drawing.Size(114, 20);
             this.maskedTextBoxCuit.TabIndex = 120;
+            this.maskedTextBoxCuit.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBoxCuit_MaskInputRejected);
             // 
             // AbmEmpresa
             // 

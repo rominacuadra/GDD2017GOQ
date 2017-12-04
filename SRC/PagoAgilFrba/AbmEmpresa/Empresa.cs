@@ -180,7 +180,7 @@ namespace PagoAgilFrba.AbmEmpresa
             if (maskedTextBoxCuit.Text.Length>0)
             {
 
-                bool result = Information.IsNumeric(Convert.ToInt64(maskedTextBoxCuit.Text));
+                bool result = Information.IsNumeric(Convert.ToInt64(maskedTextBoxCuit.Text.Replace(" ","")));
                 if (result)
                 {
                     return textBoxNombre.Text.Length > 0 && maskedTextBoxCuit.Text.Length > 0 && comboBoxServicio.Text.Length > 0 && textBoxDireccion.Text.Length > 0 ? true : false;
@@ -274,9 +274,9 @@ namespace PagoAgilFrba.AbmEmpresa
         {
             if (todosLosCamposCompletos())
             {
-                if (cuitNoEstaRepetido(maskedTextBoxCuit.Text))
+                if (cuitNoEstaRepetido(maskedTextBoxCuit.Text.Replace(" ", "")))
                 {
-                    darAltaSucursal(textBoxNombre.Text, Convert.ToString(maskedTextBoxCuit.Text), comboBoxServicio.Text, textBoxDireccion.Text);
+                    darAltaSucursal(textBoxNombre.Text, Convert.ToString(maskedTextBoxCuit.Text.Replace(" ", "")), comboBoxServicio.Text, textBoxDireccion.Text);
                 }
                 else
                 {
@@ -380,7 +380,7 @@ namespace PagoAgilFrba.AbmEmpresa
         {
             if (todosLosCamposCompletos())
             {
-                modificarEmpresa(textBoxNombre.Text, maskedTextBoxCuit.Text, comboBoxServicio.Text, textBoxDireccion.Text);
+                modificarEmpresa(textBoxNombre.Text, maskedTextBoxCuit.Text.Replace(" ", ""), comboBoxServicio.Text, textBoxDireccion.Text);
             }
             else
             {
@@ -536,8 +536,8 @@ namespace PagoAgilFrba.AbmEmpresa
         {
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
-                
-                return maskedTextBoxCuit.Text != "" && textBoxNombre.Text.ToString().Length > 0 && comboBoxServicio.SelectedIndex > 0;
+
+                return maskedTextBoxCuit.Text != "" && textBoxNombre.Text.ToString().Length > 0 && comboBoxServicio.SelectedItem.ToString() != "";
             }
             else if (comboBoxFiltro.SelectedItem.ToString() == "Nombre")
             {
@@ -559,11 +559,11 @@ namespace PagoAgilFrba.AbmEmpresa
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where ( e.empresa_cuit , '-' , '' )=@CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion=@SERVICIO;",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion=@SERVICIO;",
                 PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text;
+                cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text.Replace(" ", "");
                 cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = comboBoxServicio.Text;
-                cmd.Parameters.Add("@NOMBRE", "%" + textBoxNombre.Text + "%");
+                cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -607,7 +607,7 @@ namespace PagoAgilFrba.AbmEmpresa
                 SqlDataReader reader = null;
                 SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT",
                 PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text;
+                cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text.Replace(" ", "");
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -682,6 +682,11 @@ namespace PagoAgilFrba.AbmEmpresa
         private void buttonLimpiar_Click(object sender, EventArgs e)
         {
             limpiarCampos();
+        }
+
+        private void maskedTextBoxCuit_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+            
         }
     }
 }
