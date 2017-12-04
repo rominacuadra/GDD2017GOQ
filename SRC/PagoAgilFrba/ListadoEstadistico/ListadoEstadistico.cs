@@ -30,7 +30,7 @@ namespace PagoAgilFrba.ListadoEstadistico
             if (tipoListado == "Porcentaje de facturas cobradas por empresa")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select TOP 5 e.empresa_nombre,COUNT(fac_id)*100 / (select COUNT(fac_id) cantidadTotal from GOQ.Empresa e1 inner join GOQ.Factura f1 on(e1.ID_empresa = f1.fac_empresa_id) where e1.ID_empresa = f.fac_empresa_id) PorcentajeCobrado from GOQ.Factura f inner join GOQ.Pago_Factura pf on(f.fac_id = pf.pago_fac_fac_id) inner join GOQ.Pago p on(p.pago_id = pf.pago_fac_pago_id) inner join GOQ.Empresa e on(e.ID_empresa = f.fac_empresa_id) where year(p.pago_fecha_cobro) = @año and month(p.pago_fecha_cobro) between @mesInicio and @mesFin group by f.fac_empresa_id,e.empresa_nombre order by 2 DESC",
+                SqlCommand cmd = new SqlCommand("select TOP 5 e.empresa_nombre,COUNT(DISTINCT fac_id)*100 / (select COUNT(DISTINCT fac_id) cantidadTotal from GOQ.Empresa e1 inner join GOQ.Factura f1 on(e1.ID_empresa = f1.fac_empresa_id) where e1.ID_empresa = f.fac_empresa_id) PorcentajeCobrado from GOQ.Factura f inner join GOQ.Pago_Factura pf on(f.fac_id = pf.pago_fac_fac_id) inner join GOQ.Pago p on(p.pago_id = pf.pago_fac_pago_id) inner join GOQ.Empresa e on(e.ID_empresa = f.fac_empresa_id) where year(p.pago_fecha_cobro) = @año and month(p.pago_fecha_cobro) between @mesInicio and @mesFin group by f.fac_empresa_id,e.empresa_nombre order by 2 DESC",
                     PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("año", SqlDbType.Int).Value = año;
                 cmd.Parameters.Add("mesInicio", SqlDbType.Int).Value = mesInicio;
@@ -81,7 +81,7 @@ namespace PagoAgilFrba.ListadoEstadistico
             else if(tipoListado == "Empresas con mayor monto rendido"){
 
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select TOP 5 e.empresa_nombre ,SUM(ren_imp_total) TotalMontoRendido from GOQ.Factura f inner join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) inner join GOQ.Empresa e on(e.ID_empresa = f.fac_empresa_id) where  year(ren_fecha_ren) = @año and month(ren_fecha_ren) between @mesInicio and @mesFin group by e.empresa_nombre order by 2 DESC", PagoAgilFrba.ModuloGlobal.getConexion());
+                SqlCommand cmd = new SqlCommand("select TOP 5 e.empresa_nombre ,SUM(ren_imp_total) TotalMontoRendido from GOQ.Rendicion r inner join GOQ.Empresa e on(e.ID_empresa = r.ren_empresa_id) where  year(ren_fecha_ren) = @año and month(ren_fecha_ren) between @mesInicio and  @mesFin group by e.empresa_nombre order by 2 DESC", PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("año", SqlDbType.Int).Value = año;
                 cmd.Parameters.Add("mesInicio", SqlDbType.Int).Value = mesInicio;
                 cmd.Parameters.Add("mesFin", SqlDbType.Int).Value = mesFin;
@@ -164,7 +164,7 @@ namespace PagoAgilFrba.ListadoEstadistico
             }
             else{
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select TOP 5 c.cli_apellido+','+c.cli_nombre ApellidoNombre , COUNT(f.fac_id)*100/(select COUNT(f1.fac_id) cantidadTotal from GOQ.Factura f1 where f1.fac_cli_id = c.cli_id) PorcentajeFacturasPagadas from GOQ.Cliente c inner join GOQ.Factura f on(c.cli_id = f.fac_cli_id) inner join GOQ.Pago_Factura pf on(pf.pago_fac_fac_id = f.fac_id) inner join GOQ.Pago p on(p.pago_id = pf.pago_fac_pago_id) where year(p.pago_fecha_cobro) = @año and month(pago_fecha_cobro) between @mesInicio and @mesFin group by c.cli_apellido,c.cli_nombre,c.cli_id order by 2 DESC", PagoAgilFrba.ModuloGlobal.getConexion());
+                SqlCommand cmd = new SqlCommand("select TOP 5 c.cli_apellido+','+c.cli_nombre ApellidoNombre , COUNT(DISTINCT f.fac_id)*100/(select COUNT(DISTINCT f1.fac_id) cantidadTotal from GOQ.Factura f1 where f1.fac_cli_id = c.cli_id) PorcentajeFacturasPagadas from GOQ.Cliente c inner join GOQ.Factura f on(c.cli_id = f.fac_cli_id) inner join GOQ.Pago_Factura pf on(pf.pago_fac_fac_id = f.fac_id) inner join GOQ.Pago p on(p.pago_id = pf.pago_fac_pago_id) where year(p.pago_fecha_cobro) = @año and month(pago_fecha_cobro) between @mesInicio and @mesFin group by c.cli_apellido,c.cli_nombre,c.cli_id order by 2 DESC", PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("año", SqlDbType.Int).Value = año;
                 cmd.Parameters.Add("mesInicio", SqlDbType.Int).Value = mesInicio;
                 cmd.Parameters.Add("mesFin", SqlDbType.Int).Value = mesFin;
