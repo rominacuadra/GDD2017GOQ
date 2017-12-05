@@ -204,6 +204,7 @@
             // textBoxCodigoPostal
             // 
             this.textBoxCodigoPostal.Location = new System.Drawing.Point(220, 256);
+            this.textBoxCodigoPostal.MaxLength = 16;
             this.textBoxCodigoPostal.Name = "textBoxCodigoPostal";
             this.textBoxCodigoPostal.Size = new System.Drawing.Size(100, 20);
             this.textBoxCodigoPostal.TabIndex = 89;
@@ -211,6 +212,7 @@
             // textBoxDirec
             // 
             this.textBoxDirec.Location = new System.Drawing.Point(220, 213);
+            this.textBoxDirec.MaxLength = 40;
             this.textBoxDirec.Name = "textBoxDirec";
             this.textBoxDirec.Size = new System.Drawing.Size(100, 20);
             this.textBoxDirec.TabIndex = 81;
@@ -218,6 +220,7 @@
             // textBoxNombre
             // 
             this.textBoxNombre.Location = new System.Drawing.Point(220, 170);
+            this.textBoxNombre.MaxLength = 40;
             this.textBoxNombre.Name = "textBoxNombre";
             this.textBoxNombre.Size = new System.Drawing.Size(100, 20);
             this.textBoxNombre.TabIndex = 80;

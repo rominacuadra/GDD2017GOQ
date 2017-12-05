@@ -261,6 +261,7 @@
             // textBoxItemMonto
             // 
             this.textBoxItemMonto.Location = new System.Drawing.Point(180, 485);
+            this.textBoxItemMonto.MaxLength = 16;
             this.textBoxItemMonto.Name = "textBoxItemMonto";
             this.textBoxItemMonto.Size = new System.Drawing.Size(114, 20);
             this.textBoxItemMonto.TabIndex = 140;
@@ -268,6 +269,7 @@
             // textBoxItemCantidad
             // 
             this.textBoxItemCantidad.Location = new System.Drawing.Point(180, 522);
+            this.textBoxItemCantidad.MaxLength = 16;
             this.textBoxItemCantidad.Name = "textBoxItemCantidad";
             this.textBoxItemCantidad.Size = new System.Drawing.Size(114, 20);
             this.textBoxItemCantidad.TabIndex = 141;

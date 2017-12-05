@@ -21,13 +21,11 @@ namespace PagoAgilFrba
 
         private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
 
         private void administraciónToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //PagoAgilFrba.AbmCliente();
-
             AbmCliente.ABMCliente p = new AbmCliente.ABMCliente();
             p.ShowDialog();
         }
@@ -49,7 +47,6 @@ namespace PagoAgilFrba
                         while (reader.Read())
                         {
                             imprimir = reader.GetValue(0).ToString();
-                            //MessageBox.Show(imprimir.ToString());
 
                             switch (imprimir)
                             {

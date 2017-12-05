@@ -280,33 +280,41 @@ namespace PagoAgilFrba.AbmRol
                 TextInfo miTituloCase= new CultureInfo("en-US", false).TextInfo;
 
                 if (nombre_rol.ToString().Length > 0 ) {
-                    if (!existeRol(nombre_rol.ToString()))
+                    if (nombre_rol.ToString().Length <= 14)
                     {
-
-                        SqlCommand cmd = new SqlCommand("INSERT INTO [GOQ].[Rol] ([rol_nombre],[rol_habilitado]) VALUES (@NOMBREROL ,1)",
-    PagoAgilFrba.ModuloGlobal.getConexion());
-
-                        cmd.Parameters.Add("NOMBREROL", SqlDbType.Text).Value = nombre_rol.ToUpper().Trim();//miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();
-
-                        int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
-
-                        if (cantidadFilasAfectadas > 0)
+                        if (!existeRol(nombre_rol.ToString()))
                         {
-                            lbRoles.Items.Clear();
-                            limpiarCheckBox();
-                            cargarRoles();
-                            lbRoles.Items.Add(nombre_rol.ToUpper().Trim());
-                            MessageBox.Show("Seleccione el rol y elija sus funcionalidades para que se registre correctamente, de lo contrario no se cargará.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            SqlCommand cmd = new SqlCommand("INSERT INTO [GOQ].[Rol] ([rol_nombre],[rol_habilitado]) VALUES (@NOMBREROL ,1)",
+                                    PagoAgilFrba.ModuloGlobal.getConexion());
+
+                            cmd.Parameters.Add("NOMBREROL", SqlDbType.Text).Value = nombre_rol.ToUpper().Trim();//miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();
+
+                            int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+
+                            if (cantidadFilasAfectadas > 0)
+                            {
+                                lbRoles.Items.Clear();
+                                limpiarCheckBox();
+                                cargarRoles();
+                                lbRoles.Items.Add(nombre_rol.ToUpper().Trim());
+                                MessageBox.Show("Seleccione el rol y elija sus funcionalidades para que se registre correctamente, de lo contrario no se cargará.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Ocurrió un error al intentar agregar un rol.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("Ocurrió un error al intentar agregar un rol.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                            MessageBox.Show("El nombre elegido ya existe, intente con otro.", "Error");
+                        }  
                     }
                     else
                     {
-                        MessageBox.Show("El nombre elegido ya existe, intente con otro.", "Error");
-                    }                
+                        MessageBox.Show("El nombre elegido contiene más de 14 caracteres, intente con otro.", "Error");
+                    }
+                                  
                 }
                 else
                 {
@@ -651,36 +659,44 @@ namespace PagoAgilFrba.AbmRol
 
                 if (nombre_rol.ToString().Length > 0)
                 {
-                    if (!existeRol(nombre_rol.ToString()))
+                    if (nombre_rol.ToString().Length <= 14)
                     {
 
-                        SqlCommand cmd = new SqlCommand("UPDATE [GOQ].[Rol] SET [rol_nombre]=@RENOMBRAR WHERE ltrim(rtrim(upper([rol_nombre])))=@ORIGINAL",
-                        PagoAgilFrba.ModuloGlobal.getConexion());
-
-                        cmd.Parameters.Add("RENOMBRAR", SqlDbType.VarChar).Value = nombre_rol.ToUpper().Trim();//miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();
-                        cmd.Parameters.Add("ORIGINAL", SqlDbType.VarChar).Value = lbRoles.SelectedItem.ToString();
-
-                        int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
-
-                        if (cantidadFilasAfectadas > 0)
+                        if (!existeRol(nombre_rol.ToString()))
                         {
-                            //MessageBox.Show("Rol agregado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            lbRoles.Items.Clear();
-                            limpiarCheckBox();
-                            cargarRoles();
-                            MessageBox.Show("Se modificó el nombre correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            lbRolHab.Items.Clear();
-                            cargarRolesHabilitados();
-                            
+
+                            SqlCommand cmd = new SqlCommand("UPDATE [GOQ].[Rol] SET [rol_nombre]=@RENOMBRAR WHERE ltrim(rtrim(upper([rol_nombre])))=@ORIGINAL",
+                            PagoAgilFrba.ModuloGlobal.getConexion());
+
+                            cmd.Parameters.Add("RENOMBRAR", SqlDbType.VarChar).Value = nombre_rol.ToUpper().Trim();//miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();
+                            cmd.Parameters.Add("ORIGINAL", SqlDbType.VarChar).Value = lbRoles.SelectedItem.ToString();
+
+                            int cantidadFilasAfectadas = cmd.ExecuteNonQuery();
+
+                            if (cantidadFilasAfectadas > 0)
+                            {
+                                //MessageBox.Show("Rol agregado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                lbRoles.Items.Clear();
+                                limpiarCheckBox();
+                                cargarRoles();
+                                MessageBox.Show("Se modificó el nombre correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                lbRolHab.Items.Clear();
+                                cargarRolesHabilitados();
+
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se ha modificado el nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("No se ha modificado el nombre.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("El nombre ya existe, intente con otro.", "Error");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("El nombre ya existe, intente con otro.", "Error");
+                        MessageBox.Show("El nombre elegido contiene más de 14 caracteres, intente con otro.", "Error");
                     }
 
                 }

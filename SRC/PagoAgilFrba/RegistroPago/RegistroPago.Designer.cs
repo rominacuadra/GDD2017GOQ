@@ -204,6 +204,7 @@
             // textBoxNroFact
             // 
             this.textBoxNroFact.Location = new System.Drawing.Point(289, 136);
+            this.textBoxNroFact.MaxLength = 9;
             this.textBoxNroFact.Name = "textBoxNroFact";
             this.textBoxNroFact.Size = new System.Drawing.Size(100, 20);
             this.textBoxNroFact.TabIndex = 16;

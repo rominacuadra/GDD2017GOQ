@@ -66,6 +66,7 @@
             // textAño
             // 
             this.textAño.Location = new System.Drawing.Point(176, 63);
+            this.textAño.MaxLength = 4;
             this.textAño.Name = "textAño";
             this.textAño.Size = new System.Drawing.Size(62, 20);
             this.textAño.TabIndex = 2;

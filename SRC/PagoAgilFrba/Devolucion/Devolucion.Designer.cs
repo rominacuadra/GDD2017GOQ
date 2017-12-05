@@ -84,6 +84,7 @@
             // boxIngreso
             // 
             this.boxIngreso.Location = new System.Drawing.Point(32, 53);
+            this.boxIngreso.MaxLength = 9;
             this.boxIngreso.Name = "boxIngreso";
             this.boxIngreso.Size = new System.Drawing.Size(69, 20);
             this.boxIngreso.TabIndex = 4;
