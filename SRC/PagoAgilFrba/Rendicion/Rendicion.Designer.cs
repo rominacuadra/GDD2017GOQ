@@ -43,9 +43,10 @@
             // 
             // cbEmpresa
             // 
+            this.cbEmpresa.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbEmpresa.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbEmpresa.FormattingEnabled = true;
-            this.cbEmpresa.Location = new System.Drawing.Point(80, 49);
+            this.cbEmpresa.Location = new System.Drawing.Point(81, 49);
             this.cbEmpresa.Name = "cbEmpresa";
             this.cbEmpresa.Size = new System.Drawing.Size(174, 23);
             this.cbEmpresa.TabIndex = 0;
@@ -62,7 +63,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(31, 26);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(742, 386);
+            this.groupBox1.Size = new System.Drawing.Size(742, 311);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Rendición";
@@ -70,6 +71,7 @@
             // 
             // cbPorcComision
             // 
+            this.cbPorcComision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPorcComision.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbPorcComision.FormattingEnabled = true;
             this.cbPorcComision.Location = new System.Drawing.Point(683, 46);
@@ -90,7 +92,7 @@
             // btnRendir
             // 
             this.btnRendir.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRendir.Location = new System.Drawing.Point(337, 120);
+            this.btnRendir.Location = new System.Drawing.Point(337, 174);
             this.btnRendir.Name = "btnRendir";
             this.btnRendir.Size = new System.Drawing.Size(75, 23);
             this.btnRendir.TabIndex = 4;
@@ -131,7 +133,7 @@
             // btnCerrar
             // 
             this.btnCerrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCerrar.Location = new System.Drawing.Point(368, 428);
+            this.btnCerrar.Location = new System.Drawing.Point(368, 371);
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(75, 23);
             this.btnCerrar.TabIndex = 5;
@@ -143,7 +145,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(831, 476);
+            this.ClientSize = new System.Drawing.Size(831, 410);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

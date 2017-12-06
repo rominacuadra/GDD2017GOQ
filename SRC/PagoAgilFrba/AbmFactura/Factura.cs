@@ -19,6 +19,9 @@ namespace PagoAgilFrba.AbmFactura
         public AbmFactura()
         {
             InitializeComponent();
+            var appSettings = ConfigurationManager.AppSettings;
+            DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
+            dtFechaVen.MinDate = fechaActual;
             comboBoxFiltro.Items.Add("NroFactura");
             comboBoxFiltro.Items.Add("Empresa");
             comboBoxFiltro.Items.Add("Cliente");

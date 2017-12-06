@@ -65,6 +65,7 @@
             // 
             // comboBoxFiltro
             // 
+            this.comboBoxFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFiltro.FormattingEnabled = true;
             this.comboBoxFiltro.Location = new System.Drawing.Point(89, 62);
             this.comboBoxFiltro.Name = "comboBoxFiltro";
@@ -148,7 +149,7 @@
             // listBoxFacturas
             // 
             this.listBoxFacturas.FormattingEnabled = true;
-            this.listBoxFacturas.Location = new System.Drawing.Point(477, 136);
+            this.listBoxFacturas.Location = new System.Drawing.Point(477, 174);
             this.listBoxFacturas.Name = "listBoxFacturas";
             this.listBoxFacturas.Size = new System.Drawing.Size(228, 160);
             this.listBoxFacturas.TabIndex = 10;
@@ -157,7 +158,7 @@
             // labelFactAPagar
             // 
             this.labelFactAPagar.AutoSize = true;
-            this.labelFactAPagar.Location = new System.Drawing.Point(474, 108);
+            this.labelFactAPagar.Location = new System.Drawing.Point(474, 146);
             this.labelFactAPagar.Name = "labelFactAPagar";
             this.labelFactAPagar.Size = new System.Drawing.Size(91, 13);
             this.labelFactAPagar.TabIndex = 11;
@@ -165,7 +166,7 @@
             // 
             // buttonPagar
             // 
-            this.buttonPagar.Location = new System.Drawing.Point(630, 337);
+            this.buttonPagar.Location = new System.Drawing.Point(630, 375);
             this.buttonPagar.Name = "buttonPagar";
             this.buttonPagar.Size = new System.Drawing.Size(75, 23);
             this.buttonPagar.TabIndex = 12;
@@ -175,7 +176,7 @@
             // 
             // buttonQuitar
             // 
-            this.buttonQuitar.Location = new System.Drawing.Point(477, 337);
+            this.buttonQuitar.Location = new System.Drawing.Point(477, 375);
             this.buttonQuitar.Name = "buttonQuitar";
             this.buttonQuitar.Size = new System.Drawing.Size(75, 23);
             this.buttonQuitar.TabIndex = 13;
@@ -186,7 +187,7 @@
             // labelTotAPagar
             // 
             this.labelTotAPagar.AutoSize = true;
-            this.labelTotAPagar.Location = new System.Drawing.Point(474, 309);
+            this.labelTotAPagar.Location = new System.Drawing.Point(474, 347);
             this.labelTotAPagar.Name = "labelTotAPagar";
             this.labelTotAPagar.Size = new System.Drawing.Size(74, 13);
             this.labelTotAPagar.TabIndex = 14;
@@ -295,7 +296,7 @@
             // labelRTot
             // 
             this.labelRTot.AutoSize = true;
-            this.labelRTot.Location = new System.Drawing.Point(554, 309);
+            this.labelRTot.Location = new System.Drawing.Point(554, 347);
             this.labelRTot.Name = "labelRTot";
             this.labelRTot.Size = new System.Drawing.Size(10, 13);
             this.labelRTot.TabIndex = 26;
@@ -322,6 +323,7 @@
             // 
             // comboBoxTipoPago
             // 
+            this.comboBoxTipoPago.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoPago.FormattingEnabled = true;
             this.comboBoxTipoPago.Location = new System.Drawing.Point(137, 375);
             this.comboBoxTipoPago.Name = "comboBoxTipoPago";
@@ -341,10 +343,11 @@
             // 
             this.comboBoxFacEnc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.comboBoxFacEnc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxFacEnc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFacEnc.FormattingEnabled = true;
             this.comboBoxFacEnc.Location = new System.Drawing.Point(132, 97);
             this.comboBoxFacEnc.Name = "comboBoxFacEnc";
-            this.comboBoxFacEnc.Size = new System.Drawing.Size(336, 21);
+            this.comboBoxFacEnc.Size = new System.Drawing.Size(573, 21);
             this.comboBoxFacEnc.TabIndex = 32;
             this.comboBoxFacEnc.SelectedIndexChanged += new System.EventHandler(this.comboBoxFacEnc_SelectedIndexChanged_1);
             // 

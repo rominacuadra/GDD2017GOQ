@@ -127,6 +127,7 @@
             // 
             // comboBoxFiltro
             // 
+            this.comboBoxFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFiltro.FormattingEnabled = true;
             this.comboBoxFiltro.Location = new System.Drawing.Point(64, 125);
             this.comboBoxFiltro.Name = "comboBoxFiltro";
@@ -145,6 +146,7 @@
             // 
             // comboBoxEmpresasEncontradas
             // 
+            this.comboBoxEmpresasEncontradas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEmpresasEncontradas.FormattingEnabled = true;
             this.comboBoxEmpresasEncontradas.Location = new System.Drawing.Point(326, 166);
             this.comboBoxEmpresasEncontradas.Name = "comboBoxEmpresasEncontradas";
@@ -257,6 +259,7 @@
             // 
             // comboBoxServicio
             // 
+            this.comboBoxServicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxServicio.FormattingEnabled = true;
             this.comboBoxServicio.Location = new System.Drawing.Point(139, 277);
             this.comboBoxServicio.Name = "comboBoxServicio";

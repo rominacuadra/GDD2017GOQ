@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AbmFactura));
             this.menuABMCli = new System.Windows.Forms.MenuStrip();
             this.archivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -366,6 +367,7 @@
             // 
             // comboBoxFiltro
             // 
+            this.comboBoxFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFiltro.FormattingEnabled = true;
             this.comboBoxFiltro.Location = new System.Drawing.Point(137, 92);
             this.comboBoxFiltro.Name = "comboBoxFiltro";
@@ -394,6 +396,7 @@
             // 
             // comboBoxFacturasEncontradas
             // 
+            this.comboBoxFacturasEncontradas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFacturasEncontradas.FormattingEnabled = true;
             this.comboBoxFacturasEncontradas.Location = new System.Drawing.Point(354, 177);
             this.comboBoxFacturasEncontradas.Name = "comboBoxFacturasEncontradas";
@@ -438,6 +441,7 @@
             this.Controls.Add(this.labelTitulo);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuABMCli);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AbmFactura";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Administracion de Factura";

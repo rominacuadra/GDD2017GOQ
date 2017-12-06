@@ -83,6 +83,7 @@
             // 
             // listadotrimestre
             // 
+            this.listadotrimestre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.listadotrimestre.FormattingEnabled = true;
             this.listadotrimestre.Location = new System.Drawing.Point(490, 63);
             this.listadotrimestre.Name = "listadotrimestre";
@@ -101,6 +102,7 @@
             // 
             // listadoMostrar
             // 
+            this.listadoMostrar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.listadoMostrar.FormattingEnabled = true;
             this.listadoMostrar.Location = new System.Drawing.Point(311, 103);
             this.listadoMostrar.Name = "listadoMostrar";

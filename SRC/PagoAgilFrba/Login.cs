@@ -26,6 +26,7 @@ namespace PagoAgilFrba
         public Form1()
         {
             InitializeComponent();
+            
         }
 
         /******************************************************************************/
@@ -47,7 +48,7 @@ namespace PagoAgilFrba
         private SqlDataReader logueoCorrecto(String usuario, string password)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT USU_ID, USU_INTENTOS,USU_HABILITADO FROM GOQ.USUARIO WHERE USU_USERNAME = @USUARIO AND USU_PASSWORD = GOQ.F_Hash256(@PASS)", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT USU_ID, USU_INTENTOS,USU_HABILITADO FROM GOQ.USUARIO WHERE USU_USERNAME = @USUARIO AND USU_PASSWORD = GOQ.F_Hash256(@PASS) AND USU_HABILITADO=1", PagoAgilFrba.ModuloGlobal.getConexion());//getConexion());
 
             cmd.Parameters.Add("USUARIO", SqlDbType.NVarChar).Value = usuario;
             cmd.Parameters.Add("PASS", SqlDbType.NVarChar).Value = password;

@@ -130,7 +130,7 @@ namespace PagoAgilFrba.AbmCliente
                 respuesta = false;
             }
             if(!respuesta){
-                MessageBox.Show("El/los siguientes campos: " + mensaje + " son inválidos.", "Error");
+                MessageBox.Show("El/los siguientes campos: " + mensaje + "es/son inválidos.", "Error");
             }
             return respuesta;
 

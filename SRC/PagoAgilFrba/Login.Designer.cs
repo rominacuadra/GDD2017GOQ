@@ -47,6 +47,7 @@
             // 
             // cbRol
             // 
+            this.cbRol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRol.Enabled = false;
             this.cbRol.FormattingEnabled = true;
             this.cbRol.Location = new System.Drawing.Point(99, 177);
@@ -151,6 +152,7 @@
             // 
             // cbSuc
             // 
+            this.cbSuc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSuc.Enabled = false;
             this.cbSuc.FormattingEnabled = true;
             this.cbSuc.Location = new System.Drawing.Point(99, 204);

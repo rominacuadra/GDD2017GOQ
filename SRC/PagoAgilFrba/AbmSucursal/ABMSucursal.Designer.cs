@@ -146,6 +146,7 @@
             // 
             // comboBoxFiltro
             // 
+            this.comboBoxFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxFiltro.FormattingEnabled = true;
             this.comboBoxFiltro.Location = new System.Drawing.Point(104, 132);
             this.comboBoxFiltro.Name = "comboBoxFiltro";
@@ -164,6 +165,7 @@
             // 
             // comboBoxResultadoBusqueda
             // 
+            this.comboBoxResultadoBusqueda.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxResultadoBusqueda.FormattingEnabled = true;
             this.comboBoxResultadoBusqueda.Location = new System.Drawing.Point(347, 169);
             this.comboBoxResultadoBusqueda.Name = "comboBoxResultadoBusqueda";

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace PagoAgilFrba.Rendicion
 {
@@ -17,6 +18,9 @@ namespace PagoAgilFrba.Rendicion
         public ABMRendicion()
         {
             InitializeComponent();
+            var appSettings = ConfigurationManager.AppSettings;
+            DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
+            dtRendicion.MaxDate = fechaActual;
         }
 
         private void ABMRendicion_Load(object sender, EventArgs e)
