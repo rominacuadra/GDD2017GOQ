@@ -19,9 +19,6 @@ namespace PagoAgilFrba.AbmFactura
         public AbmFactura()
         {
             InitializeComponent();
-            var appSettings = ConfigurationManager.AppSettings;
-            DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
-            dtFechaVen.MinDate = fechaActual;
             comboBoxFiltro.Items.Add("NroFactura");
             comboBoxFiltro.Items.Add("Empresa");
             comboBoxFiltro.Items.Add("Cliente");
@@ -138,6 +135,9 @@ namespace PagoAgilFrba.AbmFactura
             textBoxTotal.Visible = true;
             labelTotal.Visible = true;
             labelDatosFactura.Visible = true;
+            var appSettings = ConfigurationManager.AppSettings;
+            DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
+            dtFechaVen.MinDate = fechaActual;
         }
 
         private void mostrarModificacion()
@@ -157,6 +157,8 @@ namespace PagoAgilFrba.AbmFactura
             labelNroFac.Visible = true;
             maskedTextBoxNroFact.Visible = true;
             maskedTextBoxNroFact.ReadOnly = true;
+            DateTime fechaMinima = Convert.ToDateTime("01/01/1900");
+            dtFechaVen.MinDate = fechaMinima;
         }
 
         private void altaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -759,8 +761,9 @@ namespace PagoAgilFrba.AbmFactura
                         
                         limpiarCampos();
                         //IDFACTURA
-                        llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]));
                         mostrarModificacion();
+                        llenarCamposParaModificar(Convert.ToInt32(camposABuscar[0]));
+                        
 
                         if (MessageBox.Show("¿Desea modificar los items?", "Información",
                           MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
