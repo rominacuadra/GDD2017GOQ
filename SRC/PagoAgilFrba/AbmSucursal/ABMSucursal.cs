@@ -243,7 +243,7 @@ namespace PagoAgilFrba.AbmSucursal
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),sucu_cp) + '/' + sucu_dir + '/' + sucu_nombre FROM GOQ.Sucursal WHERE sucu_cp = @CP AND sucu_nombre = @NOMBRE AND sucu_dir = @DIR",
+                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),sucu_cp) + '/' + sucu_dir + '/' + sucu_nombre FROM GOQ.Sucursal WHERE sucu_cp = @CP AND sucu_nombre LIKE '%'+@NOMBRE+'%' AND sucu_dir LIKE '%'+@DIR+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion()); 
                 cmd.Parameters.Add("CP", SqlDbType.Decimal).Value = Convert.ToInt32(textBoxCodigoPostal.Text);
                 cmd.Parameters.Add("DIR", SqlDbType.NVarChar).Value = textBoxDirec.Text;
@@ -267,7 +267,7 @@ namespace PagoAgilFrba.AbmSucursal
             else if (comboBoxFiltro.SelectedItem.ToString() == "Nombre")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),sucu_cp) + '/' + sucu_dir + '/' + sucu_nombre FROM GOQ.Sucursal WHERE sucu_nombre = @NOMBRE",
+                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),sucu_cp) + '/' + sucu_dir + '/' + sucu_nombre FROM GOQ.Sucursal WHERE sucu_nombre LIKE '%'+@NOMBRE+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion()); 
                 cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
                 reader = cmd.ExecuteReader();
@@ -289,7 +289,7 @@ namespace PagoAgilFrba.AbmSucursal
             else if (comboBoxFiltro.SelectedItem.ToString() == "Dirección")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),sucu_cp) + '/' + sucu_dir + '/' + sucu_nombre FROM GOQ.Sucursal WHERE sucu_dir = @DIR",
+                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),sucu_cp) + '/' + sucu_dir + '/' + sucu_nombre FROM GOQ.Sucursal WHERE sucu_dir LIKE '%'+@DIR+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion()); 
                 cmd.Parameters.Add("DIR", SqlDbType.NVarChar).Value = textBoxDirec.Text;
                 reader = cmd.ExecuteReader();
@@ -334,7 +334,7 @@ namespace PagoAgilFrba.AbmSucursal
 
         private void inhabilitarSucursal(int CP, string Direccion, string Nombre)
         {
-            SqlCommand cmd = new SqlCommand("UPDATE GOQ.Sucursal SET sucu_habilitado = 0 WHERE sucu_cp = @CP AND sucu_dir = @DIR AND sucu_nombre = @NOMBRE",
+            SqlCommand cmd = new SqlCommand("UPDATE GOQ.Sucursal SET sucu_habilitado = 0 WHERE sucu_cp = @CP AND sucu_dir LIKE '%'+@DIR+'%' AND sucu_nombre LIKE '%'+@NOMBRE+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion()); 
             cmd.Parameters.Add("CP", SqlDbType.Decimal).Value = CP;
             cmd.Parameters.Add("DIR", SqlDbType.NVarChar).Value = Direccion;
@@ -362,7 +362,7 @@ namespace PagoAgilFrba.AbmSucursal
         private void llenarCamposParaModificar(int CP, string Direccion, string Nombre)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT sucu_nombre, sucu_dir, sucu_cp, sucu_habilitado FROM GOQ.Sucursal WHERE sucu_nombre = @NOMBRE AND sucu_dir = @DIR AND sucu_cp = @CP",
+            SqlCommand cmd = new SqlCommand("SELECT sucu_nombre, sucu_dir, sucu_cp, sucu_habilitado FROM GOQ.Sucursal WHERE sucu_nombre LIKE '%'+@NOMBRE+'%' AND sucu_dir LIKE '%'+@DIR+'%' AND sucu_cp = @CP",
                 PagoAgilFrba.ModuloGlobal.getConexion()); 
             cmd.Parameters.Add("CP", SqlDbType.Decimal).Value = CP;
             cmd.Parameters.Add("DIR", SqlDbType.NVarChar).Value = Direccion;
@@ -390,7 +390,7 @@ namespace PagoAgilFrba.AbmSucursal
         private bool sucursalNoEstaInhabilitada(int CP, string Direccion, string Nombre)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT sucu_id FROM GOQ.Sucursal WHERE sucu_nombre = @NOMBRE AND sucu_dir = @DIR AND sucu_cp = @CP AND sucu_habilitado = 0",
+            SqlCommand cmd = new SqlCommand("SELECT sucu_id FROM GOQ.Sucursal WHERE sucu_nombre LIKE '%'+@NOMBRE+'%' AND sucu_dir LIKE '%'+@DIR+'%' AND sucu_cp = @CP AND sucu_habilitado = 0",
                     PagoAgilFrba.ModuloGlobal.getConexion()); 
             cmd.Parameters.Add("CP", SqlDbType.Decimal).Value = CP;
             cmd.Parameters.Add("DIR", SqlDbType.NVarChar).Value = Direccion;

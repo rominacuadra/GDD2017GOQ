@@ -225,7 +225,7 @@ namespace PagoAgilFrba.AbmEmpresa
             int IDEmpresa = -1;
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion = @SERVICIO ",
+            SqlCommand cmd = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion LIKE '%'+@SERVICIO+'%' ",
             PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = Servicio;
             reader = cmd.ExecuteReader();
@@ -339,7 +339,7 @@ namespace PagoAgilFrba.AbmEmpresa
             int filasRetornadasServicioEmpresa;
             int serv_id = 0;
             SqlDataReader reader = null;
-            SqlCommand cmd1 = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion = @SERVICIO ",
+            SqlCommand cmd1 = new SqlCommand("SELECT serv_id FROM GOQ.Servicio WHERE serv_descripcion LIKE '%'+@SERVICIO+'%' ",
             PagoAgilFrba.ModuloGlobal.getConexion());
             cmd1.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = Servicio;
             reader = cmd1.ExecuteReader();
@@ -517,12 +517,11 @@ namespace PagoAgilFrba.AbmEmpresa
         private bool yaRindioTodasLasFacturas(string cuit) {
 
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select count(*) from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) join GOQ.Pago_Factura pf on(pf.pago_fac_fac_id = f.fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT and f.fac_ren_id is null having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id);", PagoAgilFrba.ModuloGlobal.getConexion());
-
+            SqlCommand cmd = new SqlCommand("select * from [GOQ].[Factura] f inner join [GOQ].[Empresa] e on (e.ID_empresa=f.fac_empresa_id) join GOQ.Pago_Factura pf on(pf.pago_fac_fac_id = f.fac_id) where REPLACE( e.empresa_cuit , '-' , '' )= @CUIT and f.fac_ren_id is null and f.fac_id in (select fac_id from GOQ.Factura f1 join GOQ.Pago_factura pf1 on(f1.fac_id = pf1.pago_fac_fac_id) group by f1.fac_id having COUNT(pf1.pago_fac_fac_id) > (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f1.fac_id ));", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = cuit;
             reader = cmd.ExecuteReader();
             reader.Read();
-
+            reader.Read();
             if (reader.HasRows)
             {
                 return false;
@@ -559,7 +558,7 @@ namespace PagoAgilFrba.AbmEmpresa
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT and e.empresa_nombre like @NOMBRE and s.serv_descripcion=@SERVICIO;",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' ) LIKE '%'+@CUIT+'%' and e.empresa_nombre like '%'+@NOMBRE+'%' and s.serv_descripcion LIKE '%'+@SERVICIO+'%';",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text.Replace(" ", "");
                 cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = comboBoxServicio.Text;
@@ -583,9 +582,9 @@ namespace PagoAgilFrba.AbmEmpresa
             else if (comboBoxFiltro.SelectedItem.ToString() == "Nombre")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_nombre like @NOMBRE;",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where e.empresa_nombre like '%'+@NOMBRE+'%';",
                 PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("@NOMBRE", "%" + textBoxNombre.Text + "%");
+                cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -605,7 +604,7 @@ namespace PagoAgilFrba.AbmEmpresa
             else if (comboBoxFiltro.SelectedItem.ToString() == "Cuit")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' )=@CUIT",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where REPLACE( e.empresa_cuit , '-' , '' ) LIKE '%'+@CUIT+'%'",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("CUIT", SqlDbType.NVarChar).Value = maskedTextBoxCuit.Text.Replace(" ", "");
                 reader = cmd.ExecuteReader();
@@ -627,7 +626,7 @@ namespace PagoAgilFrba.AbmEmpresa
             else
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where s.serv_descripcion=@SERVICIO",
+                SqlCommand cmd = new SqlCommand("select e.empresa_nombre + '/' + e.empresa_cuit + '/' + e.empresa_dir + '/' + s.serv_descripcion from GOQ.Empresa as e inner join GOQ.Servicio_Empresa as se on se.ID_empresa = e.ID_empresa inner join GOQ.Servicio as s on s.serv_id = se.ID_servicio where s.serv_descripcion LIKE '%'+@SERVICIO+'%'",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("SERVICIO", SqlDbType.NVarChar).Value = comboBoxServicio.Text;
                 reader = cmd.ExecuteReader();

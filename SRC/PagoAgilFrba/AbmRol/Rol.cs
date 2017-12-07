@@ -127,7 +127,7 @@ namespace PagoAgilFrba.AbmRol
         private bool existeRol(string nombreRol)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select * from GOQ.Rol where rol_nombre = @NombreRol", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select * from GOQ.Rol where rol_nombre LIKE '%'+@NombreRol+'%'", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("NombreRol", SqlDbType.NVarChar).Value = nombreRol;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -172,7 +172,7 @@ namespace PagoAgilFrba.AbmRol
 
             int cant = 0;
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT distinct fun_rol_fun_id FROM [GOQ].[Funcionalidad_Rol] F INNER JOIN [GOQ].[Rol] R ON(F.fun_rol_rol_id=r.rol_id) where R.rol_nombre=@NOMBREROL;", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT distinct fun_rol_fun_id FROM [GOQ].[Funcionalidad_Rol] F INNER JOIN [GOQ].[Rol] R ON(F.fun_rol_rol_id=r.rol_id) where R.rol_nombre LIKE '%'+@NOMBREROL+'%';", PagoAgilFrba.ModuloGlobal.getConexion());
 
             cmd.Parameters.Add("NOMBREROL", SqlDbType.NVarChar).Value = rol;
 
@@ -225,8 +225,8 @@ namespace PagoAgilFrba.AbmRol
         {
             if (lbRoles.SelectedItems.Count > 0) 
             {
-                
-                SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 0 WHERE rol_nombre = @NOMBREROL; DELETE FROM GOQ.Rol_Usuario where rol_usu_rol_id = (select rol_id from GOQ.Rol where rol_nombre = @NOMBREROL)",
+
+                SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 0 WHERE rol_nombre LIKE '%'+@NOMBREROL+'%'; DELETE FROM GOQ.Rol_Usuario where rol_usu_rol_id = (select rol_id from GOQ.Rol where rol_nombre LIKE '%'+@NOMBREROL+'%')",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("NOMBREROL", SqlDbType.VarChar).Value = lbRoles.SelectedItem.ToString();
 
@@ -325,9 +325,8 @@ namespace PagoAgilFrba.AbmRol
         private int dameElIDdelRol(string nombreRol) {
         
                         SqlDataReader reader = null;
-                        SqlCommand cmdInsert = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE ltrim(rtrim(upper(rol_nombre)))=@NOMBREROL;", PagoAgilFrba.ModuloGlobal.getConexion());
+                        SqlCommand cmdInsert = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE ltrim(rtrim(upper(rol_nombre))) LIKE '%'+@NOMBREROL+'%';", PagoAgilFrba.ModuloGlobal.getConexion());
 
-                        MessageBox.Show(nombreRol.ToUpper().Trim());
                         cmdInsert.Parameters.Add("NOMBREROL", SqlDbType.NVarChar).Value = nombreRol.ToUpper().Trim();
                         
                         
@@ -509,7 +508,7 @@ namespace PagoAgilFrba.AbmRol
 
                 
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT distinct usu_id FROM GOQ.Usuario WHERE usu_username=@USUARIO", PagoAgilFrba.ModuloGlobal.getConexion());
+                SqlCommand cmd = new SqlCommand("SELECT distinct usu_id FROM GOQ.Usuario WHERE usu_username LIKE '%'+@USUARIO+'%'", PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("USUARIO", SqlDbType.VarChar).Value = lbUsuario.SelectedItem.ToString();
 
                 reader = cmd.ExecuteReader();
@@ -528,7 +527,7 @@ namespace PagoAgilFrba.AbmRol
 
 
                             SqlDataReader readerRol = null;
-                            SqlCommand cmdSelect = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE rol_nombre=@NOMBREROL;", PagoAgilFrba.ModuloGlobal.getConexion());
+                            SqlCommand cmdSelect = new SqlCommand("SELECT distinct rol_id FROM [GOQ].[Rol] WHERE rol_nombre LIKE '%'+@NOMBREROL+'%';", PagoAgilFrba.ModuloGlobal.getConexion());
 
                             cmdSelect.Parameters.Add("NOMBREROL", SqlDbType.NVarChar).Value = lbRolHab.SelectedItem.ToString();
 
@@ -577,7 +576,7 @@ namespace PagoAgilFrba.AbmRol
         {
             int cant = 0;
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM GOQ.Funcionalidad_Rol F INNER JOIN GOQ.Rol R ON (F.fun_rol_rol_id=R.rol_id) WHERE R.rol_nombre=@USUARIO", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM GOQ.Funcionalidad_Rol F INNER JOIN GOQ.Rol R ON (F.fun_rol_rol_id=R.rol_id) WHERE R.rol_nombre LIKE '%'+@USUARIO+'%'", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("USUARIO", SqlDbType.VarChar).Value = nombreRol;
 
             reader = cmd.ExecuteReader();
@@ -611,7 +610,7 @@ namespace PagoAgilFrba.AbmRol
                 if (tieneHabilitadaFuncionalidades(lbRoles.SelectedItem.ToString())) {
 
 
-                    SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 1 WHERE rol_nombre = @NOMBREROL",
+                    SqlCommand cmd = new SqlCommand("UPDATE GOQ.Rol SET rol_habilitado = 1 WHERE rol_nombre LIKE '%'+@NOMBREROL+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion());
                     cmd.Parameters.Add("NOMBREROL", SqlDbType.VarChar).Value = lbRoles.SelectedItem.ToString();
 
@@ -665,7 +664,7 @@ namespace PagoAgilFrba.AbmRol
                         if (!existeRol(nombre_rol.ToString()))
                         {
 
-                            SqlCommand cmd = new SqlCommand("UPDATE [GOQ].[Rol] SET [rol_nombre]=@RENOMBRAR WHERE ltrim(rtrim(upper([rol_nombre])))=@ORIGINAL",
+                            SqlCommand cmd = new SqlCommand("UPDATE [GOQ].[Rol] SET [rol_nombre]=@RENOMBRAR WHERE ltrim(rtrim(upper([rol_nombre]))) LIKE '%'+@ORIGINAL+'%'",
                             PagoAgilFrba.ModuloGlobal.getConexion());
 
                             cmd.Parameters.Add("RENOMBRAR", SqlDbType.VarChar).Value = nombre_rol.ToUpper().Trim();//miTituloCase.ToTitleCase(nombre_rol);//nombre_rol.To ToString().ToUpperInvariant();

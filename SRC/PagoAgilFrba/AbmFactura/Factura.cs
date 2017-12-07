@@ -19,6 +19,9 @@ namespace PagoAgilFrba.AbmFactura
         public AbmFactura()
         {
             InitializeComponent();
+            var appSettings = ConfigurationManager.AppSettings;
+            DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
+            dtFechaVen.Value = fechaActual;
             comboBoxFiltro.Items.Add("NroFactura");
             comboBoxFiltro.Items.Add("Empresa");
             comboBoxFiltro.Items.Add("Cliente");
@@ -138,6 +141,7 @@ namespace PagoAgilFrba.AbmFactura
             var appSettings = ConfigurationManager.AppSettings;
             DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
             dtFechaVen.MinDate = fechaActual;
+            dtFechaVen.Value = fechaActual;
         }
 
         private void mostrarModificacion()
@@ -202,7 +206,7 @@ namespace PagoAgilFrba.AbmFactura
            if (listBoxItems.Items.Count > 0)
            {
                int filasRetornadas;
-               int itemsRetornados;
+               int itemsRetornados = 0;
                string empresa = Convert.ToString(comboBoxEmpresa.Text);
                string[] camposABuscar = comboBoxCliente.SelectedItem.ToString().Replace(" ", "").Split(new Char[] { '/' });
                string nombre = Convert.ToString(camposABuscar[0]);
@@ -238,15 +242,15 @@ namespace PagoAgilFrba.AbmFactura
                         cmd2.CommandType = CommandType.StoredProcedure;
                         cmd2.Parameters.AddRange(sqls1);
                         itemsRetornados = cmd2.ExecuteNonQuery();
-
-                        if (itemsRetornados > 0)
-                        {
-                            MessageBox.Show("La factura se ha registrado con éxito!", "Información");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Error al insertar los items", "Información");
-                        }
+                        
+                    }
+                    if (itemsRetornados > 0)
+                    {
+                        MessageBox.Show("La factura se ha registrado con éxito!", "Información");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al insertar los items", "Información");
                     }
                }
                else
@@ -511,11 +515,19 @@ namespace PagoAgilFrba.AbmFactura
 
         private void buttonLimpiarItems_Click(object sender, EventArgs e)
         {
-            listBoxItems.Items.Clear();
-            textBoxItemMonto.Text = "";
-            textBoxItemCantidad.Text = "";
-            totalItems = 0;
-            textBoxTotal.Text = "0";
+            if (listBoxItems.SelectedItems.Count > 0)
+            {
+                string[] direccion = listBoxItems.SelectedItem.ToString().Split(new Char[] { '/' });
+                decimal monto = Convert.ToDecimal(direccion[0]);
+                decimal cantidad = Convert.ToDecimal(direccion[1]);
+                totalItems = totalItems - (monto * cantidad);
+                textBoxTotal.Text = Convert.ToString(totalItems);
+                listBoxItems.Items.Remove(listBoxItems.SelectedItem);
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar un item para quitar de la lista.", "Error");
+            }
         }
 
         private void labelItemMonto_Click(object sender, EventArgs e)
@@ -589,8 +601,7 @@ namespace PagoAgilFrba.AbmFactura
                 int fac_id = Convert.ToInt32(maskedTextBoxNroFact.Text.Replace(" ", ""));
 
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where f.fac_id = @nroFactura and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
-                PagoAgilFrba.ModuloGlobal.getConexion());
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where f.fac_id = @nroFactura and f.fac_ren_id IS NULL group by f.fac_id, e.empresa_nombre, c.cli_nombre, c.cli_apellido having COUNT(pf.pago_fac_fac_id) = (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f.fac_id);", PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("nroFactura", SqlDbType.Int).Value = fac_id;
                 reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -612,7 +623,7 @@ namespace PagoAgilFrba.AbmFactura
             {
                 string empresa = Convert.ToString(comboBoxEmpresa.Text);
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where e.empresa_nombre = @empresa and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where e.empresa_nombre LIKE '%'+@empresa+'%' and f.fac_ren_id IS NULL group by f.fac_id, e.empresa_nombre, c.cli_nombre, c.cli_apellido having COUNT(pf.pago_fac_fac_id) = (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f.fac_id);",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("empresa", SqlDbType.NVarChar).Value = empresa;
                 reader = cmd.ExecuteReader();
@@ -638,7 +649,7 @@ namespace PagoAgilFrba.AbmFactura
                 string nombre = Convert.ToString(camposABuscar[0]);
                 string apellido = Convert.ToString(camposABuscar[1]);
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where c.cli_nombre = @nombre and c.cli_apellido = @apellido and pf.pago_fac_fac_id IS NULL and f.fac_ren_id IS NULL;",
+                SqlCommand cmd = new SqlCommand("select CONVERT(varchar(50), f.fac_id) + '/' + e.empresa_nombre + '/' + c.cli_nombre + '/' + c.cli_apellido from GOQ.Factura as f inner join GOQ.Empresa as e on e.ID_empresa = f.fac_empresa_id inner join GOQ.Cliente as c on c.cli_id = f.fac_cli_id left join GOQ.Pago_Factura as pf on pf.pago_fac_fac_id = f.fac_id where c.cli_nombre LIKE '%'+@nombre+'%' and c.cli_apellido LIKE '%'+@apellido+'%' and f.fac_ren_id IS NULL group by f.fac_id, e.empresa_nombre, c.cli_nombre, c.cli_apellido having COUNT(pf.pago_fac_fac_id) = (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f.fac_id);",
                 PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("nombre", SqlDbType.NVarChar).Value = nombre;
                 cmd.Parameters.Add("apellido", SqlDbType.NVarChar).Value = apellido;
@@ -847,7 +858,7 @@ namespace PagoAgilFrba.AbmFactura
         private bool puedeSerModificadaEliminada(int facturaID)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) left join GOQ.Devolucion d on(f.fac_id = d.dev_fac_id) left join GOQ.Rendicion r on(f.fac_ren_id = r.ren_id) where fac_id = @FACTURA group by fac_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) or COUNT(r.ren_id)>0", PagoAgilFrba.ModuloGlobal.getConexion());
+            SqlCommand cmd = new SqlCommand("select fac_id from GOQ.Factura f left join GOQ.Pago_factura pf on(f.fac_id = pf.pago_fac_fac_id) where fac_id = @FACTURA and fac_ren_id is not NULL group by fac_id having COUNT(pf.pago_fac_fac_id) > (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f.fac_id);", PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("FACTURA", SqlDbType.Decimal).Value = facturaID;
             reader = cmd.ExecuteReader();
             if (reader.HasRows)

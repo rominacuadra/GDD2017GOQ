@@ -18,15 +18,39 @@ namespace PagoAgilFrba.Rendicion
         public ABMRendicion()
         {
             InitializeComponent();
+            ocultarRendicion();
             var appSettings = ConfigurationManager.AppSettings;
             DateTime fechaActual = Convert.ToDateTime(appSettings["fechaActual"]);
             dtRendicion.MaxDate = fechaActual;
+            dtRendicion.Value = fechaActual;
         }
 
         private void ABMRendicion_Load(object sender, EventArgs e)
         {
             cargarEmpresas();
             cargarComision();
+        }
+
+        private void ocultarRendicion()
+        {
+            labelCant.Visible = false;
+            labelCom.Visible = false;
+            labelImp.Visible = false;
+            labelTImp.Visible = false;
+            labelTCant.Visible = false;
+            labelTCom.Visible = false;
+            labelTitRend.Visible = false;
+        }
+
+        private void mostrarLabelsRendicion()
+        {
+            labelCant.Visible = true;
+            labelCom.Visible = true;
+            labelImp.Visible = true;
+            labelTImp.Visible = true;
+            labelTCant.Visible = true;
+            labelTCom.Visible = true;
+            labelTitRend.Visible = true;
         }
 
         private void cargarComision() {
@@ -124,13 +148,27 @@ namespace PagoAgilFrba.Rendicion
 
             if (cbPorcComision.SelectedIndex==-1 || cbEmpresa.SelectedIndex==-1) {
                 MessageBox.Show("Debe seleccionar los datos necesarios.");
+                ocultarRendicion();
             }else{
 
-                if (!SeRindioParaLaEmpresa(cbEmpresa.SelectedItem.ToString(), dtRendicion.Value) && !seRindioEseDia(dtRendicion.Value))
+               if (!SeRindioParaLaEmpresa(cbEmpresa.SelectedItem.ToString(), dtRendicion.Value) && !seRindioEseDia(dtRendicion.Value))
                 {
                     string queryInsertRendicion = "";
-                    queryInsertRendicion = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total]) select @FECHARENDICION as ren_fecha_ren, COUNT(f.fac_id) as ren_cant_fac, cast((SUM(f.fac_total*@COMISION)/100) as decimal(18,2)) as ren_imp_comision, f.fac_empresa_id as ren_empresa_id, @IDCOMISION as ren_porc_comision_id, SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) left join [GOQ].[Devolucion] d on(d.dev_fac_id = f.fac_id) where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and month(p.pago_fecha_cobro) = month(@FECHARENDICION) and year(p.pago_fecha_cobro) = year(@FECHARENDICION) group by f.fac_empresa_id having COUNT(pf.pago_fac_fac_id) > COUNT(d.dev_fac_id) SELECT SCOPE_IDENTITY();";
+                    SqlDataReader reader = null;
+                    SqlCommand cmd = new SqlCommand("select TOP 1 r2.ren_fecha_ren from GOQ.Rendicion r2 where r2.ren_fecha_ren <= @FECHARENDICION and r2.ren_empresa_id = @EMPRESAID order by r2.ren_fecha_ren DESC", PagoAgilFrba.ModuloGlobal.getConexion()); 
+                    cmd.Parameters.Add("FECHARENDICION", SqlDbType.Date).Value = dtRendicion.Value;
+                    cmd.Parameters.Add("EMPRESAID", SqlDbType.Int).Value = idEmpresa(cbEmpresa.SelectedItem.ToString().Trim());
+                    reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        queryInsertRendicion = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total]) select @FECHARENDICION as ren_fecha_ren, COUNT(distinct f.fac_id) as ren_cant_fac, cast((SUM(f.fac_total*@COMISION)/100) as decimal(18,2)) as ren_imp_comision, f.fac_empresa_id as ren_empresa_id, @IDCOMISION as ren_porc_comision_id, SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and p.pago_fecha_cobro between (select TOP 1 r2.ren_fecha_ren from GOQ.Rendicion r2 where r2.ren_fecha_ren <= @FECHARENDICION and r2.ren_empresa_id = @EMPRESAID order by r2.ren_fecha_ren DESC) and DATEADD(day,-1, @FECHARENDICION) and f.fac_id in (select fac_id from GOQ.Factura f1 join GOQ.Pago_factura pf1 on(f1.fac_id = pf1.pago_fac_fac_id) group by f1.fac_id having COUNT(pf1.pago_fac_fac_id) > (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f1.fac_id )) group by f.fac_empresa_id; SELECT SCOPE_IDENTITY();";
 
+                    }
+                    else{
+                        queryInsertRendicion = "INSERT INTO [GOQ].[Rendicion]([ren_fecha_ren],[ren_cant_fac],[ren_imp_comision],[ren_empresa_id],[ren_porc_comision_id],[ren_imp_total]) select @FECHARENDICION as ren_fecha_ren, COUNT(distinct f.fac_id) as ren_cant_fac, cast((SUM(f.fac_total*@COMISION)/100) as decimal(18,2)) as ren_imp_comision, f.fac_empresa_id as ren_empresa_id, @IDCOMISION as ren_porc_comision_id, SUM(f.fac_total) as ren_imp_total from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id) where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and p.pago_fecha_cobro <= DATEADD(day,-1, @FECHARENDICION) and f.fac_id in (select fac_id from GOQ.Factura f1 join GOQ.Pago_factura pf1 on(f1.fac_id = pf1.pago_fac_fac_id) group by f1.fac_id having COUNT(pf1.pago_fac_fac_id) > (select COUNT(dev_fac_id) from GOQ.Devolucion where dev_fac_id = f1.fac_id )) group by f.fac_empresa_id; SELECT SCOPE_IDENTITY();";
+
+                    }
+               
                     string queryUpdateEmpresaRen_Id = "";
                     queryUpdateEmpresaRen_Id = "UPDATE [GOQ].[Factura] SET [fac_ren_id] = @MAXRENID WHERE [fac_id] in (select distinct f.fac_id from [GOQ].[Factura] f inner join [GOQ].[Pago_Factura] pf on (pf.pago_fac_fac_id=f.fac_id) inner join [GOQ].[Pago] p on(p.pago_id=pf.pago_fac_pago_id)  where f.fac_ren_id is null and f.fac_empresa_id = @EMPRESAID and month(p.pago_fecha_cobro) = month(@FECHARENDICION) and year(p.pago_fecha_cobro) = year(@FECHARENDICION) group by f.fac_id);";
 
@@ -156,16 +194,20 @@ namespace PagoAgilFrba.Rendicion
                         if (cantidadFilasActualizadas > 0)
                         {
                             MessageBox.Show("Facturas Rendidas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            mostrarLabelsRendicion();
+                            mostrarRendicion(maxRenId);
                         }
                     }
                     else
                     {
                         MessageBox.Show("No hay facturas para rendir en esta fecha para la empresa.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ocultarRendicion();
                     }
                 }
                 else
                 {
                     MessageBox.Show("Ya se ha rendido para la empresa y el mes seleccionado.");
+                    ocultarRendicion();
                 }
 
             }
@@ -213,6 +255,22 @@ namespace PagoAgilFrba.Rendicion
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void mostrarRendicion(int renID)
+        {
+            SqlDataReader reader = null;
+            SqlCommand cmd = new SqlCommand("select ren_cant_fac, ren_imp_comision, ren_imp_total from GOQ.Rendicion where ren_id = @RenID", PagoAgilFrba.ModuloGlobal.getConexion());
+            cmd.Parameters.Add("RenID", SqlDbType.Decimal).Value = renID;
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                labelTCant.Text = Convert.ToString(reader.GetValue(0));
+                labelTCom.Text = Convert.ToString(reader.GetValue(1));
+                labelTImp.Text = Convert.ToString(reader.GetValue(2));
+                reader.Close();
+            }
         }
     }
 }

@@ -158,6 +158,7 @@
             // 
             // comboBoxEmpresa
             // 
+            this.comboBoxEmpresa.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEmpresa.FormattingEnabled = true;
             this.comboBoxEmpresa.Location = new System.Drawing.Point(180, 201);
             this.comboBoxEmpresa.Name = "comboBoxEmpresa";
@@ -318,7 +319,7 @@
             this.buttonLimpiarItems.Name = "buttonLimpiarItems";
             this.buttonLimpiarItems.Size = new System.Drawing.Size(75, 23);
             this.buttonLimpiarItems.TabIndex = 147;
-            this.buttonLimpiarItems.Text = "Borrar Items";
+            this.buttonLimpiarItems.Text = "Borrar Item";
             this.buttonLimpiarItems.UseVisualStyleBackColor = true;
             this.buttonLimpiarItems.Click += new System.EventHandler(this.buttonLimpiarItems_Click);
             // 

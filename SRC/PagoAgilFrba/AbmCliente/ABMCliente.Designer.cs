@@ -242,9 +242,9 @@
             this.labelNroPiso.AutoSize = true;
             this.labelNroPiso.Location = new System.Drawing.Point(217, 400);
             this.labelNroPiso.Name = "labelNroPiso";
-            this.labelNroPiso.Size = new System.Drawing.Size(50, 13);
+            this.labelNroPiso.Size = new System.Drawing.Size(37, 13);
             this.labelNroPiso.TabIndex = 39;
-            this.labelNroPiso.Text = "Nro Piso:";
+            this.labelNroPiso.Text = "Altura:";
             // 
             // labelDireccion
             // 

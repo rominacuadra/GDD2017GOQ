@@ -129,6 +129,11 @@ namespace PagoAgilFrba.AbmCliente
                 mensaje = mensaje + "Fecha de Nacimiento, ";
                 respuesta = false;
             }
+            if (!Int32.TryParse(textBoxNroPiso.Text.ToString(), out esNumero))
+            {
+                mensaje = mensaje + "Altura, ";
+                respuesta = false;
+            }
             if(!respuesta){
                 MessageBox.Show("El/los siguientes campos: " + mensaje + "es/son inválidos.", "Error");
             }
@@ -233,7 +238,7 @@ namespace PagoAgilFrba.AbmCliente
             if (MailSinModificar == Mail && DNISinModificar != DNI)
             {
                 //modifica DNI, MAIL no
-                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido LIKE '%'+'{9}'+'%' AND cli_nombre LIKE '%'+'{10}'+'%'",
                 Nombre, Apellido, DNI, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
@@ -252,7 +257,7 @@ namespace PagoAgilFrba.AbmCliente
                 if (mailNoEstaRepetido(textBoxMail.Text))
                 {
 
-                    SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_mail = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido = '{9}' AND cli_nombre = '{10}'",
+                    SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_mail = '{2}', cli_tel = '{3}', cli_dir = '{4}', cli_cp = '{5}', cli_habilitado = '{6}', cli_fecha_nac =  '{7}' WHERE cli_dni = '{8}' AND cli_apellido LIKE '%'+'{9}'+'%' AND cli_nombre LIKE '%'+'{10}'+'%'",
                     Nombre, Apellido, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                     DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                     filasRetornadas = cmd.ExecuteNonQuery();
@@ -276,7 +281,7 @@ namespace PagoAgilFrba.AbmCliente
                 ////modifica Mail y DNI
                 if (mailNoEstaRepetido(textBoxMail.Text))
                 {
-                    SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido = '{10}' AND cli_nombre = '{11}'",
+                    SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_dni = '{2}', cli_mail = '{3}', cli_tel = '{4}', cli_dir = '{5}', cli_cp = '{6}', cli_habilitado = '{7}', cli_fecha_nac =  '{8}' WHERE cli_dni = '{9}' AND cli_apellido LIKE '%'+'{10}'+'%' AND cli_nombre LIKE '%'+'{11}'+'%'",
                     Nombre, Apellido, DNI, Mail, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                     DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                     filasRetornadas = cmd.ExecuteNonQuery();
@@ -297,7 +302,7 @@ namespace PagoAgilFrba.AbmCliente
             else
             {
                 ////no modifica Mail ni DNI
-                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_tel = '{2}', cli_dir = '{3}', cli_cp = '{4}', cli_habilitado = '{5}', cli_fecha_nac =  '{6}' WHERE cli_dni = '{7}' AND cli_apellido = '{8}' AND cli_nombre = '{9}'",
+                SqlCommand cmd = new SqlCommand(string.Format("UPDATE GOQ.Cliente SET cli_nombre = '{0}', cli_apellido = '{1}', cli_tel = '{2}', cli_dir = '{3}', cli_cp = '{4}', cli_habilitado = '{5}', cli_fecha_nac =  '{6}' WHERE cli_dni = '{7}' AND cli_apellido LIKE '%'+'{8}'+'%' AND cli_nombre LIKE '%'+'{9}'+'%'",
                 Nombre, Apellido, Telefono, Direccion, CodigoPostal, habilitado, FechaDeNacimiento,
                 DNIAModificar, ApellidoAModificar, NombreAModificar), PagoAgilFrba.ModuloGlobal.getConexion());
                 filasRetornadas = cmd.ExecuteNonQuery();
@@ -338,54 +343,72 @@ namespace PagoAgilFrba.AbmCliente
             comboBoxResultadoBusqueda.Items.Clear();
             if (comboBoxFiltro.SelectedItem.ToString() == "Todos")
             {
-                SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE",
-                    PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = Convert.ToInt32(textBoxDNI.Text);
-                cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = textBoxApellido.Text;
-                cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
-                reader = cmd.ExecuteReader();
-                while (reader.Read())
+                int esNumero;
+                if (Int32.TryParse(textBoxDNI.Text.ToString(), out esNumero))
                 {
-                    comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
+                        SqlDataReader reader = null;
+                    SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido LIKE '%'+@APELLIDO+'%' AND cli_nombre LIKE '%'+@NOMBRE+'%'",
+                        PagoAgilFrba.ModuloGlobal.getConexion());
+                    cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = Convert.ToInt32(textBoxDNI.Text);
+                    cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = textBoxApellido.Text;
+                    cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
+                    reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
+                    }
+                    if (reader.HasRows)
+                    {
+                        reader.Close();
+                        return true;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        return false;
+                    }
                 }
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    return true;
-                }
-                else
-                {
-                    reader.Close();
+                else{
+                    MessageBox.Show("Debe ingresar el campo DNI correctamente.","Error");
                     return false;
                 }
+                
             }
             else if (comboBoxFiltro.SelectedItem.ToString() == "DNI")
             {
-                SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_dni = @DNI",
-                    PagoAgilFrba.ModuloGlobal.getConexion());
-                cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = Convert.ToInt32(textBoxDNI.Text);
-                reader = cmd.ExecuteReader();
-                while (reader.Read())
+                int esNumero;
+                if (Int32.TryParse(textBoxDNI.Text.ToString(), out esNumero))
                 {
-                    comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
-                }
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    return true;
+                    SqlDataReader reader = null;
+                    SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_dni = @DNI",
+                        PagoAgilFrba.ModuloGlobal.getConexion());
+                    cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = Convert.ToInt32(textBoxDNI.Text);
+                    reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        comboBoxResultadoBusqueda.Items.Add(reader.GetString(0));
+                    }
+                    if (reader.HasRows)
+                    {
+                        reader.Close();
+                        return true;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        return false;
+                    }
                 }
                 else
                 {
-                    reader.Close();
+                    MessageBox.Show("Debe ingresar el campo DNI correctamente.", "Error");
                     return false;
                 }
             }
             else if (comboBoxFiltro.SelectedItem.ToString() == "Apellido")
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_apellido = @APELLIDO",
+                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_apellido LIKE '%'+@APELLIDO+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = textBoxApellido.Text;
                 reader = cmd.ExecuteReader();
@@ -407,7 +430,7 @@ namespace PagoAgilFrba.AbmCliente
             else
             {
                 SqlDataReader reader = null;
-                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_nombre = @NOMBRE",
+                SqlCommand cmd = new SqlCommand("SELECT CONVERT(varchar(18),cli_dni) + ' - ' + cli_apellido + ' - ' + cli_nombre FROM GOQ.Cliente WHERE cli_nombre LIKE '%'+@NOMBRE+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion());
                 cmd.Parameters.Add("NOMBRE", SqlDbType.NVarChar).Value = textBoxNombre.Text;
                 reader = cmd.ExecuteReader();
@@ -430,7 +453,7 @@ namespace PagoAgilFrba.AbmCliente
 
         private void inhabilitarCliente(int DNI, string Apellido, string Nombre)
         {
-            SqlCommand cmd = new SqlCommand("UPDATE GOQ.Cliente SET cli_habilitado = 0 WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE",
+            SqlCommand cmd = new SqlCommand("UPDATE GOQ.Cliente SET cli_habilitado = 0 WHERE cli_dni = @DNI AND cli_apellido LIKE '%'+@APELLIDO+'%' AND cli_nombre LIKE '%'+@NOMBRE+'%'",
                     PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = DNI;
             cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = Apellido;
@@ -464,7 +487,7 @@ namespace PagoAgilFrba.AbmCliente
         private void llenarCamposParaModificar(int DNI, string Apellido, string Nombre)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT cli_nombre, cli_apellido, cli_dni, cli_mail, cli_tel, cli_dir, cli_cp, cli_fecha_nac, cli_habilitado FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE",
+            SqlCommand cmd = new SqlCommand("SELECT cli_nombre, cli_apellido, cli_dni, cli_mail, cli_tel, cli_dir, cli_cp, cli_fecha_nac, cli_habilitado FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido LIKE '%'+@APELLIDO+'%' AND cli_nombre LIKE '%'+@NOMBRE+'%'",
                 PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = DNI;
             cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = Apellido;
@@ -500,7 +523,7 @@ namespace PagoAgilFrba.AbmCliente
         private bool clienteNoEstaInhabilitado(int DNI, string Apellido, string Nombre)
         {
             SqlDataReader reader = null;
-            SqlCommand cmd = new SqlCommand("SELECT cli_id FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido = @APELLIDO AND cli_nombre = @NOMBRE AND cli_habilitado = 0",
+            SqlCommand cmd = new SqlCommand("SELECT cli_id FROM GOQ.Cliente WHERE cli_dni = @DNI AND cli_apellido LIKE '%'+@APELLIDO+'%' AND cli_nombre LIKE '%'+@NOMBRE+'%' AND cli_habilitado = 0",
                     PagoAgilFrba.ModuloGlobal.getConexion());
             cmd.Parameters.Add("DNI", SqlDbType.Decimal).Value = DNI;
             cmd.Parameters.Add("APELLIDO", SqlDbType.NVarChar).Value = Apellido;
